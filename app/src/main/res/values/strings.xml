@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Pandora</string>
+
+    <!-- Pantalla de inicio -->
+    <string name="inicio_bienvenido">Bienvenido/a</string>
+    <string name="inicio_logo">Logo</string>
+    <string name="inicio_login">Iniciar sesión</string>
+    <string name="inicio_texto">¿Todavía no tienes una cuenta?</string>
+    <string name="inicio_registro">Registrarse</string>
+    <string name="inicio_texto2">¿Tienes algún problema?</string>
+    <string name="inicio_contacto">Contáctanos</string>
 </resources>
