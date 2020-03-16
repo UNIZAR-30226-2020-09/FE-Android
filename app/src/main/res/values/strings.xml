@@ -9,4 +9,20 @@
     <string name="inicio_registro">Registrarse</string>
     <string name="inicio_texto2">¿Tienes algún problema?</string>
     <string name="inicio_contacto">Contáctanos</string>
+
+    <!-- Primera pantalla de registro -->
+    <string name="registro_texto">Registrarse 1/2</string>
+    <string name="registro_texto_correo">Introduzca su correo electrónico</string>
+    <string name="registro_hint_correo">example@example.example</string>
+    <string name="registro_siguiente">Siguiente</string>
+    <string name="registro_long_correo">100</string>
+
+    <!-- Segunda pantalla de registro -->
+    <string name="registro2_texto">Registrarse 2/2</string>
+    <string name="registro_texto_clave1">Introduzca una clave maestra</string>
+    <string name="registro_clave1">Clave maestra</string>
+    <string name="registro_texto_clave2">Repita la clave maestra</string>
+    <string name="registro_confirmar">Confirmar</string>
+
+
 </resources>
