@@ -19,10 +19,11 @@
 
     <!-- Segunda pantalla de registro -->
     <string name="registro2_texto">Registrarse 2/2</string>
-    <string name="registro_texto_clave1">Introduzca una clave maestra</string>
-    <string name="registro_clave1">Clave maestra</string>
-    <string name="registro_texto_clave2">Repita la clave maestra</string>
-    <string name="registro_confirmar">Confirmar</string>
+    <string name="registro2_texto_clave1">Introduzca una clave maestra</string>
+    <string name="registro2_hint_clave1">Clave maestra</string>
+    <string name="registro2_long_clave">40</string>
+    <string name="registro2_texto_clave2">Repita la clave maestra</string>
+    <string name="registro2_confirmar">Confirmar</string>
 
 
 </resources>

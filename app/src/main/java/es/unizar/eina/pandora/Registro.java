@@ -3,7 +3,9 @@ package es.unizar.eina.pandora;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,20 +19,16 @@ import android.widget.Toast;
 
 public class Registro extends AppCompatActivity {
 
+    SharedPreferences sharedpreferences;
 
     private Button siguiente;
 
     private EditText email;        //Campo para escribir el email
-
     private Boolean emptyEmail = true;      //Campo del email vacío
-
     private Boolean emailCheckLength = false;
-
     private Boolean emailCheckValue = false;
-
     private TextView limitEmail;
 
-    private String emailIntroducido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +37,10 @@ public class Registro extends AppCompatActivity {
 
         siguiente=findViewById(R.id.registro_siguiente);
         email = findViewById(R.id.registro_correo);
-
-
         limitEmail = findViewById(R.id.registro_long_correo);
 
         email.addTextChangedListener(registerTextWatcher);
-
+        sharedpreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
     }
 
@@ -77,8 +73,6 @@ public class Registro extends AppCompatActivity {
 
         @Override // Soloo puede tener letras mayusculas, minusci,as si n acentuar numeros y _-.
         public void afterTextChanged(Editable s) {
-            Log.d("MyApp","++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            Log.d("MyApp", Integer.toString(correo.length()));
             emailCheckLength = (correo.length() <= 100 && correo.length() >= 3);
             emailCheckValue = correo.matches("[a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+");
 
@@ -98,12 +92,16 @@ public class Registro extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"La dirección de correo tiene que tener entre 3 y 100 caracteres.", Toast.LENGTH_LONG).show();
         }
         else {
-            emailIntroducido = email.getText().toString().trim();
-
-            //Enviamos el email que ha introducido el usuario a la actividad RegistroDos
-            Intent aux = new Intent(this, RegistroDos.class);
-            aux.putExtra("email",emailIntroducido);
-            startActivity(aux);
+            String emailIntroducido = email.getText().toString().trim();
+            Log.d("correo","++++++++++++++++++++++++++++++++++++++++++++++++++");
+            Log.d("+++++++",emailIntroducido);
+            //Guardamos el correo del usuario para seguir con el registro
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.clear();
+            editor.putString("email",emailIntroducido);
+            editor.commit();
+            //Cambiamos de actividad
+            startActivity(new Intent(this,RegistroDos.class));
         }
     }
 }
