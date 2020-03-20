@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora;
+package es.unizar.eina.pandora.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -17,9 +17,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import es.unizar.eina.pandora.R;
+
 public class Registro extends AppCompatActivity {
 
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedPreferences;
 
     private Button siguiente;
 
@@ -40,7 +42,7 @@ public class Registro extends AppCompatActivity {
         limitEmail = findViewById(R.id.registro_long_correo);
 
         email.addTextChangedListener(registerTextWatcher);
-        sharedpreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
     }
 
@@ -55,7 +57,7 @@ public class Registro extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            correo= email.getText().toString().trim();
+            correo = email.getText().toString().trim();
 
             Integer mailchars = 100 - correo.length();
             if (mailchars < 0) {
@@ -96,7 +98,7 @@ public class Registro extends AppCompatActivity {
             Log.d("correo","++++++++++++++++++++++++++++++++++++++++++++++++++");
             Log.d("+++++++",emailIntroducido);
             //Guardamos el correo del usuario para seguir con el registro
-            SharedPreferences.Editor editor = sharedpreferences.edit();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.putString("email",emailIntroducido);
             editor.commit();

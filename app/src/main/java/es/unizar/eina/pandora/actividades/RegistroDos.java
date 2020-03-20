@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora;
+package es.unizar.eina.pandora.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -8,7 +8,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
@@ -30,17 +29,16 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.RequestManager;
 
 public class RegistroDos extends AppCompatActivity {
 
-    String url = "https://pandorapp.herokuapp.com/api/users/registro";
-
+    final String url = "https://pandorapp.herokuapp.com/api/usuarios/registro";
 
     private Button confirmar;
 
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedPreferences;
 
     String savedEmail;
 
@@ -79,8 +77,8 @@ public class RegistroDos extends AppCompatActivity {
         password.addTextChangedListener(registerTextWatcher);
         confirmPassword.addTextChangedListener(registerTextWatcher);
 
-        sharedpreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        savedEmail = sharedpreferences.getString("email","");
+        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        savedEmail = sharedPreferences.getString("email","");
 
     }
 
@@ -180,7 +178,7 @@ public class RegistroDos extends AppCompatActivity {
         else {
             String password_in = password.getText().toString().trim();
             //Guardamos la contraseña
-            SharedPreferences.Editor editor = sharedpreferences.edit();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.putString("password",password_in);
 
@@ -207,8 +205,8 @@ public class RegistroDos extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             // TODO Auto-generated method stub
-                            // hazle un print al object o lo que gustes
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            Log.d("OK: ","Se ha podido registrar");
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.clear();
                             editor.putString("email",correo);
                             editor.putString("password",contrasena);
@@ -221,7 +219,7 @@ public class RegistroDos extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // TODO Auto-generated method stub
-
+                            Log.d("Error: ","No se ha podido registrar");
                         }
                     });
 
@@ -229,6 +227,5 @@ public class RegistroDos extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora;
+package es.unizar.eina.pandora.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import es.unizar.eina.pandora.R;
 
 public class Inicio extends AppCompatActivity {
     private Button login;

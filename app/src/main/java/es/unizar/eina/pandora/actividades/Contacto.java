@@ -1,8 +1,10 @@
-package es.unizar.eina.pandora;
+package es.unizar.eina.pandora.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import es.unizar.eina.pandora.R;
 
 public class Contacto extends AppCompatActivity {
 

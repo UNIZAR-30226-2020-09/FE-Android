@@ -4,6 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".actividades.Login">
 
+    <TextView
+        android:id="@+id/login_texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="32dp"
+        android:text="Iniciar sesión"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_texto_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/login_texto_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="278dp"
+        android:text="Email"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrada_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_texto" />
+
+    <EditText
+        android:id="@+id/login_entrada_usuario"
+        android:layout_width="294dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="33dp"
+        android:ems="10"
+        android:hint="Introduzca su email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/login_texto_clave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_texto_usuario" />
+
+    <TextView
+        android:id="@+id/login_texto_clave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="207dp"
+        android:text="Clave maestra"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrada_clave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_entrada_usuario" />
+
+    <EditText
+        android:id="@+id/login_entrada_clave"
+        android:inputType="textPassword"
+        android:layout_width="294dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:hint="Introduzca su clave maestra"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_texto_clave" />
+
+    <Button
+        android:id="@+id/login_entrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="257dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="63dp"
+        android:onClick="entrar"
+        android:text="Entrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_entrada_clave" />
 </androidx.constraintlayout.widget.ConstraintLayout>

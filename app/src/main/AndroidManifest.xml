@@ -12,17 +12,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegistroDos"></activity>
-        <activity android:name=".Contacto" />
-        <activity android:name=".Login" />
-        <activity android:name=".Inicio">
+        <activity android:name=".actividades.RegistroDos"></activity>
+        <activity android:name=".actividades.Contacto" />
+        <activity android:name=".actividades.Login" />
+        <activity android:name=".actividades.Inicio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Registro" />
+        <activity android:name=".actividades.Registro" />
     </application>
 
 </manifest>
