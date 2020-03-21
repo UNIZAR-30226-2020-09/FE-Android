@@ -3,12 +3,8 @@ package es.unizar.eina.pandora.actividades;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,12 +25,19 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import es.unizar.eina.pandora.R;
-import es.unizar.eina.pandora.RequestManager;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RegistroDos extends AppCompatActivity {
 
     final String url = "https://pandorapp.herokuapp.com/api/usuarios/registro";
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     private Button confirmar;
 
@@ -72,7 +75,7 @@ public class RegistroDos extends AppCompatActivity {
         password = findViewById(R.id.registro2_clave1);
         confirmPassword = findViewById(R.id.registro2_clave2);
         limitPass = findViewById(R.id.registro2_long_clave);
-        limitPass2 = findViewById(R.id.registro2_long_clave);
+        limitPass2 = findViewById(R.id.registro2_long_clave2);
 
         password.addTextChangedListener(registerTextWatcher);
         confirmPassword.addTextChangedListener(registerTextWatcher);
@@ -88,7 +91,7 @@ public class RegistroDos extends AppCompatActivity {
         private String _confirmpassword;
 
         private String newLimitpassword;
-        private  String newLimitpassword2;
+        private String newLimitpassword2;
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -96,8 +99,8 @@ public class RegistroDos extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            _password= password.getText().toString().trim();
-            _confirmpassword = password.getText().toString().trim();
+            _password = password.getText().toString().trim();
+            _confirmpassword = confirmPassword.getText().toString().trim();
 
             Integer passchars = 40 - _password.length();
             if (passchars < 0) {
@@ -125,7 +128,7 @@ public class RegistroDos extends AppCompatActivity {
             passwordEmpty = _password.isEmpty();
         }
 
-        @Override // Soloo puede tener letras mayusculas, minusci,as si n acentuar numeros y _-.
+        @Override // Solo puede tener letras mayusculas, minusculas sin acentuar numeros y _-.
         public void afterTextChanged(Editable s) {
             passwordCheckLength = (_password.length() <= 40 && _password.length() >= 8);
             passwordCheckValue = _password.matches("[a-zA-Z0-9_]+");
@@ -167,13 +170,13 @@ public class RegistroDos extends AppCompatActivity {
     // Se registra el usuario si se cumplen todos los requisitos, si no se muestra el error.
     public void registrar(View view){
         if (!passwordCheckLength) {
-            Toast.makeText(getApplicationContext(),"LLa contraseña tiene que tener entre 8 y 40 caracteres.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"La contraseña tiene que tener entre 8 y 40 caracteres.", Toast.LENGTH_LONG).show();
         }
         else if(!passwordCheckValue) {
             Toast.makeText(getApplicationContext(),"La contraseña solo puede tener letras mayúsculas o minúsculas sin acentuar, números, y los caracteres _ y -.", Toast.LENGTH_LONG).show();
         }
         else if (!confirmCheck) {
-            Toast.makeText(getApplicationContext(),"Contraseñas no coinciden.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Las contraseñas no coinciden.", Toast.LENGTH_LONG).show();
         }
         else {
             String password_in = password.getText().toString().trim();
@@ -189,38 +192,47 @@ public class RegistroDos extends AppCompatActivity {
     }
 
     private void doPost(final String contrasena, final String correo) {
-        try {
-            final org.json.JSONObject jsonBody = new org.json.JSONObject();
-            jsonBody.put("mail",correo);
-            jsonBody.put("masterPassword",contrasena);
-
-            JsonObjectRequest request = new JsonObjectRequest (Request.Method.POST, url, jsonBody
-                    , new Response.Listener<JSONObject>()
-                    {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // TODO Auto-generated method stub
-                            Log.d("OK: ", "Se ha podido registrar");
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.clear();
-                            editor.putString("email", correo);
-                            editor.putString("password", contrasena);
-                            editor.commit();
-                            startActivity(new Intent(RegistroDos.this, Login.class));
-                            finish();
-                        }
-                    }
-                    , new Response.ErrorListener()
-                    {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO Auto-generated method stub
-                            Log.d("Error: ", error.getMessage());
-                        }
-                    });
-            RequestManager.getInstance(this).addToRequestQueue(request);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        // Formamos un JSON con los parámetros
+        JSONObject json = new JSONObject();
+        try{
+            json.accumulate("mail",correo);
+            json.accumulate("masterPassword",contrasena);
         }
+        catch (Exception e){
+            Log.d("EXCEPCION", e.getMessage());
+        }
+
+        // Formamos el cuerpo de la petición con el JSON creado
+        RequestBody formBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                json.toString()
+        );
+
+        // Formamos la petición con el cuerpo creado
+        final okhttp3.Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Content-Type", formBody.contentType().toString())
+                .post(formBody)
+                .build();
+
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR ", response.body().string());
+                    } else {
+                        Log.d("OK ", response.body().string());
+                        startActivity(new Intent(RegistroDos.this, Login.class));
+                        finish();
+                    }
+                }
+                catch (IOException e){
+                    Log.d("EXCEPCION ", e.getMessage());
+                }
+            }
+        });
+        thread.start();
     }
 }

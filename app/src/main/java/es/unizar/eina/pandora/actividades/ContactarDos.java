@@ -10,56 +10,45 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
 import es.unizar.eina.pandora.R;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 
-public class Login extends AppCompatActivity {
+public class ContactarDos extends AppCompatActivity {
 
-    final String url = "https://pandorapp.herokuapp.com/api/usuarios/login";
+    final String url = "https://pandorapp.herokuapp.com/api/mensaje";
     private final OkHttpClient httpClient = new OkHttpClient();
 
     SharedPreferences sharedPreferences;
-    TextView email;
-    TextView password;
+    TextView remitente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_contactar_dos);
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        email = findViewById(R.id.login_entrada_usuario);
-        password = findViewById(R.id.login_entrada_clave);
+
+        remitente = findViewById(R.id.contactar2_entrada_comunicado);
     }
 
-    public void entrar(View view) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.putString("email", email.getText().toString().trim());
-        editor.putString("password", password.getText().toString().trim());
-        editor.commit();
-        doPost(sharedPreferences.getString("email",null),
-                sharedPreferences.getString("password",null));
+    public void contactar(View view){
+        if(!remitente.getText().toString().equals("")){
+            String remitente_insertado = remitente.getText().toString().trim();
+            String mensaje_insertado = sharedPreferences.getString("mensaje",null);
+            doPost(remitente_insertado, mensaje_insertado);
+        }
     }
 
-    private void doPost(final String correo, final String contrasena) {
+    private void doPost(final String remitente, final String mensaje) {
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
-            json.accumulate("mail",correo);
-            json.accumulate("masterPassword",contrasena);
+            json.accumulate("mail",remitente);
+            json.accumulate("body",mensaje);
         }
         catch (Exception e){
             Log.d("EXCEPCION", e.getMessage());
@@ -72,7 +61,7 @@ public class Login extends AppCompatActivity {
         );
 
         // Formamos la petición con el cuerpo creado
-        final okhttp3.Request request = new Request.Builder()
+        final Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Content-Type", formBody.contentType().toString())
                 .post(formBody)
@@ -87,8 +76,7 @@ public class Login extends AppCompatActivity {
                         Log.d("ERROR ", response.body().string());
                     } else {
                         Log.d("OK ", response.body().string());
-                        startActivity(new Intent(Login.this, Principal.class));
-                        finish();
+                        startActivity(new Intent(ContactarDos.this, ContactarTres.class));
                     }
                 }
                 catch (IOException e){

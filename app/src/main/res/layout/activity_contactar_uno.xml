@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".actividades.ContactarUno">
+
+    <TextView
+        android:id="@+id/contactar1_texto_contacte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="48dp"
+        android:text="Contacte con nosotros"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/contactar1_texto_que_desea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/contactar1_texto_que_desea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="134dp"
+        android:text="¿Qué desea comunicar?"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/contactar1_entrada_comunicado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactar1_texto_contacte" />
+
+    <EditText
+        android:id="@+id/contactar1_entrada_comunicado"
+        android:layout_width="364dp"
+        android:layout_height="260dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="32dp"
+        android:hint="Escriba aquí su mensaje"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactar1_texto_que_desea" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="298dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="goSiguiente"
+        android:text="Siguiente"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contactar1_entrada_comunicado" />
+</androidx.constraintlayout.widget.ConstraintLayout>

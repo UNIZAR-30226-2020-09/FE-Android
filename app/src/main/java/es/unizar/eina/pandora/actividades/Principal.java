@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import es.unizar.eina.pandora.R;
 
-public class Contacto extends AppCompatActivity {
+public class Principal extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacto);
+        setContentView(R.layout.activity_principal);
     }
 }

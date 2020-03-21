@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 
 import es.unizar.eina.pandora.R;
 
-public class Registro extends AppCompatActivity {
+public class RegistroUno extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
@@ -35,11 +34,11 @@ public class Registro extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registro);
+        setContentView(R.layout.activity_registro_uno);
 
-        siguiente=findViewById(R.id.registro_siguiente);
-        email = findViewById(R.id.registro_correo);
-        limitEmail = findViewById(R.id.registro_long_correo);
+        siguiente=findViewById(R.id.contactar1_texto_que_desea);
+        email = findViewById(R.id.registro1_correo);
+        limitEmail = findViewById(R.id.registro1_long_correo);
 
         email.addTextChangedListener(registerTextWatcher);
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);

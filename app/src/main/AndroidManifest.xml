@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="es.unizar.eina.pandora">
-
     <!-- To call backing services -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,8 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".actividades.RegistroDos"></activity>
-        <activity android:name=".actividades.Contacto" />
+        <activity android:name=".actividades.Principal"></activity>
+        <activity android:name=".actividades.ContactarTres" />
+        <activity android:name=".actividades.ContactarDos" />
+        <activity android:name=".actividades.ContactarUno" />
+        <activity android:name=".actividades.RegistroDos" />
         <activity android:name=".actividades.Login" />
         <activity android:name=".actividades.Inicio">
             <intent-filter>
@@ -22,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".actividades.Registro" />
+        <activity android:name=".actividades.RegistroUno" />
     </application>
 
 </manifest>

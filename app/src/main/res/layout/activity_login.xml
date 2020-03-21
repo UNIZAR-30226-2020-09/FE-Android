@@ -44,7 +44,7 @@
         android:layout_marginEnd="66dp"
         android:layout_marginBottom="33dp"
         android:ems="10"
-        android:hint="Introduzca su email"
+        android:hint="example@example.example"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/login_texto_clave"
         app:layout_constraintEnd_toEndOf="parent"

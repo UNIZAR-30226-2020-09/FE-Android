@@ -29,10 +29,10 @@ public class Inicio extends AppCompatActivity {
     }
 
     public void goRegistro(View view){
-        startActivity(new Intent(Inicio.this, Registro.class));
+        startActivity(new Intent(Inicio.this, RegistroUno.class));
     }
 
     public void goContacto(View view){
-        startActivity(new Intent(Inicio.this, Contacto.class));
+        startActivity(new Intent(Inicio.this, ContactarUno.class));
     }
 }

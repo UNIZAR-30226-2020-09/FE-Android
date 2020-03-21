@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".actividades.Registro">
+    tools:context=".actividades.RegistroUno">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Registro"
@@ -14,7 +14,7 @@
         tools:layout_editor_absoluteY="0dp">
 
         <TextView
-            android:id="@+id/registro_texto"
+            android:id="@+id/registro1_texto"
             android:layout_width="282dp"
             android:layout_height="119dp"
             android:layout_marginStart="10dp"
@@ -24,14 +24,14 @@
             android:text="@string/registro_texto"
             android:textAlignment="center"
             android:textSize="50sp"
-            app:layout_constraintBottom_toTopOf="@+id/registro_texto_correo"
+            app:layout_constraintBottom_toTopOf="@+id/registro1_texto_correo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/registro_texto_correo"
+            android:id="@+id/registro1_texto_correo"
             android:layout_width="474dp"
             android:layout_height="39dp"
             android:layout_marginStart="50dp"
@@ -40,27 +40,27 @@
             android:text="@string/registro_texto_correo"
             android:textAlignment="center"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/registro_correo"
+            app:layout_constraintBottom_toTopOf="@+id/registro1_correo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/registro_correo"
+            android:id="@+id/registro1_correo"
             android:layout_width="305dp"
             android:layout_height="57dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="138dp"
             android:hint="@string/registro_hint_correo"
-            app:layout_constraintBottom_toTopOf="@+id/registro_siguiente"
+            app:layout_constraintBottom_toTopOf="@+id/contactar1_texto_que_desea"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.318"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/registro_siguiente"
+            android:id="@+id/contactar1_texto_que_desea"
             android:layout_width="145dp"
             android:layout_height="54dp"
             android:layout_marginStart="217dp"
@@ -73,7 +73,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/registro_long_correo"
+            android:id="@+id/registro1_long_correo"
             android:layout_width="37dp"
             android:layout_height="20dp"
             android:layout_marginStart="16dp"
@@ -83,7 +83,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/registro_correo" />
+            app:layout_constraintStart_toEndOf="@+id/registro1_correo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
