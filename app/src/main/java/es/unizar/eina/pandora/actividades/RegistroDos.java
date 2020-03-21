@@ -188,41 +188,36 @@ public class RegistroDos extends AppCompatActivity {
         }
     }
 
-
     private void doPost(final String contrasena, final String correo) {
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
             final org.json.JSONObject jsonBody = new org.json.JSONObject();
-
             jsonBody.put("mail",correo);
             jsonBody.put("masterPassword",contrasena);
 
-            final String requestBody = jsonBody.toString();
-
-            JsonObjectRequest request = new JsonObjectRequest
-                    (Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
-
+            JsonObjectRequest request = new JsonObjectRequest (Request.Method.POST, url, jsonBody
+                    , new Response.Listener<JSONObject>()
+                    {
                         @Override
                         public void onResponse(JSONObject response) {
                             // TODO Auto-generated method stub
-                            Log.d("OK: ","Se ha podido registrar");
+                            Log.d("OK: ", "Se ha podido registrar");
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.clear();
-                            editor.putString("email",correo);
-                            editor.putString("password",contrasena);
+                            editor.putString("email", correo);
+                            editor.putString("password", contrasena);
                             editor.commit();
                             startActivity(new Intent(RegistroDos.this, Login.class));
                             finish();
                         }
-                    }, new Response.ErrorListener() {
-
+                    }
+                    , new Response.ErrorListener()
+                    {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // TODO Auto-generated method stub
-                            Log.d("Error: ","No se ha podido registrar");
+                            Log.d("Error: ", error.getMessage());
                         }
                     });
-
             RequestManager.getInstance(this).addToRequestQueue(request);
         } catch (JSONException e) {
             e.printStackTrace();

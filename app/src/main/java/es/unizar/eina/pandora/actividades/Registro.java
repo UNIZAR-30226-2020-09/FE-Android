@@ -25,8 +25,8 @@ public class Registro extends AppCompatActivity {
 
     private Button siguiente;
 
-    private EditText email;        //Campo para escribir el email
-    private Boolean emptyEmail = true;      //Campo del email vacío
+    private EditText email;                     //Campo para escribir el email
+    private Boolean emptyEmail = true;          //Campo del email vacío
     private Boolean emailCheckLength = false;
     private Boolean emailCheckValue = false;
     private TextView limitEmail;
@@ -73,7 +73,7 @@ public class Registro extends AppCompatActivity {
             emptyEmail = correo.isEmpty();
         }
 
-        @Override // Soloo puede tener letras mayusculas, minusci,as si n acentuar numeros y _-.
+        @Override // Solo puede tener letras mayusculas, minusculas sin acentuar numeros y _-.
         public void afterTextChanged(Editable s) {
             emailCheckLength = (correo.length() <= 100 && correo.length() >= 3);
             emailCheckValue = correo.matches("[a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+");
@@ -95,8 +95,6 @@ public class Registro extends AppCompatActivity {
         }
         else {
             String emailIntroducido = email.getText().toString().trim();
-            Log.d("correo","++++++++++++++++++++++++++++++++++++++++++++++++++");
-            Log.d("+++++++",emailIntroducido);
             //Guardamos el correo del usuario para seguir con el registro
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();

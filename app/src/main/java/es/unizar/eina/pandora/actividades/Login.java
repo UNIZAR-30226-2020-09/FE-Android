@@ -54,13 +54,9 @@ public class Login extends AppCompatActivity {
 
     private void doPost(final String correo, final String contrasena) {
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
             final org.json.JSONObject jsonBody = new org.json.JSONObject();
-
             jsonBody.put("mail", correo);
             jsonBody.put("masterPassword", contrasena);
-
-            final String requestBody = jsonBody.toString();
 
             JsonObjectRequest request = new JsonObjectRequest
                     (Request.Method.POST, url, jsonBody, new Response.Listener<JSONObject>() {
@@ -80,7 +76,7 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // TODO Auto-generated method stub
-                            Log.d("Error: ","No se ha podido iniciar sesión");
+                            Log.d("Error: ", error.getMessage());
                         }
                     });
             RequestManager.getInstance(this).addToRequestQueue(request);
