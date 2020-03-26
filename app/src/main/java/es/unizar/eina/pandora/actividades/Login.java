@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -74,6 +77,15 @@ public class Login extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
+        // Esto no tiene que ir en todas las peticiones... Es en las que nos interesa dar retroalimentación al usuario
+        final Handler h = new Handler() {
+            public void handleMessage(Message msg){
+                if(msg.what == 0){
+                    Toast.makeText(getApplicationContext(), "Email o clave maestra incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
         // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -81,6 +93,7 @@ public class Login extends AppCompatActivity {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
                         Log.d("ERROR ", response.body().string());
+                        h.sendEmptyMessage(0);
                     } else {
                         Log.d("OK ", response.body().string());
                         startActivity(new Intent(Login.this, Principal.class));

@@ -36,7 +36,8 @@
             android:layout_height="39dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:inputType="textEmailAddress"
+            android:clickable="false"
+            android:contextClickable="false"
             android:text="@string/registro_texto_correo"
             android:textAlignment="center"
             android:textSize="18sp"
@@ -53,14 +54,15 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="138dp"
             android:hint="@string/registro_hint_correo"
-            app:layout_constraintBottom_toTopOf="@+id/contactar1_texto_que_desea"
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toTopOf="@+id/registro1_texto_que_desea"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.318"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/contactar1_texto_que_desea"
+            android:id="@+id/registro1_texto_que_desea"
             android:layout_width="145dp"
             android:layout_height="54dp"
             android:layout_marginStart="217dp"

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -22,6 +24,8 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.function.IntPredicate;
+import java.util.regex.Pattern;
 
 import es.unizar.eina.pandora.R;
 import okhttp3.MediaType;
@@ -124,10 +128,10 @@ public class RegistroDos extends AppCompatActivity {
             passwordEmpty = _password.isEmpty();
         }
 
-        @Override // Solo puede tener letras mayusculas, minusculas sin acentuar numeros y _-.
+        @Override
         public void afterTextChanged(Editable s) {
-            passwordCheckLength = (_password.length() <= 40 && _password.length() >= 8);
-            passwordCheckValue = _password.matches("[a-zA-Z0-9_]+");
+            passwordCheckLength = _password.length() >= 8 &&  _password.length() <= 40;
+            passwordCheckValue = checkValue(_password);
 
             //Comprueba que las dos claves son iguales
             confirmCheck = _password.equals(_confirmpassword);
@@ -138,6 +142,28 @@ public class RegistroDos extends AppCompatActivity {
             else {
                 confirmar.setBackgroundTintList(AppCompatResources.getColorStateList(confirmar.getContext(), R.color.colorButtonDisabled));
             }
+        }
+
+        private boolean checkValue(String _password){
+            final String specialChars = "@#$%!";
+            char currentCharacter;
+            boolean numberPresent = false;
+            boolean upperCasePresent = false;
+            boolean lowerCasePresent = false;
+            boolean specialCharacterPresent = false;
+            for (int i = 0; i < _password.length(); i++) {
+                currentCharacter = _password.charAt(i);
+                if (Character.isDigit(currentCharacter)) {
+                    numberPresent = true;
+                } else if (Character.isUpperCase(currentCharacter)) {
+                    upperCasePresent = true;
+                } else if (Character.isLowerCase(currentCharacter)) {
+                    lowerCasePresent = true;
+                } else if (specialChars.contains(String.valueOf(currentCharacter))) {
+                    specialCharacterPresent = true;
+                }
+            }
+            return numberPresent && upperCasePresent && lowerCasePresent && specialCharacterPresent;
         }
     };
 
@@ -169,7 +195,7 @@ public class RegistroDos extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"La contraseña tiene que tener entre 8 y 40 caracteres.", Toast.LENGTH_LONG).show();
         }
         else if(!passwordCheckValue) {
-            Toast.makeText(getApplicationContext(),"La contraseña solo puede tener letras mayúsculas o minúsculas sin acentuar, números, y los caracteres _ y -.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"La contraseña debe tener al menos una minúscula, una mayúscula, un número y un carácter especial @#$%!", Toast.LENGTH_LONG).show();
         }
         else if (!confirmCheck) {
             Toast.makeText(getApplicationContext(),"Las contraseñas no coinciden.", Toast.LENGTH_LONG).show();
@@ -211,6 +237,15 @@ public class RegistroDos extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
+        // Esto no tiene que ir en todas las peticiones... Es en las que nos interesa dar retroalimentación al usuario
+        final Handler h = new Handler() {
+            public void handleMessage(Message msg){
+                if(msg.what == 0){
+                    Toast.makeText(getApplicationContext(), "Ya existe un usuario registrado con ese email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
         // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -218,13 +253,14 @@ public class RegistroDos extends AppCompatActivity {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
                         Log.d("ERROR ", response.body().string());
+                        h.sendEmptyMessage(0);
                     } else {
                         Log.d("OK ", response.body().string());
                         startActivity(new Intent(RegistroDos.this, Login.class));
                         finish();
                     }
                 }
-                catch (IOException e){
+                catch (Throwable e){
                     Log.d("EXCEPCION ", e.getMessage());
                 }
             }

@@ -57,7 +57,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="18dp"
             android:hint="@string/registro2_hint_clave1"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintBottom_toTopOf="@+id/registro2_texto_clave2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_long_clave"
@@ -90,10 +90,10 @@
             app:layout_constraintBottom_toTopOf="@+id/registro2_clave2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/registro2_texto_clave2" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/registro2_texto_clave2"
             android:layout_width="247dp"
             android:layout_height="83dp"
             android:layout_marginStart="50dp"

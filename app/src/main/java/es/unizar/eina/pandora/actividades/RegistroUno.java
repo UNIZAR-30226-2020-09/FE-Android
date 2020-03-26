@@ -25,7 +25,7 @@ public class RegistroUno extends AppCompatActivity {
     private Button siguiente;
 
     private EditText email;                     //Campo para escribir el email
-    private Boolean emptyEmail = true;          //Campo del email vacío
+    private Boolean emptyEmail = true;          //Campo del email vacío??
     private Boolean emailCheckLength = false;
     private Boolean emailCheckValue = false;
     private TextView limitEmail;
@@ -36,13 +36,12 @@ public class RegistroUno extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_uno);
 
-        siguiente=findViewById(R.id.contactar1_texto_que_desea);
+        siguiente=findViewById(R.id.registro1_texto_que_desea);
         email = findViewById(R.id.registro1_correo);
         limitEmail = findViewById(R.id.registro1_long_correo);
 
         email.addTextChangedListener(registerTextWatcher);
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-
     }
 
     private TextWatcher registerTextWatcher = new TextWatcher() {
@@ -72,7 +71,7 @@ public class RegistroUno extends AppCompatActivity {
             emptyEmail = correo.isEmpty();
         }
 
-        @Override // Solo puede tener letras mayusculas, minusculas sin acentuar numeros y _-.
+        @Override
         public void afterTextChanged(Editable s) {
             emailCheckLength = (correo.length() <= 100 && correo.length() >= 3);
             emailCheckValue = correo.matches("[a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+");
@@ -89,8 +88,8 @@ public class RegistroUno extends AppCompatActivity {
 
     // Se registra el usuario si se cumplen todos los requisitos, si no se muestra el error.
     public void goSiguiente(View view){
-        if (!emailCheckLength) {
-            Toast.makeText(getApplicationContext(),"La dirección de correo tiene que tener entre 3 y 100 caracteres.", Toast.LENGTH_LONG).show();
+        if (!emailCheckLength || !emailCheckValue) {
+            Toast.makeText(getApplicationContext(),"La dirección de correo tiene que tener entre 3 y 100 caracteres y ser válida", Toast.LENGTH_LONG).show();
         }
         else {
             String emailIntroducido = email.getText().toString().trim();
