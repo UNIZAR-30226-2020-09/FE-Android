@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/menu_perfil"
+        android:title="Cerrar sesión" />
+    <item
+        android:id="@+id/menu_mensajes"
+        android:title="Contactar" />
+    <item
+        android:id="@+id/menu_ayuda"
+        android:title="Sobre Pandora" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Eliminar cuenta" />
+</menu>

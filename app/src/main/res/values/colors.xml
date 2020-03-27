@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
+
+    # Colores básicos de la interfaz
+    <color name="colorPrimary">#3d0214</color>
     <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorFondo">#F3EBEE</color>
+    <color name="colorTextos">@color/secondary_text_default_material_light</color>
     <color name="colorButtonEnabled">#e6d6ff</color>
     <color name="colorButtonDisabled">#b989ff</color>
     <color name="colorAccent">#03DAC5</color>
