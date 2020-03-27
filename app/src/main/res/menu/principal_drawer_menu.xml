@@ -5,9 +5,11 @@
 
     <item
         android:id="@+id/menu_perfil"
+        android:onClick="cerrarSesion"
         android:title="Cerrar sesión" />
     <item
         android:id="@+id/menu_mensajes"
+        android:onClick="contactar"
         android:title="Contactar" />
     <item
         android:id="@+id/menu_ayuda"

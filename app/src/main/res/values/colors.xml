@@ -2,11 +2,11 @@
 <resources>
 
     # Colores básicos de la interfaz
-    <color name="colorPrimary">#3d0214</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorFondo">#F3EBEE</color>
-    <color name="colorTextos">@color/secondary_text_default_material_light</color>
-    <color name="colorButtonEnabled">#e6d6ff</color>
-    <color name="colorButtonDisabled">#b989ff</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#2c2f33</color>
+    <color name="colorPrimaryDark">#23272A</color>
+    <color name="colorFondo">#DCCFEC</color>
+    <color name="colorTextos">#23272A</color>
+    <color name="colorButtonEnabled">#A997DF</color>
+    <color name="colorButtonDisabled">#606060</color>
+    <color name="colorAccent">#A997DF</color>
 </resources>

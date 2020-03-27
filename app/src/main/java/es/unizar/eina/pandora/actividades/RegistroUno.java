@@ -42,6 +42,8 @@ public class RegistroUno extends AppCompatActivity {
 
         email.addTextChangedListener(registerTextWatcher);
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+
+        siguiente.setEnabled(false);
     }
 
     private TextWatcher registerTextWatcher = new TextWatcher() {
@@ -77,12 +79,6 @@ public class RegistroUno extends AppCompatActivity {
             emailCheckValue = correo.matches("[a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+");
 
             siguiente.setEnabled(!emptyEmail);
-            if (siguiente.isEnabled()) {
-                siguiente.setBackgroundTintList(AppCompatResources.getColorStateList(siguiente.getContext(), R.color.colorButtonEnabled));
-            }
-            else {
-                siguiente.setBackgroundTintList(AppCompatResources.getColorStateList(siguiente.getContext(), R.color.colorButtonDisabled));
-            }
         }
     };
 

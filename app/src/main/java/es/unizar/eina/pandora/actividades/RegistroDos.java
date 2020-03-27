@@ -23,10 +23,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.function.IntPredicate;
-import java.util.regex.Pattern;
-
 import es.unizar.eina.pandora.R;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -136,12 +132,6 @@ public class RegistroDos extends AppCompatActivity {
             //Comprueba que las dos claves son iguales
             confirmCheck = _password.equals(_confirmpassword);
             confirmar.setEnabled(!passwordEmpty);
-            if (confirmar.isEnabled()) {
-                confirmar.setBackgroundTintList(AppCompatResources.getColorStateList(confirmar.getContext(), R.color.colorButtonEnabled));
-            }
-            else {
-                confirmar.setBackgroundTintList(AppCompatResources.getColorStateList(confirmar.getContext(), R.color.colorButtonDisabled));
-            }
         }
 
         private boolean checkValue(String _password){
@@ -204,9 +194,8 @@ public class RegistroDos extends AppCompatActivity {
             String password_in = password.getText().toString().trim();
             //Guardamos la contraseña
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
             editor.putString("password",password_in);
-
+            editor.commit();
             confirmar.setEnabled(false);
 
             doPost(password_in,savedEmail);

@@ -35,7 +35,7 @@
                 android:paddingBottom="8dp"
                 android:text="Principal"
                 android:textAlignment="center"
-                android:textColor="@color/colorFondo"
+                android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 

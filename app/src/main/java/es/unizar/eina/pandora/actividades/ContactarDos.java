@@ -30,9 +30,16 @@ public class ContactarDos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contactar_dos);
 
+        remitente = findViewById(R.id.contactar2_entrada_comunicado);
+
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
-        remitente = findViewById(R.id.contactar2_entrada_comunicado);
+        // Si viene de la pantalla principal (ha iniciado sesión), rellenamos el campo con su email
+        // puesto que ya lo conocemos
+        boolean guest = sharedPreferences.getBoolean("guest",true);
+        if(!guest){
+            remitente.setText(sharedPreferences.getString("email",null));
+        }
     }
 
     public void contactar(View view){

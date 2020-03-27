@@ -7,8 +7,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ import es.unizar.eina.pandora.R;
 public class Principal extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
-    // Urls para peticiones.
+    // Urls para peticiones: cambiar las de Yapper a algunas que tengan sentido en Pandora
     /*
     private String urlBorrar = "https://yapper-app.herokuapp.com/borrarUsuario";
     private String urlRecuperarUsuario = "https://yapper-app.herokuapp.com/recuperarUsuario";
@@ -40,8 +42,6 @@ public class Principal extends AppCompatActivity {
     private SwipeRefreshLayout swipeLayout;
     private View headerDrawer;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +53,16 @@ public class Principal extends AppCompatActivity {
 
         // Menú desplegable.
         toolbar = findViewById(R.id.topbar_toolbar);
+        setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, 0, 0);
+        drawer.addDrawerListener(toggle);
         drawerView = findViewById(R.id.principal_drawer);
-        //drawerView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         headerDrawer = drawerView.getHeaderView(0);
         drawerEmail = headerDrawer.findViewById(R.id.drawer_email);
+
+        drawerEmail.setText(email);
 
         // Layout refresh pass.
         swipeLayout = findViewById(R.id.principal_refresh);
@@ -70,5 +75,20 @@ public class Principal extends AppCompatActivity {
         });
 
         // algo habrá que hacer -> petición
+    }
+
+    public void cerrarSesion(MenuItem menuItem){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Borramos información de la sesión y del usuario
+        editor.clear();
+        editor.commit();
+        startActivity(new Intent(Principal.this, Inicio.class));
+    }
+
+    public void contactar(MenuItem menuItem){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("guest",false);
+        editor.commit();
+        startActivity(new Intent(Principal.this, ContactarUno.class));
     }
 }

@@ -2,7 +2,9 @@ package es.unizar.eina.pandora.actividades;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,7 +19,17 @@ public class ContactarTres extends AppCompatActivity {
     }
 
     public void terminar(View view){
-        startActivity(new Intent(ContactarTres.this, Inicio.class));
-        finish();
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        boolean guest = sharedPreferences.getBoolean("guest",true);
+        // Si no habíamos iniciado sesión, vamos a la pantalla de inicio
+        if(guest){
+            startActivity(new Intent(ContactarTres.this, Inicio.class));
+            finish();
+        }
+        // En caso contrario, volvemos a la pantalla principal
+        else{
+            startActivity(new Intent(ContactarTres.this, Principal.class));
+            finish();
+        }
     }
 }

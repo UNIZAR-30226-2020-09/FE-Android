@@ -39,6 +39,15 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String _email = sharedPreferences.getString("email",null);
+        String _password = sharedPreferences.getString("password",null);
+        // Si ya tenemos estos datos, iniciamos sesión automáticamente
+        if (_email != null && _password != null) {
+            doPost(sharedPreferences.getString("email",null),
+                    sharedPreferences.getString("password",null));
+            finish();
+        }
+
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
     }
@@ -94,6 +103,12 @@ public class Login extends AppCompatActivity {
                     if (!response.isSuccessful()) {
                         Log.d("ERROR ", response.body().string());
                         h.sendEmptyMessage(0);
+                        // Si nos han devuelto un error, borramos la información almacenada
+                        // porque puede ser que vengamos redirigidos de otra pantalla y
+                        // la información sea incorrecta
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
                     } else {
                         Log.d("OK ", response.body().string());
                         startActivity(new Intent(Login.this, Principal.class));
