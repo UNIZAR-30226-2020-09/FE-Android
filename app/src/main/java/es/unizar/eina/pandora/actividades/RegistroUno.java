@@ -25,7 +25,7 @@ public class RegistroUno extends AppCompatActivity {
     private Button siguiente;
 
     private EditText email;                     //Campo para escribir el email
-    private Boolean emptyEmail = true;          //Campo del email vacío??
+    private Boolean emptyEmail = true;          //Campo del email vacío?
     private Boolean emailCheckLength = false;
     private Boolean emailCheckValue = false;
     private TextView limitEmail;
@@ -36,7 +36,7 @@ public class RegistroUno extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_uno);
 
-        siguiente=findViewById(R.id.registro1_texto_que_desea);
+        siguiente = findViewById(R.id.registro1_texto_que_desea);
         email = findViewById(R.id.registro1_correo);
         limitEmail = findViewById(R.id.registro1_long_correo);
 
