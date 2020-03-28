@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/principalnav"
     android:layout_width="match_parent"
     android:layout_height="match_parent">>
@@ -53,5 +54,107 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_principal"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/principal_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/principal_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="40dp"
+            android:clickable="true"
+            android:onClick="pulsarAdd"
+            android:tint="@color/design_default_color_on_primary"
+            app:backgroundTint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+        <FrameLayout
+            android:id="@+id/principal_frame_cat"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="70dp"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/principal_add_button">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/principal_add_cat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="addCategory"
+                app:backgroundTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
+
+            <TextView
+                android:id="@+id/principal_cat_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="15dp"
+                android:elevation="6dp"
+                android:text="CAT"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_on_primary"
+                android:textSize="21dp"
+                app:layout_anchorGravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/princial_add_password_button" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/principal_frame_con"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="125dp"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/principal_frame_cat">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/principal_add_con_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:onClick="addPassword"
+                app:backgroundTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
+
+            <TextView
+                android:id="@+id/principal_con_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="15dp"
+                android:elevation="6dp"
+                android:text="CON"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_on_primary"
+                android:textSize="21dp"
+                app:layout_anchorGravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/princial_add_password_button" />
+
+        </FrameLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

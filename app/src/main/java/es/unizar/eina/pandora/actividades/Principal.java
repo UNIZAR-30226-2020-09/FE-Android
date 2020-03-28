@@ -10,10 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import es.unizar.eina.pandora.R;
@@ -42,6 +45,16 @@ public class Principal extends AppCompatActivity {
     private SwipeRefreshLayout swipeLayout;
     private View headerDrawer;
 
+    private FloatingActionButton addMenu;
+    private FloatingActionButton addCat;
+    private FloatingActionButton addCon;
+
+    private FrameLayout catButton;
+    private FrameLayout conButton;
+
+    boolean pulsado=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +63,14 @@ public class Principal extends AppCompatActivity {
         // Recuperar información del usuario.
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         email = sharedPreferences.getString("email",null);
+
+        //Botones de crear categoria y contraseña
+        addMenu = findViewById(R.id.principal_add_button);
+        addCat = findViewById(R.id.principal_add_cat_button);
+        addCon = findViewById(R.id.principal_add_con_button);
+
+        catButton = findViewById(R.id.principal_frame_cat);
+        conButton = findViewById(R.id.principal_frame_con);
 
         // Menú desplegable.
         toolbar = findViewById(R.id.topbar_toolbar);
@@ -90,5 +111,26 @@ public class Principal extends AppCompatActivity {
         editor.putBoolean("guest",false);
         editor.commit();
         startActivity(new Intent(Principal.this, ContactarUno.class));
+    }
+
+    //Pulsar el boton inferior con el "+"
+    public void pulsarAdd(View view){
+        if(!pulsado){
+            pulsado = true;
+            catButton.setVisibility(View.VISIBLE);
+            conButton.setVisibility(View.VISIBLE);
+        }else{
+            pulsado = false;
+            catButton.setVisibility(View.INVISIBLE);
+            conButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void addCategory(View view){
+        Log.d("ADD CATEGORY","TODO OK");
+    }
+
+    public void addPassword(View view){
+        Log.d("ADD PASSWORD","TODO OK");
     }
 }

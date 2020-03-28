@@ -26,5 +26,7 @@
     <string name="registro2_hint_clave2">Repita la clave maestra</string>
     <string name="registro2_confirmar">Confirmar</string>
 
+    <!-- Pantalla principal -->
+    <string name="principal_add_cat">CAT</string>
 
 </resources>
