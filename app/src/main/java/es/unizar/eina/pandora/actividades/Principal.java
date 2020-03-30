@@ -59,6 +59,7 @@ public class Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        Log.d("Principal", "1");
 
         // Recuperar información del usuario.
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -84,7 +85,8 @@ public class Principal extends AppCompatActivity {
         drawerEmail = headerDrawer.findViewById(R.id.drawer_email);
 
         drawerEmail.setText(email);
-
+        Log.d("Principal", "2");
+        /*
         // Layout refresh pass.
         swipeLayout = findViewById(R.id.principal_refresh);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -93,7 +95,7 @@ public class Principal extends AppCompatActivity {
                 // algo habrá que hacer -> petición
                 swipeLayout.setRefreshing(false);
             }
-        });
+        });*/
 
         // algo habrá que hacer -> petición
     }
@@ -131,6 +133,7 @@ public class Principal extends AppCompatActivity {
     }
 
     public void addPassword(View view){
+        startActivity(new Intent(Principal.this, CrearPasswordUno.class));
         Log.d("ADD PASSWORD","TODO OK");
     }
 }

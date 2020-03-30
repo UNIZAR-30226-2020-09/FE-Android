@@ -6,11 +6,17 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/logo"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".actividades.Principal"></activity>
+        <activity android:name=".actividades.CrearPasswordCinco"></activity>
+        <activity android:name=".actividades.CrearPasswordCuatro" />
+        <activity android:name=".actividades.CrearPasswordTres" />
+        <activity android:name=".actividades.CrearPasswordDos" />
+        <activity android:name=".actividades.CrearPasswordUno" />
+        <activity android:name=".actividades.CrearPasswordSeis" />
+        <activity android:name=".actividades.Principal" />
         <activity android:name=".actividades.ContactarTres" />
         <activity android:name=".actividades.ContactarDos" />
         <activity android:name=".actividades.ContactarUno" />
@@ -19,6 +25,7 @@
         <activity android:name=".actividades.Inicio">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

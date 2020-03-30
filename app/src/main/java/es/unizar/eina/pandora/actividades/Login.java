@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -110,12 +111,18 @@ public class Login extends AppCompatActivity {
                         editor.clear();
                         editor.commit();
                     } else {
-                        Log.d("OK ", response.body().string());
+                        //Log.d("OK ", response.body().string());
+                        final JSONObject json = new JSONObject(response.body().string());
+                        String token = json.getString("token");
+                        Log.d("Crear password 4", token);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("token",token);
+                        editor.commit();
                         startActivity(new Intent(Login.this, Principal.class));
                         finish();
                     }
                 }
-                catch (IOException e){
+                catch (IOException | JSONException e){
                     Log.d("EXCEPCION ", e.getMessage());
                 }
             }
