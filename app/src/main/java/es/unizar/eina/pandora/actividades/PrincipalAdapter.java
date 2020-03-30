@@ -24,24 +24,20 @@ public class PrincipalAdapter extends
     private Context context;
     private JSONArray password = new JSONArray();
 
-    String _user;
-
     //Constructor
     public PrincipalAdapter(Context _context, JSONArray _password){
         context = _context;
         password = _password;
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", context.MODE_PRIVATE);
-        _user = sharedPreferences.getString("user",null);
-        Log.d("Usuario", _user);
     }
 
     // Usually involves inflating a layout from XML and returning the holder
     @NonNull
     @Override
     public PrincipalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
 
-        View passwordView = inflater.inflate(R.layout.item_principal, parent, false);
+
+        View passwordView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_principal, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(passwordView);
         return viewHolder;
@@ -53,6 +49,21 @@ public class PrincipalAdapter extends
         try {
             JSONObject pass = password.getJSONObject(position);
 
+            String name = pass.getString("passwordName");
+            TextView passwd = holder.name;
+            passwd.setText(name);
+            Log.d("+++++++",name);
+
+            String user = pass.getString("userName");
+            TextView _user= holder.user;
+            _user.setText(user);
+            Log.d("+++++++",user);
+
+            String cat = pass.getString("categoryName");
+            TextView category = holder.category;
+            category.setText(cat);
+            Log.d("+++++++",cat);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,7 +71,7 @@ public class PrincipalAdapter extends
 
     @Override
     public int getItemCount() {
-        return 0;
+        return password.length();
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -86,44 +97,4 @@ public class PrincipalAdapter extends
         }
     }
 
-    /*
-    private List<Contact> mContacts;
-
-    // Pass in the contact array into the constructor
-    public PrincipalAdapter(List<Contact> contacts) {
-        mContacts = contacts;
-    }
-
-    @Override
-    public PrincipalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.item_contact, parent, false);
-
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
-        return viewHolder;
-    }
-
-    // Involves populating data into the item through holder
-    @Override
-    public void onBindViewHolder(PrincipalAdapter.ViewHolder viewHolder, int position) {
-        // Get the data model based on position
-        Contact contact = mContacts.get(position);
-
-        // Set item views based on your views and data model
-        TextView textView = viewHolder.nameTextView;
-        textView.setText(contact.getName());
-        Button button = viewHolder.messageButton;
-        button.setText(contact.isOnline() ? "Message" : "Offline");
-        button.setEnabled(contact.isOnline());
-    }
-
-    // Returns the total count of items in the list
-    @Override
-    public int getItemCount() {
-        return mContacts.size();
-    }*/
 }

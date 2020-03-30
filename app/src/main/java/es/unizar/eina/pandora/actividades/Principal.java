@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
@@ -19,10 +21,23 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import es.unizar.eina.pandora.R;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Principal extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
+    final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     // Urls para peticiones: cambiar las de Yapper a algunas que tengan sentido en Pandora
     /*
@@ -36,6 +51,7 @@ public class Principal extends AppCompatActivity {
 
     // Información del usuario.
     private String email;
+    JSONArray lista_respuesta = new JSONArray();
 
     // Elementos de la interfaz.
     private Toolbar toolbar;
@@ -44,6 +60,7 @@ public class Principal extends AppCompatActivity {
     private NavigationView drawerView;
     private SwipeRefreshLayout swipeLayout;
     private View headerDrawer;
+    private RecyclerView listaPass;
 
     private FloatingActionButton addMenu;
     private FloatingActionButton addCat;
@@ -86,6 +103,21 @@ public class Principal extends AppCompatActivity {
 
         drawerEmail.setText(email);
         Log.d("Principal", "2");
+
+        listaPass = (RecyclerView) findViewById(R.id.principal_recyclerview_password);
+        try {
+            doPostPassword();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d("Principal","3");
+        Log.d("Prueba",Integer.toString(lista_respuesta.length()));
+        PrincipalAdapter lista= new PrincipalAdapter(Principal.this,lista_respuesta);
+        listaPass.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        listaPass.setAdapter(lista);
+
+
+
         /*
         // Layout refresh pass.
         swipeLayout = findViewById(R.id.principal_refresh);
@@ -135,5 +167,38 @@ public class Principal extends AppCompatActivity {
     public void addPassword(View view){
         startActivity(new Intent(Principal.this, CrearPasswordUno.class));
         Log.d("ADD PASSWORD","TODO OK");
+    }
+
+    public void doPostPassword() throws InterruptedException {
+        String token = sharedPreferences.getString("token",null);
+        Log.d("Crear password 4", token);
+
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlListarPassword)
+                .addHeader("Authorization", token)
+                .build();
+
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR ", response.body().string());
+                    } else {
+                        final JSONObject json = new JSONObject(response.body().string());
+                        lista_respuesta = json.getJSONArray("passwords");
+                        Log.d("AAAAAAAAAAAAA",Integer.toString(lista_respuesta.length()));
+                    }
+                }
+                catch (IOException | JSONException e){
+                    Log.d("EXCEPCION ", e.getMessage());
+                }
+            }
+        });
+        thread.start();
+        thread.join();
     }
 }
