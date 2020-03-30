@@ -117,19 +117,6 @@ public class Principal extends AppCompatActivity {
         listaPass.setAdapter(lista);
 
 
-
-        /*
-        // Layout refresh pass.
-        swipeLayout = findViewById(R.id.principal_refresh);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() { // Cada vez que se realiza el gesto para refrescar
-                // algo habrá que hacer -> petición
-                swipeLayout.setRefreshing(false);
-            }
-        });*/
-
-        // algo habrá que hacer -> petición
     }
 
     public void cerrarSesion(MenuItem menuItem){
