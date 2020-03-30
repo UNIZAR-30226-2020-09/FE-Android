@@ -36,15 +36,15 @@ public class Inicio extends AppCompatActivity {
         nPass = findViewById(R.id.inicio_nPass);
 
         SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String _email = sharedPreferences.getString("email",null);
-        String _password = sharedPreferences.getString("password",null);
-        // Si ya tenemos estos datos, iniciamos sesión automáticamente
-        if (_email != null && _password != null) {
-            startActivity(new Intent(Inicio.this, Login.class));
+        String token = sharedPreferences.getString("token",null);
+        if(token != null){
+            startActivity(new Intent(Inicio.this, Principal.class));
             finish();
         }
+        /*
+        startActivity(new Intent(Inicio.this, Login.class));
+        */
         doPost();
-
     }
 
     public void goLogin(View view){
@@ -70,7 +70,8 @@ public class Inicio extends AppCompatActivity {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
                         Log.d("ERROR ", response.body().string());
-                    } else {
+                    }
+                    else {
                         // Obtenemos la respuesta y creamos un JSON con la misma
                         final JSONObject json = new JSONObject(response.body().string());
 

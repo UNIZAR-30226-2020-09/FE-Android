@@ -40,14 +40,19 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String _email = sharedPreferences.getString("email",null);
-        String _password = sharedPreferences.getString("password",null);
+
+        /*
+        Por si vuelven a cambiar el token, necesitaremos iniciar sesión para que nos den uno nuevo
+        //String _email = sharedPreferences.getString("email",null);
+        //String _password = sharedPreferences.getString("password",null);
         // Si ya tenemos estos datos, iniciamos sesión automáticamente
+
         if (_email != null && _password != null) {
             doPost(sharedPreferences.getString("email",null),
                     sharedPreferences.getString("password",null));
             finish();
         }
+        */
 
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
@@ -114,7 +119,6 @@ public class Login extends AppCompatActivity {
                         //Log.d("OK ", response.body().string());
                         final JSONObject json = new JSONObject(response.body().string());
                         String token = json.getString("token");
-                        Log.d("Crear password 4", token);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("token",token);
                         editor.commit();

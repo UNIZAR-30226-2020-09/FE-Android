@@ -36,18 +36,11 @@ import okhttp3.Response;
 
 public class Principal extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
-    final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
-    private final OkHttpClient httpClient = new OkHttpClient();
 
-    // Urls para peticiones: cambiar las de Yapper a algunas que tengan sentido en Pandora
-    /*
-    private String urlBorrar = "https://yapper-app.herokuapp.com/borrarUsuario";
-    private String urlRecuperarUsuario = "https://yapper-app.herokuapp.com/recuperarUsuario";
-    private String urlListarYaps = "https://yapper-app.herokuapp.com/listarYaps";
-    private String urlListarYapsPorCategoria = "https://yapper-app.herokuapp.com/listarYapsPorCategoria?categoria=";
-    private String urlListarCategorias = "https://yapper-app.herokuapp.com/getCategorias";
-    private String urlRecuperarLikesDeUssuario = "https://yapper-app.herokuapp.com/listaDeLikesDeUnUsuario";
-    */
+    private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
+    private final String urlEliminarCuenta = "https://pandorapp.herokuapp.com/api/usuarios/eliminar";
+
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     // Información del usuario.
     private String email;
@@ -69,7 +62,7 @@ public class Principal extends AppCompatActivity {
     private FrameLayout catButton;
     private FrameLayout conButton;
 
-    boolean pulsado=false;
+    boolean pulsado = false;
 
 
     @Override
@@ -100,11 +93,26 @@ public class Principal extends AppCompatActivity {
         drawerView = findViewById(R.id.principal_drawer);
         headerDrawer = drawerView.getHeaderView(0);
         drawerEmail = headerDrawer.findViewById(R.id.drawer_email);
-
         drawerEmail.setText(email);
+
+        // Swipe refresh
+        swipeLayout = findViewById(R.id.principal_refresh);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Esto se ejecuta cada vez que se realiza el gesto
+                try {
+                    doPostPassword();
+                    swipeLayout.setRefreshing(false);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         Log.d("Principal", "2");
 
-        listaPass = (RecyclerView) findViewById(R.id.principal_recyclerview_password);
+        listaPass = findViewById(R.id.principal_recyclerview_password);
         try {
             doPostPassword();
         } catch (InterruptedException e) {
@@ -115,8 +123,6 @@ public class Principal extends AppCompatActivity {
         PrincipalAdapter lista= new PrincipalAdapter(Principal.this,lista_respuesta);
         listaPass.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listaPass.setAdapter(lista);
-
-
     }
 
     public void cerrarSesion(MenuItem menuItem){
@@ -125,6 +131,7 @@ public class Principal extends AppCompatActivity {
         editor.clear();
         editor.commit();
         startActivity(new Intent(Principal.this, Inicio.class));
+        finish();
     }
 
     public void contactar(MenuItem menuItem){
@@ -134,7 +141,11 @@ public class Principal extends AppCompatActivity {
         startActivity(new Intent(Principal.this, ContactarUno.class));
     }
 
-    //Pulsar el boton inferior con el "+"
+    public void eliminarCuenta(MenuItem menuItem){
+        doPostEliminarCuenta();
+    }
+
+    // Pulsar el boton inferior con el "+"
     public void pulsarAdd(View view){
         if(!pulsado){
             pulsado = true;
@@ -159,7 +170,6 @@ public class Principal extends AppCompatActivity {
     public void doPostPassword() throws InterruptedException {
         String token = sharedPreferences.getString("token",null);
         Log.d("Crear password 4", token);
-
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
@@ -187,5 +197,41 @@ public class Principal extends AppCompatActivity {
         });
         thread.start();
         thread.join();
+    }
+
+    public void doPostEliminarCuenta() {
+        // Recogemos el token
+        String token = sharedPreferences.getString("token",null);
+
+        // Formamos la petición con el token (IMPORTANTE VER QUE ES DE TIPO DELETE)
+        final Request request = new Request.Builder()
+                .url(urlEliminarCuenta)
+                .addHeader("Authorization", token)
+                .delete()
+                .build();
+
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR ", response.body().string());
+                    } else {
+                        Log.d("Eliminar", response.body().string());
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        // Borramos información de la sesión y del usuario
+                        editor.clear();
+                        editor.commit();
+                        startActivity(new Intent(Principal.this, Inicio.class));
+                        finish();
+                    }
+                }
+                catch (IOException e){
+                    Log.d("EXCEPCION ", e.getMessage());
+                }
+            }
+        });
+        thread.start();
     }
 }

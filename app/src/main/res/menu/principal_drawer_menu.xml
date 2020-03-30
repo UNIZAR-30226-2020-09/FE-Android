@@ -16,5 +16,6 @@
         android:title="Sobre Pandora" />
     <item
         android:id="@+id/menu_logout"
+        android:onClick="eliminarCuenta"
         android:title="Eliminar cuenta" />
 </menu>
