@@ -54,12 +54,11 @@ public class CrearPasswordSeis extends AppCompatActivity {
         Log.i("Crear note 4",pass_insertado);
         String nota_insertada = note.getText().toString().trim();
         Log.i("Crear note 4",nota_insertada);
-        String aux = sharedPreferences.getString("password_dias",null);
-        Log.d("Crear note 4", aux);
-        Integer dias_insertados=Integer.parseInt(aux);
-        //Corregir
-        Integer cartegory_insertada=2;
+        Integer dias_insertados = sharedPreferences.getInt("password_dias",0);
+        Log.d("Crear note 4", dias_insertados.toString());
+        Integer cartegory_insertada = sharedPreferences.getInt("password_cat",0);
         doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,cartegory_insertada);
+        Log.d("OK","OK");
     }
 
     private void doPost(final String name, final String user, final String pass, final String note,

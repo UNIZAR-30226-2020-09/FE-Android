@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.unizar.eina.pandora.R;
 
@@ -37,6 +38,8 @@ public class CrearPasswordUno extends AppCompatActivity {
             editor.putString("password_name",nombre_insertado);
             editor.commit();
             startActivity(new Intent(this,CrearPasswordDos.class));
+        }else{
+            Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.unizar.eina.pandora.R;
 
@@ -42,5 +43,9 @@ public class CrearPasswordTres extends AppCompatActivity {
             editor.commit();
             startActivity(new Intent(this,CrearPasswordCuatro.class));
         }
+        else{
+            Toast.makeText(getApplicationContext(),"El campo contraseña no puede estar vacío", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
