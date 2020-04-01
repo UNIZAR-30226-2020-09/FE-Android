@@ -91,25 +91,11 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:onClick="addCategory"
+                android:src="@drawable/category"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
-
-            <TextView
-                android:id="@+id/principal_cat_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="15dp"
-                android:elevation="6dp"
-                android:onClick="addCategory"
-                android:text="CAT"
-                android:textAlignment="center"
-                android:textColor="@color/design_default_color_on_primary"
-                android:textSize="21dp"
-                app:layout_anchorGravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/princial_add_password_button" />
+            />
 
         </FrameLayout>
 
@@ -130,33 +116,16 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:onClick="addPassword"
+                android:src="@drawable/pass"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
-
-            <TextView
-                android:id="@+id/principal_con_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="15dp"
-                android:elevation="6dp"
-                android:onClick="addPassword"
-                android:text="CON"
-                android:textAlignment="center"
-                android:textColor="@color/design_default_color_on_primary"
-                android:textSize="21dp"
-                app:layout_anchorGravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/princial_add_password_button" />
-
+            />
         </FrameLayout>
 
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
