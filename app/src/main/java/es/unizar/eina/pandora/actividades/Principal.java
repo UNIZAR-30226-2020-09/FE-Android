@@ -261,6 +261,7 @@ public class Principal extends AppCompatActivity {
 
     public void addCategory(View view){
         Log.d("ADD CATEGORY","TODO OK");
+        startActivity(new Intent(Principal.this, CrearCategoria.class));
     }
 
     public void addPassword(View view){
