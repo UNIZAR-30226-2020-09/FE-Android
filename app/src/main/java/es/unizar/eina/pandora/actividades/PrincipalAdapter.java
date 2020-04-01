@@ -16,16 +16,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import es.unizar.eina.pandora.R;
 
 public class PrincipalAdapter extends
         RecyclerView.Adapter<PrincipalAdapter.ViewHolder> {
 
     private Context context;
-    private JSONArray password = new JSONArray();
+    private ArrayList<JSONObject> password = new ArrayList<>();
 
     //Constructor
-    public PrincipalAdapter(Context _context, JSONArray _password){
+    public PrincipalAdapter(Context _context, ArrayList<JSONObject> _password){
         context = _context;
         password = _password;
         SharedPreferences sharedPreferences = context.getSharedPreferences("user", context.MODE_PRIVATE);
@@ -47,7 +49,8 @@ public class PrincipalAdapter extends
     @Override
     public void onBindViewHolder(@NonNull PrincipalAdapter.ViewHolder holder, int position) {
         try {
-            JSONObject pass = password.getJSONObject(position);
+            Log.d("onBindViewHolder","IN");
+            JSONObject pass = password.get(position);
 
             String name = pass.getString("passwordName");
             TextView passwd = holder.name;
@@ -64,6 +67,7 @@ public class PrincipalAdapter extends
             category.setText(cat);
             Log.d("+++++++",cat);
 
+            Log.d("onBindViewHolder","OUT");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -71,7 +75,7 @@ public class PrincipalAdapter extends
 
     @Override
     public int getItemCount() {
-        return password.length();
+        return password.size();
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -94,6 +98,10 @@ public class PrincipalAdapter extends
             name = (TextView) itemView.findViewById(R.id.item_password_name);
             category = (TextView) itemView.findViewById(R.id.item_password_category);
             user = (TextView) itemView.findViewById(R.id.item_password_user);
+        }
+
+        public String getName(){
+            return name.getText().toString();
         }
     }
 
