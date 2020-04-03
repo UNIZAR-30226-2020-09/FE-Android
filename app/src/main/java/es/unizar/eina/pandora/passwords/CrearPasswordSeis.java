@@ -1,14 +1,10 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.passwords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -16,7 +12,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,43 +29,30 @@ public class CrearPasswordSeis extends AppCompatActivity {
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private TextView note;
-    private Button compartir;
-    private Button siguiente;
-
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_password_seis);
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-
         note = findViewById(R.id.crear_password_6_note);
-        siguiente = findViewById(R.id.crear_password_6_button_confirmar);
-        compartir = findViewById(R.id.crear_password_6_button_compartir);
     }
 
     public void crear(View view){
         //Recuperamos los datos introducidos
-        String nombre_insertado = sharedPreferences.getString("password_name",null);
-        Log.i("Crear note 4",nombre_insertado);
-        String user_insertado = sharedPreferences.getString("password_user",null);
-        Log.i("Crear note 4",user_insertado);
-        String pass_insertado = sharedPreferences.getString("password_pass",null);
-        Log.i("Crear note 4",pass_insertado);
+        String nombre_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_name");
+        String user_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_user");
+        String pass_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_pass");
         String nota_insertada = note.getText().toString().trim();
-        Log.i("Crear note 4",nota_insertada);
-        Integer dias_insertados = sharedPreferences.getInt("password_dias",0);
-        Log.d("Crear note 4", dias_insertados.toString());
-        Integer cartegory_insertada = sharedPreferences.getInt("password_cat",0);
+        int dias_insertados = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_dias");
+        int cartegory_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
         doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,cartegory_insertada);
-        Log.d("OK","OK");
     }
 
     private void doPost(final String name, final String user, final String pass, final String note,
-                        final Integer dias, final Integer categoria) {
-        String token = sharedPreferences.getString("token",null);
-        Log.d("Crear password 4", token);
+                        final int dias, final int categoria) {
+        // Recuperamos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
@@ -76,7 +64,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
             json.accumulate("userName",user);
         }
         catch (Exception e){
-            Log.d("EXCEPCION", e.getMessage());
+            e.printStackTrace();
         }
 
         // Formamos el cuerpo de la petición con el JSON creado
@@ -93,23 +81,26 @@ public class CrearPasswordSeis extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+            public void onResponse(Call call, Response response) throws IOException {
+                try{
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
                         startActivity(new Intent(CrearPasswordSeis.this, Principal.class));
+                        finishAffinity();
                     }
-                }
-                catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    else {
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                    }
+                } catch (JSONException e){
+                    e.printStackTrace();
                 }
             }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-        thread.start();
     }
 }

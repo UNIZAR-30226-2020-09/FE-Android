@@ -1,11 +1,8 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.autenticacion;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,10 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
 public class RegistroUno extends AppCompatActivity {
-
-    SharedPreferences sharedPreferences;
 
     private Button siguiente;
 
@@ -41,7 +37,6 @@ public class RegistroUno extends AppCompatActivity {
         limitEmail = findViewById(R.id.registro1_long_correo);
 
         email.addTextChangedListener(registerTextWatcher);
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
         siguiente.setEnabled(false);
     }
@@ -90,10 +85,8 @@ public class RegistroUno extends AppCompatActivity {
         else {
             String emailIntroducido = email.getText().toString().trim();
             //Guardamos el correo del usuario para seguir con el registro
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.putString("email",emailIntroducido);
-            editor.commit();
+            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
+            sharedPreferencesHelper.put("email",emailIntroducido);
             //Cambiamos de actividad
             startActivity(new Intent(this,RegistroDos.class));
         }

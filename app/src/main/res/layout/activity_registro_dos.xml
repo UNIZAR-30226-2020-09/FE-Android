@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".actividades.RegistroDos">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/RegistroDos"
@@ -65,13 +64,13 @@
 
         <ImageButton
             android:id="@+id/registro2_imagen_ver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="36dp"
             android:layout_marginStart="7dp"
             android:layout_marginTop="317dp"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="383dp"
-            android:background="@android:color/background_light"
+            android:background="@android:color/transparent"
             android:onClick="password_visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +131,7 @@
             android:layout_marginTop="148dp"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="202dp"
-            android:background="@android:color/background_light"
+            android:background="@android:color/transparent"
             android:onClick="password2_visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

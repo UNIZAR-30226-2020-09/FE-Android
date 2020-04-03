@@ -1,29 +1,31 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.autenticacion;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,8 +39,6 @@ public class RegistroDos extends AppCompatActivity {
 
     private Button confirmar;
 
-    SharedPreferences sharedPreferences;
-
     String savedEmail;
 
     private EditText password;          // Campo de contraseña.
@@ -46,6 +46,8 @@ public class RegistroDos extends AppCompatActivity {
 
     private Boolean mostrandoPass1 = false;
     private Boolean mostrandoPass2 = false;
+    private ImageButton registro_mostrar1;
+    private ImageButton registro_mostrar2;
 
     //Comprobación longitud contraseñas
     private Boolean passwordCheckLength = false;
@@ -72,13 +74,13 @@ public class RegistroDos extends AppCompatActivity {
         confirmPassword = findViewById(R.id.registro2_clave2);
         limitPass = findViewById(R.id.registro2_long_clave);
         limitPass2 = findViewById(R.id.registro2_long_clave2);
+        registro_mostrar1 = findViewById(R.id.registro2_imagen_ver);
+        registro_mostrar2 = findViewById(R.id.registro2_imagen_ver2);
 
         password.addTextChangedListener(registerTextWatcher);
         confirmPassword.addTextChangedListener(registerTextWatcher);
 
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        savedEmail = sharedPreferences.getString("email","");
-
+        savedEmail = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("email");
     }
 
     private TextWatcher registerTextWatcher = new TextWatcher() {
@@ -161,10 +163,12 @@ public class RegistroDos extends AppCompatActivity {
         if (mostrandoPass1){
             password.setTransformationMethod(PasswordTransformationMethod.getInstance());
             mostrandoPass1 = false;
+            registro_mostrar1.setColorFilter(R.color.colorPrimaryDark);
         }
         else{
             password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            mostrandoPass1 = true;
+            mostrandoPass1= true;
+            registro_mostrar1.clearColorFilter();
         }
     }
 
@@ -172,10 +176,12 @@ public class RegistroDos extends AppCompatActivity {
         if (mostrandoPass2){
             confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             mostrandoPass2 = false;
+            registro_mostrar2.setColorFilter(R.color.colorPrimaryDark);
         }
         else{
             confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            mostrandoPass2 = true;
+            mostrandoPass2= true;
+            registro_mostrar2.clearColorFilter();
         }
     }
 
@@ -193,9 +199,7 @@ public class RegistroDos extends AppCompatActivity {
         else {
             String password_in = password.getText().toString().trim();
             //Guardamos la contraseña
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("password",password_in);
-            editor.commit();
+            SharedPreferencesHelper.getInstance(getApplicationContext()).put("password",password_in);
             confirmar.setEnabled(false);
 
             doPost(password_in,savedEmail);
@@ -210,7 +214,7 @@ public class RegistroDos extends AppCompatActivity {
             json.accumulate("masterPassword",contrasena);
         }
         catch (Exception e){
-            Log.d("EXCEPCION", e.getMessage());
+            e.printStackTrace();
         }
 
         // Formamos el cuerpo de la petición con el JSON creado
@@ -226,34 +230,29 @@ public class RegistroDos extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        // Esto no tiene que ir en todas las peticiones... Es en las que nos interesa dar retroalimentación al usuario
-        final Handler h = new Handler() {
-            public void handleMessage(Message msg){
-                if(msg.what == 0){
-                    Toast.makeText(getApplicationContext(), "Ya existe un usuario registrado con ese email", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                        h.sendEmptyMessage(0);
-                    } else {
-                        Log.d("OK ", response.body().string());
-                        startActivity(new Intent(RegistroDos.this, Login.class));
-                        finish();
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    startActivity(new Intent(RegistroDos.this, Login.class));
+                    finishAffinity();
+                }
+                else {
+                    try {
+                        JSONObject json = new JSONObject(response.body().string());
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                    }
+                    catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-                catch (Throwable e){
-                    Log.d("EXCEPCION ", e.getMessage());
-                }
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
         });
-        thread.start();
     }
 }

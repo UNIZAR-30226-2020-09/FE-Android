@@ -1,14 +1,15 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.contacto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import es.unizar.eina.pandora.Inicio;
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
 public class ContactarTres extends AppCompatActivity {
 
@@ -19,17 +20,16 @@ public class ContactarTres extends AppCompatActivity {
     }
 
     public void terminar(View view){
-        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        boolean guest = sharedPreferences.getBoolean("guest",true);
+        boolean guest = SharedPreferencesHelper.getInstance(getApplicationContext()).getBoolean("guest",true);
         // Si no habíamos iniciado sesión, vamos a la pantalla de inicio
         if(guest){
             startActivity(new Intent(ContactarTres.this, Inicio.class));
-            finish();
+            finishAffinity();
         }
         // En caso contrario, volvemos a la pantalla principal
         else{
             startActivity(new Intent(ContactarTres.this, Principal.class));
-            finish();
+            finishAffinity();
         }
     }
 }

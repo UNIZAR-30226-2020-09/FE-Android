@@ -1,18 +1,15 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.adaptadores;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,17 +27,13 @@ public class PrincipalAdapter extends
     public PrincipalAdapter(Context _context, ArrayList<JSONObject> _password){
         context = _context;
         password = _password;
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user", context.MODE_PRIVATE);
     }
 
     // Usually involves inflating a layout from XML and returning the holder
     @NonNull
     @Override
     public PrincipalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         View passwordView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_principal, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(passwordView);
         return viewHolder;
     }

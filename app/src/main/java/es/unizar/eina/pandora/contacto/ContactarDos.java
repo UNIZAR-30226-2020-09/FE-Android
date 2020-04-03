@@ -1,20 +1,21 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.contacto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.*;
 
 public class ContactarDos extends AppCompatActivity {
@@ -22,7 +23,6 @@ public class ContactarDos extends AppCompatActivity {
     final String url = "https://pandorapp.herokuapp.com/api/mensaje";
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    SharedPreferences sharedPreferences;
     TextView remitente;
 
     @Override
@@ -32,20 +32,18 @@ public class ContactarDos extends AppCompatActivity {
 
         remitente = findViewById(R.id.contactar2_entrada_comunicado);
 
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-
         // Si viene de la pantalla principal (ha iniciado sesión), rellenamos el campo con su email
         // puesto que ya lo conocemos
-        boolean guest = sharedPreferences.getBoolean("guest",true);
+        boolean guest = SharedPreferencesHelper.getInstance(getApplicationContext()).getBoolean("guest");
         if(!guest){
-            remitente.setText(sharedPreferences.getString("email",null));
+            remitente.setText(SharedPreferencesHelper.getInstance(getApplicationContext()).getString("email"));
         }
     }
 
     public void contactar(View view){
         if(!remitente.getText().toString().equals("")){
             String remitente_insertado = remitente.getText().toString().trim();
-            String mensaje_insertado = sharedPreferences.getString("mensaje",null);
+            String mensaje_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("mensaje");
             doPost(remitente_insertado, mensaje_insertado);
         }
     }
@@ -74,23 +72,26 @@ public class ContactarDos extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        Log.d("OK ", response.body().string());
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
                         startActivity(new Intent(ContactarDos.this, ContactarTres.class));
+                        finish();
                     }
-                }
-                catch (IOException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    else {
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-        thread.start();
     }
 }

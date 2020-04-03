@@ -1,14 +1,10 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.categorias;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +13,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,25 +31,17 @@ public class CrearCategoria extends AppCompatActivity {
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private TextView name;
-    private Button confirmar;
-
-    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_categoria);
-
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-
         name = findViewById(R.id.crear_categoria_1_nombre);
-        confirmar = findViewById(R.id.crear_categoria_1_button_confirmar);
     }
 
     public void confirmar(View view){
         String nombre_introducido = name.getText().toString();
         if(!nombre_introducido.equals("")){
-            Log.d("InsertarCategory","IN");
             doPostCategoria(nombre_introducido);
         }else{
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la categoría", Toast.LENGTH_LONG).show();
@@ -56,15 +49,16 @@ public class CrearCategoria extends AppCompatActivity {
     }
 
     private void doPostCategoria(final String name) {
-        String token = sharedPreferences.getString("token",null);
-        Log.d("Crear password 4", token);
+        // Recuperamos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
             json.accumulate("categoryName",name);
         }
         catch (Exception e){
-            Log.d("EXCEPCION", e.getMessage());
+            e.printStackTrace();
         }
 
         // Formamos el cuerpo de la petición con el JSON creado
@@ -81,23 +75,26 @@ public class CrearCategoria extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
                         startActivity(new Intent(CrearCategoria.this, Principal.class));
+                        finishAffinity();
                     }
-                }
-                catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    else {
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-        thread.start();
     }
 }

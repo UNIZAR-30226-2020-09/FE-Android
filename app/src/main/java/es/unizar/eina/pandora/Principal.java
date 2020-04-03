@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -34,7 +32,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
+import es.unizar.eina.pandora.categorias.CrearCategoria;
+import es.unizar.eina.pandora.contacto.ContactarUno;
+import es.unizar.eina.pandora.passwords.CrearPasswordUno;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,7 +46,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Principal extends AppCompatActivity {
-    private SharedPreferences sharedPreferences;
 
     private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
     private final String urlEliminarCuenta = "https://pandorapp.herokuapp.com/api/usuarios/eliminar";
@@ -83,8 +86,8 @@ public class Principal extends AppCompatActivity {
         Log.d("Principal", "1");
 
         // Recuperar información del usuario.
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-        email = sharedPreferences.getString("email",null);
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
+        email = sharedPreferencesHelper.getString("email",null);
 
         listaPass = findViewById(R.id.principal_recyclerview_password);
 
@@ -118,17 +121,15 @@ public class Principal extends AppCompatActivity {
                     doPostPassword();
                     toArrayList();
                     swipeLayout.setRefreshing(false);
-                } catch (InterruptedException | JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
-
         try {
             doPostPassword();
             toArrayList();
-        } catch (InterruptedException | JSONException e) {
+        } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
         Log.d("Longitud lista password",Integer.toString(lista_respuesta.size()));
@@ -143,7 +144,6 @@ public class Principal extends AppCompatActivity {
     }
 
     //Necesario para el borrado de contraseñas deslizando hacia el lateral
-
     ItemTouchHelper.SimpleCallback touchHelper = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -185,18 +185,13 @@ public class Principal extends AppCompatActivity {
     }
 
     public void cerrarSesion(MenuItem menuItem){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        // Borramos información de la sesión y del usuario
-        editor.clear();
-        editor.commit();
+        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
         startActivity(new Intent(Principal.this, Inicio.class));
         finish();
     }
 
     public void contactar(MenuItem menuItem){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("guest",false);
-        editor.commit();
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("guest",false);
         startActivity(new Intent(Principal.this, ContactarUno.class));
     }
 
@@ -270,8 +265,8 @@ public class Principal extends AppCompatActivity {
     }
 
     public void doPostPassword() throws InterruptedException {
-        String token = sharedPreferences.getString("token",null);
-        Log.d("Crear password 4", token);
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
@@ -279,19 +274,15 @@ public class Principal extends AppCompatActivity {
                 .addHeader("Authorization", token)
                 .build();
 
+        // Hacemos la petición SÍNCRONA
         // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        Log.d("doPostPassword","IN");
-                        final JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
+                        JSONObject json = new JSONObject(response.body().string());
                         lista = json.getJSONArray("passwords");
-                        Log.d("doPostPassword",Integer.toString(lista.length()));
-                        Log.d("doPostPassword","OUT");
                     }
                 }
                 catch (IOException | JSONException e){
@@ -305,7 +296,7 @@ public class Principal extends AppCompatActivity {
 
     public void doPostEliminarCuenta() {
         // Recogemos el token
-        String token = sharedPreferences.getString("token",null);
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
 
         // Formamos la petición con el token (IMPORTANTE VER QUE ES DE TIPO DELETE)
         final Request request = new Request.Builder()
@@ -314,34 +305,24 @@ public class Principal extends AppCompatActivity {
                 .delete()
                 .build();
 
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        Log.d("Eliminar", response.body().string());
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        // Borramos información de la sesión y del usuario
-                        editor.clear();
-                        editor.commit();
-                        startActivity(new Intent(Principal.this, Inicio.class));
-                        finish();
-                    }
-                }
-                catch (IOException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                    startActivity(new Intent(Principal.this, Inicio.class));
+                    finish();
                 }
             }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-        thread.start();
     }
 
     public void doPostEliminarPassword(Integer id_pass) {
         // Recogemos el token
-        String token = sharedPreferences.getString("token",null);
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
 
         JSONObject json = new JSONObject();
         try{
@@ -365,23 +346,12 @@ public class Principal extends AppCompatActivity {
                 .delete(formBody)
                 .build();
 
-
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
-                    } else {
-                        Log.d("Eliminar", response.body().string());
-                    }
-                }
-                catch (IOException e){
-                    Log.d("EXCEPCION ", e.getMessage());
-                }
-            }
+            public void onResponse(Call call, Response response) { }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-        thread.start();
     }
 }

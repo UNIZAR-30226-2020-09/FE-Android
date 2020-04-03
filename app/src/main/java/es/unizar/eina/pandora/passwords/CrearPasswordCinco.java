@@ -1,18 +1,13 @@
-package es.unizar.eina.pandora.actividades;
+package es.unizar.eina.pandora.passwords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,8 +27,6 @@ public class CrearPasswordCinco extends AppCompatActivity {
     final String url = "https://pandorapp.herokuapp.com/api/categorias/listar";
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    //private Spinner categorias;
-    private Button siguiente;
     private Spinner categorias;
     ArrayList<String> name_category = new ArrayList<>();
     ArrayList<Integer> id_category = new ArrayList<>();
@@ -41,15 +35,11 @@ public class CrearPasswordCinco extends AppCompatActivity {
 
     JSONArray cat = new JSONArray();
 
-
-    SharedPreferences sharedPreferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_password_cinco);
 
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         categorias = findViewById(R.id.crear_password_5_category);
         try {
             doPostCategory();
@@ -58,12 +48,8 @@ public class CrearPasswordCinco extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, name_category);
         categorias.setAdapter(categoriesAdapter);
-
-        //dias = findViewById(R.id.crear_password_4_dias);
-        siguiente = findViewById(R.id.crear_password_5_button_continuar);
     }
 
     public void goSiguiente(View view){
@@ -82,10 +68,7 @@ public class CrearPasswordCinco extends AppCompatActivity {
                 i++;
             }
         }
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("password_cat",id_cat);
-        editor.commit();
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_cat",id_cat);
         startActivity(new Intent(CrearPasswordCinco.this,CrearPasswordSeis.class));
     }
 
@@ -105,8 +88,7 @@ public class CrearPasswordCinco extends AppCompatActivity {
     }
 
     public void doPostCategory() throws InterruptedException {
-        String token = sharedPreferences.getString("token",null);
-        Log.d("Crear password 4", token);
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
@@ -114,7 +96,7 @@ public class CrearPasswordCinco extends AppCompatActivity {
                 .addHeader("Authorization", token)
                 .build();
 
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        // Enviamos la petición SÍNCRONA
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -124,7 +106,6 @@ public class CrearPasswordCinco extends AppCompatActivity {
                     } else {
                         final JSONObject json = new JSONObject(response.body().string());
                         cat = json.getJSONArray("categories");
-                        Log.d("Categorias obtenidas",Integer.toString(cat.length()));
                     }
                 }
                 catch (IOException | JSONException e){
