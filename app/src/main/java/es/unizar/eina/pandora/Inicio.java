@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +31,17 @@ public class Inicio extends AppCompatActivity {
     final String url = "https://pandorapp.herokuapp.com/api/estadisticas";
     private final OkHttpClient httpClient = new OkHttpClient();
 
+    // Para hacer las peticiones continuas de las stats
+    final Handler handler = new Handler();
+    Runnable recargarEstadisticas = new Runnable() {
+        @Override
+        public void run() {
+            doPost();
+            Log.d("Pido estadisticas", "Inicio");
+            handler.postDelayed(this,2000);
+        }
+    };
+
     TextView nUsuarios;
     TextView nPass;
 
@@ -45,21 +58,23 @@ public class Inicio extends AppCompatActivity {
             startActivity(new Intent(Inicio.this, Principal.class));
             ActivityCompat.finishAffinity(this);
         }
-        /*
-        startActivity(new Intent(Inicio.this, Login.class));
-        */
-        doPost();
+
+        // Empezar a hacer petición de estadísticas
+        handler.post(recargarEstadisticas);
     }
 
     public void goLogin(View view){
+        handler.removeCallbacks(recargarEstadisticas);
         startActivity(new Intent(Inicio.this, Login.class));
     }
 
     public void goRegistro(View view){
+        handler.removeCallbacks(recargarEstadisticas);
         startActivity(new Intent(Inicio.this, RegistroUno.class));
     }
 
     public void goContacto(View view){
+        handler.removeCallbacks(recargarEstadisticas);
         startActivity(new Intent(Inicio.this, ContactarUno.class));
     }
 
