@@ -2,6 +2,10 @@ package es.unizar.eina.pandora.utiles;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SharedPreferencesHelper {
     private static final String SETTINGS_NAME = "user";
@@ -58,6 +62,12 @@ public class SharedPreferencesHelper {
         doCommit();
     }
 
+    public void put(String key, JSONObject val) {
+        doEdit();
+        sharedPreferencesEditor.putString(key, val.toString());
+        doCommit();
+    }
+
     public String getString(String key, String defaultValue) {
         return sharedPreferences.getString(key, defaultValue);
     }
@@ -108,6 +118,19 @@ public class SharedPreferencesHelper {
 
     public boolean getBoolean(String key) {
         return sharedPreferences.getBoolean(key, false);
+    }
+
+    public JSONObject getJSONObject(String key) {
+        String strJson = sharedPreferences.getString(key,"0");
+        JSONObject response = new JSONObject();
+        if (strJson != null) {
+            try {
+                response = new JSONObject(strJson);
+            } catch (JSONException e) {
+                Log.d("Excepcion","JSONOject");
+            }
+        }
+        return response;
     }
 
     public void remove(String... keys) {

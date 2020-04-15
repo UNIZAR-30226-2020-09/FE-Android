@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,11 +31,17 @@ public class CrearPasswordSeis extends AppCompatActivity {
 
     private TextView note;
 
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_password_seis);
         note = findViewById(R.id.crear_password_6_note);
+
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
+        password = sharedPreferencesHelper.getString("password",null);
+        Log.d("LOGIN OK",password);
     }
 
     public void crear(View view){
@@ -56,6 +63,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
+            json.accumulate("masterPassword",password);
             json.accumulate("passwordName",name);
             json.accumulate("password",pass);
             json.accumulate("expirationTime",dias);

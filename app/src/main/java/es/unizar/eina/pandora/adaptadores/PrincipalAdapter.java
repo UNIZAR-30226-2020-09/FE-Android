@@ -1,10 +1,13 @@
 package es.unizar.eina.pandora.adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,13 +18,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
+import es.unizar.eina.pandora.passwords.EditarPassword;
+import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
 public class PrincipalAdapter extends
         RecyclerView.Adapter<PrincipalAdapter.ViewHolder> {
 
+
     private Context context;
     private ArrayList<JSONObject> password = new ArrayList<>();
+
 
     //Constructor
     public PrincipalAdapter(Context _context, ArrayList<JSONObject> _password){
@@ -40,32 +48,18 @@ public class PrincipalAdapter extends
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(@NonNull PrincipalAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PrincipalAdapter.ViewHolder holder, int position) {
         try {
-            Log.d("onBindViewHolder","IN");
-            JSONObject pass = password.get(position);
-
-            String name = pass.getString("passwordName");
-            TextView passwd = holder.name;
-            passwd.setText(name);
-            Log.d("+++++++",name);
-
-            String user = pass.getString("userName");
-            TextView _user= holder.user;
-            _user.setText(user);
-            Log.d("+++++++",user);
-
-            String cat = pass.getString("categoryName");
-            TextView category = holder.category;
-            category.setText(cat);
-            Log.d("+++++++",cat);
-
-            Log.d("onBindViewHolder","OUT");
+            holder.bind(password.get(position));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void setSharedPreferences(JSONObject item){
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(context);
+        sharedPreferencesHelper.put("Password_info",item);
+    }
     @Override
     public int getItemCount() {
         return password.size();
@@ -96,6 +90,45 @@ public class PrincipalAdapter extends
         public String getName(){
             return name.getText().toString();
         }
+
+        public void bind(final JSONObject JSONitem) throws JSONException {
+            name.setText(JSONitem.getString("passwordName"));
+            category.setText(JSONitem.getString("categoryName"));
+            user.setText(JSONitem.getString("userName"));
+
+            //Desplegar el menú cuando hacemos click
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(final View v) {
+                    PopupMenu popup = new PopupMenu(context, v);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.menu_editar_info_principal);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menu_editar:
+                                    //handle menu1 click
+                                    Log.d("EDIT MENU","selected");
+                                    setSharedPreferences(JSONitem);
+                                    Intent act = new Intent(v.getContext(),EditarPassword.class);
+                                    v.getContext().startActivity(act);
+                                    return true;
+                                case R.id.menu_info:
+                                    Log.d("INFO MENU","OK");
+                                    //handle menu2 click
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
+                }
+            });
+        }
+
     }
 
 }

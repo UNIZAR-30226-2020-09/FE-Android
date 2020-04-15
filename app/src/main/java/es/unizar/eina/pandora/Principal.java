@@ -16,6 +16,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -36,6 +39,8 @@ import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.categorias.CrearCategoria;
 import es.unizar.eina.pandora.contacto.ContactarUno;
 import es.unizar.eina.pandora.passwords.CrearPasswordUno;
+import es.unizar.eina.pandora.passwords.EditarPassword;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -55,6 +60,7 @@ public class Principal extends AppCompatActivity {
 
     // Información del usuario.
     private String email;
+    private String password;
     private ArrayList<JSONObject> lista_respuesta = new ArrayList<>();
     JSONArray lista = new JSONArray();
     JSONObject deleted_password;
@@ -88,8 +94,12 @@ public class Principal extends AppCompatActivity {
         // Recuperar información del usuario.
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
         email = sharedPreferencesHelper.getString("email",null);
+        password = sharedPreferencesHelper.getString("password",null);
+        Log.d("LOGIN OK",password);
 
         listaPass = findViewById(R.id.principal_recyclerview_password);
+
+
 
         //Botones de crear categoria y contraseña
         addMenu = findViewById(R.id.principal_add_button);
@@ -168,6 +178,8 @@ public class Principal extends AppCompatActivity {
             }
         }
     };
+
+
 
     //Pasar JSONArray a un ArrayList<JSONObject>
     protected void toArrayList() throws JSONException {
@@ -266,23 +278,47 @@ public class Principal extends AppCompatActivity {
 
     public void doPostPassword() throws InterruptedException {
         // Recogemos el token
+        Log.d("dentro","OKK");
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+        Log.d("dentro","OKK");
 
+        JSONObject json = new JSONObject();
+        try{
+            json.accumulate("masterPassword",password);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // Formamos el cuerpo de la petición con el JSON creado
+        RequestBody formBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                json.toString()
+        );
+        Log.d("dentro","OKK");
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(urlListarPassword)
+                .addHeader("Content-Type", formBody.contentType().toString())
                 .addHeader("Authorization", token)
+                .post(formBody)
                 .build();
-
+        Log.d("dentro","OKK3");
         // Hacemos la petición SÍNCRONA
         // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
+                    JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
-                        JSONObject json = new JSONObject(response.body().string());
+                        Log.d("dentro","OKK3");
+                        Log.d("LISTAR",json.toString());
                         lista = json.getJSONArray("passwords");
+                    }else{
+                        Log.d("NO OK","F");
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 }
                 catch (IOException | JSONException e){
@@ -323,33 +359,26 @@ public class Principal extends AppCompatActivity {
     public void doPostEliminarPassword(Integer id_pass) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
-
-        JSONObject json = new JSONObject();
-        try{
-            json.accumulate("id",id_pass);
-        }
-        catch (Exception e){
-            Log.d("EXCEPCION", e.getMessage());
-        }
-
-        // Formamos el cuerpo de la petición con el JSON creado
-        RequestBody formBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                json.toString()
-        );
+        String urlAux = urlEliminarPassword+"?id=" + Integer.toString(id_pass);
+        Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
-                .url(urlEliminarPassword)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .url(urlAux)
                 .addHeader("Authorization", token)
-                .delete(formBody)
+                .delete()
                 .build();
 
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call call, Response response) { }
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    Log.d("PASSWORD ELIMINADA","OK");
+                }else{
+                    Log.d("fallo","mal");
+                }
+            }
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
