@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.passwords.EditarPassword;
+import es.unizar.eina.pandora.passwords.InformacionPassword;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
 public class PrincipalAdapter extends
@@ -116,6 +117,9 @@ public class PrincipalAdapter extends
                                     return true;
                                 case R.id.menu_info:
                                     Log.d("INFO MENU","OK");
+                                    setSharedPreferences(JSONitem);
+                                    Intent act2 = new Intent(v.getContext(), InformacionPassword.class);
+                                    v.getContext().startActivity(act2);
                                     //handle menu2 click
                                     return true;
                                 default:

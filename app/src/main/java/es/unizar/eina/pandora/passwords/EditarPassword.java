@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +69,7 @@ public class EditarPassword extends AppCompatActivity {
         usuario = findViewById(R.id.editar_password_usuario);
         password = findViewById(R.id.editar_password_pass);
         validez = findViewById(R.id.editar_password_dias);
+        validez.setTransformationMethod(null);
         nota = findViewById(R.id.editar_password_nota);
         categorias=findViewById(R.id.editar_password_cat);
 
@@ -119,9 +121,34 @@ public class EditarPassword extends AppCompatActivity {
        _usuario = usuario.getText().toString();
        _password = password.getText().toString();
        _validez = validez.getText().toString();
-       Integer dias = Integer.valueOf(_validez);
+       Integer dias = 0;
+       Boolean empty = false;
+       if(_validez.equals("")){
+           empty=true;
+       }else{
+           dias = Integer.valueOf(_validez);
+       }
        _nota = nota.getText().toString();
-        doPostEditar(_id, _nombre, _usuario, _password,_nota, dias, id_cat);
+       if(checkParameters(_nombre,_password,dias,empty)){
+           doPostEditar(_id, _nombre, _usuario, _password,_nota, dias, id_cat);
+       }
+    }
+
+    //Devuelve true si se cumplen todas las restricciones de los parametros de las contraseñas
+    private Boolean checkParameters(String name, String pass, Integer dias,Boolean empty){
+        Boolean isOK = false;
+        if(name.equals("")){
+            Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();
+        }else if(pass.equals("")){
+            Toast.makeText(getApplicationContext(),"El campo contraseña no puede estar vacío", Toast.LENGTH_LONG).show();
+        }else if(empty){
+            Toast.makeText(getApplicationContext(),"El periodo de validez no puede estar vacío", Toast.LENGTH_LONG).show();
+        }else if(dias<1 || dias>365){
+            Toast.makeText(getApplicationContext(),"El periodo de validez debe estar entre 1 y 365", Toast.LENGTH_LONG).show();
+        }else{
+            isOK=true;
+        }
+        return isOK;
     }
 
     //Conseguir el id de la categoria seleccionada

@@ -10,9 +10,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".passwords.EditarPassword"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+        <activity android:name=".passwords.InformacionPassword"></activity>
+        <activity
+            android:name=".passwords.EditarPassword"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".categorias.CrearCategoria" />
         <activity android:name=".passwords.CrearPasswordCinco" />
         <activity android:name=".passwords.CrearPasswordCuatro" />
