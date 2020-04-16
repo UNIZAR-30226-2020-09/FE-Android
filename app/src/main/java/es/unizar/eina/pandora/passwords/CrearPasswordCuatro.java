@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
@@ -41,6 +42,9 @@ public class CrearPasswordCuatro extends AppCompatActivity {
         }
     }
 
-
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
+    }
 
 }

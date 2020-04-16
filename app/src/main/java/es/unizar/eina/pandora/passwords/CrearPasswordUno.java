@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
@@ -30,5 +31,10 @@ public class CrearPasswordUno extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
     }
 }

@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.OkHttpClient;
@@ -115,5 +116,10 @@ public class CrearPasswordCinco extends AppCompatActivity {
         });
         thread.start();
         thread.join();
+    }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
     }
 }

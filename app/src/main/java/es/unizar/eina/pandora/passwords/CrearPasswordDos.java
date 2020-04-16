@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
@@ -25,5 +26,10 @@ public class CrearPasswordDos extends AppCompatActivity {
         //Puede ser vacío
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_user",user.getText().toString());
         startActivity(new Intent(this,CrearPasswordTres.class));
+    }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
     }
 }
