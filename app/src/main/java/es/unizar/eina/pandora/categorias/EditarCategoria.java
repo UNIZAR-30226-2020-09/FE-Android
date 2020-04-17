@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora.autenticacion;
+package es.unizar.eina.pandora.categorias;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,66 +26,57 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Login extends AppCompatActivity {
+public class EditarCategoria extends AppCompatActivity {
 
-    final String url = "https://pandorapp.herokuapp.com/api/usuarios/login";
+    final String urlEditarCategoria = "https://pandorapp.herokuapp.com/api/categorias/modificar";
     private final OkHttpClient httpClient = new OkHttpClient();
 
-    TextView email;
-    TextView password;
+    private TextView name;
+    private JSONObject category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_editar_categoria);
+        name = findViewById(R.id.editar_categoria_1_nombre);
+        category = SharedPreferencesHelper.getInstance(getApplicationContext()).getJSONObject("Category_info");
+        Log.d("PruebaCategory",category.toString());
+    }
 
-        /*
-        Por si vuelven a cambiar el token, necesitaremos iniciar sesión para que nos den uno nuevo
-        //String _email = sharedPreferences.getString("email",null);
-        //String _password = sharedPreferences.getString("password",null);
-        // Si ya tenemos estos datos, iniciamos sesión automáticamente
-
-        if (_email != null && _password != null) {
-            doPost(sharedPreferences.getString("email",null),
-                    sharedPreferences.getString("password",null));
-            finish();
+    public void confirmar(View view) throws JSONException {
+        String nombre_introducido = name.getText().toString();
+        if(!nombre_introducido.equals("")){
+            doPostCategoria(name.getText().toString(), category.getInt("catId"));
+        }else{
+            Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la categoría", Toast.LENGTH_LONG).show();
         }
-        */
-
-        email = findViewById(R.id.login_entrada_usuario);
-        password = findViewById(R.id.login_entrada_clave);
     }
 
-    public void entrar(View view) {
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-        sharedPreferencesHelper.put("email", email.getText().toString().trim());
-        sharedPreferencesHelper.put("password", password.getText().toString().trim());
-
-        doPost(sharedPreferencesHelper.getString("email"),
-                sharedPreferencesHelper.getString("password"));
-    }
-
-    private void doPost(final String correo, final String contrasena) {
-        Log.d("correo", correo);
-        Log.d("contrasena", contrasena);
+    private void doPostCategoria(final String name, final int id) {
+        // Recuperamos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
 
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
-            json.accumulate("mail",correo);
-            json.accumulate("masterPassword",contrasena);
+            json.accumulate("categoryName",name);
+            json.accumulate("id",id);
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
         // Formamos el cuerpo de la petición con el JSON creado
-        RequestBody formBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
+        RequestBody formBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                json.toString()
+        );
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
-                .url(url)
+                .url(urlEditarCategoria)
                 .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
 
@@ -95,11 +87,8 @@ public class Login extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
-                            String token = json.getString("token");
-                            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-                            sharedPreferencesHelper.put("token", token);
-                            startActivity(new Intent(Login.this, Principal.class));
-                            finishAffinity();
+                        startActivity(new Intent(EditarCategoria.this, ListadoCategorias.class));
+                        finishAffinity();
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));

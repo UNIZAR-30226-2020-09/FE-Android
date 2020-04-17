@@ -16,9 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -37,9 +34,10 @@ import java.util.ArrayList;
 
 import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.categorias.CrearCategoria;
-import es.unizar.eina.pandora.contacto.ContactarUno;
+import es.unizar.eina.pandora.categorias.ListadoCategorias;
+import es.unizar.eina.pandora.plataforma.ContactarUno;
 import es.unizar.eina.pandora.passwords.CrearPasswordUno;
-import es.unizar.eina.pandora.passwords.EditarPassword;
+import es.unizar.eina.pandora.plataforma.SobrePandora;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
@@ -66,6 +64,7 @@ public class Principal extends AppCompatActivity {
     JSONObject deleted_password;
 
     PrincipalAdapter listaAdapter;
+
     // Elementos de la interfaz.
     private Toolbar toolbar;
     private TextView drawerEmail;
@@ -74,10 +73,6 @@ public class Principal extends AppCompatActivity {
     private SwipeRefreshLayout swipeLayout;
     private View headerDrawer;
     private RecyclerView listaPass;
-
-    private FloatingActionButton addMenu;
-    private FloatingActionButton addCat;
-    private FloatingActionButton addCon;
 
     private FrameLayout catButton;
     private FrameLayout conButton;
@@ -89,22 +84,13 @@ public class Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        Log.d("Principal", "1");
 
         // Recuperar información del usuario.
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
         email = sharedPreferencesHelper.getString("email",null);
         password = sharedPreferencesHelper.getString("password",null);
-        Log.d("LOGIN OK",password);
 
         listaPass = findViewById(R.id.principal_recyclerview_password);
-
-
-
-        //Botones de crear categoria y contraseña
-        addMenu = findViewById(R.id.principal_add_button);
-        addCat = findViewById(R.id.principal_add_cat_button);
-        addCon = findViewById(R.id.principal_add_con_button);
 
         catButton = findViewById(R.id.principal_frame_cat);
         conButton = findViewById(R.id.principal_frame_con);
@@ -142,7 +128,6 @@ public class Principal extends AppCompatActivity {
         } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
-        Log.d("Longitud lista password",Integer.toString(lista_respuesta.size()));
 
         //Creación del adaptador de contraseñas
         listaAdapter= new PrincipalAdapter(Principal.this,lista_respuesta);
@@ -168,23 +153,17 @@ public class Principal extends AppCompatActivity {
             listaAdapter.notifyItemRemoved(position);
             try {
                 String name = deleted_password.getString("passwordName");
-                Log.d("Nombre password",name);
                 Integer id_pass = deleted_password.getInt("passId");
-                Log.d("Id password", Integer.toString(id_pass));
                 borrarPassword(id_pass,name,position);
-                Log.d("BORRADO","OK");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     };
 
-
-
     //Pasar JSONArray a un ArrayList<JSONObject>
     protected void toArrayList() throws JSONException {
         ArrayList<JSONObject> listaAux = new ArrayList<>();
-        Log.d("ToArrayList","IN");
         JSONObject aux;
         for (int i=0;i<lista.length();i++){
             aux = lista.getJSONObject(i);
@@ -192,19 +171,25 @@ public class Principal extends AppCompatActivity {
             Log.d("Bucle", "Bucle");
         }
         lista_respuesta = listaAux;
-        Log.d("ToArrayList",Integer.toString(lista_respuesta.size()));
-        Log.d("ToArrayList","IN");
+    }
+
+    public void administrarCategorias(MenuItem menuItem){
+        startActivity(new Intent(Principal.this, ListadoCategorias.class));
     }
 
     public void cerrarSesion(MenuItem menuItem){
         SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
         startActivity(new Intent(Principal.this, Inicio.class));
-        finish();
+        finishAffinity();
     }
 
     public void contactar(MenuItem menuItem){
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("guest",false);
         startActivity(new Intent(Principal.this, ContactarUno.class));
+    }
+
+    public void sobrePandora(MenuItem menuItem){
+        startActivity(new Intent(Principal.this, SobrePandora.class));
     }
 
     public void eliminarCuenta(MenuItem menuItem){
@@ -267,20 +252,16 @@ public class Principal extends AppCompatActivity {
     }
 
     public void addCategory(View view){
-        Log.d("ADD CATEGORY","TODO OK");
         startActivity(new Intent(Principal.this, CrearCategoria.class));
     }
 
     public void addPassword(View view){
         startActivity(new Intent(Principal.this, CrearPasswordUno.class));
-        Log.d("ADD PASSWORD","TODO OK");
     }
 
     public void doPostPassword() throws InterruptedException {
         // Recogemos el token
-        Log.d("dentro","OKK");
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
-        Log.d("dentro","OKK");
 
         JSONObject json = new JSONObject();
         try{
@@ -295,7 +276,6 @@ public class Principal extends AppCompatActivity {
                 MediaType.parse("application/json; charset=utf-8"),
                 json.toString()
         );
-        Log.d("dentro","OKK");
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(urlListarPassword)
@@ -303,7 +283,6 @@ public class Principal extends AppCompatActivity {
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
-        Log.d("dentro","OKK3");
         // Hacemos la petición SÍNCRONA
         // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
         Thread thread = new Thread(new Runnable() {
@@ -312,17 +291,13 @@ public class Principal extends AppCompatActivity {
                 try (Response response = httpClient.newCall(request).execute()) {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
-                        Log.d("dentro","OKK3");
-                        Log.d("LISTAR",json.toString());
                         lista = json.getJSONArray("passwords");
                     }else{
-                        Log.d("NO OK","F");
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 }
                 catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });

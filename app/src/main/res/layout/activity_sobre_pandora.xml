@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".plataforma.SobrePandora">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inicio"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:forceDarkAllowed="false"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
+
+
+        <ImageView
+            android:id="@+id/sobre_pandora_logo"
+            android:layout_width="315dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="39dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="39dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_texto1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_texto1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="32dp"
+            android:text="Pandora es una plataforma sin ánimo de lucro\nque vela por la seguridad de tus contraseñas,\nmanteniéndolas en secreto gracias a:\nAES-256, criptografía de clave pública, sal...\nEntre muchas otras características\n\nEl equipo que está detrás de Pandora está\nformado por ocho estudiantes del grado en\nIngeniería Informática de la Universidad de Zaragoza"
+            android:textAlignment="center"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_text_nUsers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_logo" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_nUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="32dp"
+            android:text="0"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_text_nUsers" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_text_nUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="45dp"
+            android:text="Usuarios registrados"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/sobre_pandora_text_nPass"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_texto1" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_nPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="70dp"
+            android:text="0"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_text_nPass" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_text_nPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="28dp"
+            android:text="Contraseñas guardadas"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/sobre_pandora_text_nUsers"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_texto1" />
+
+        <TextView
+            android:id="@+id/sobre_pandora_texto2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="118dp"
+            android:layout_marginEnd="118dp"
+            android:layout_marginBottom="9dp"
+            android:text="@string/inicio_texto2"
+            app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_contacto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/sobre_pandora_contacto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="95dp"
+            android:layout_marginEnd="95dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="contactar"
+            android:text="@string/inicio_contacto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

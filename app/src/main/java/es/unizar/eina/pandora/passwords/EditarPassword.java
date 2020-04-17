@@ -87,7 +87,7 @@ public class EditarPassword extends AppCompatActivity {
         spassword = sharedPreferencesHelper.getString("password",null);
         Log.d("EDITAR OK",spassword);
         password = sharedPreferencesHelper.getJSONObject("Password_info");
-        Log.d("Prueba",password.toString());
+        Log.d("PruebaPassword",password.toString());
         try {
             _id = password.getInt("passId");
             _nombre = password.getString("passwordName");

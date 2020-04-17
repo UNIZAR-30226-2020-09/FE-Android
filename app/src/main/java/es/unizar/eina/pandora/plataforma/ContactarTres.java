@@ -1,4 +1,4 @@
-package es.unizar.eina.pandora.contacto;
+package es.unizar.eina.pandora.plataforma;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -4,9 +4,9 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/menu_administrar_categorias"
-        android:onClick="administrarCategorias"
-        android:title="Administrar categorías" />
+        android:id="@+id/menu_administrar_contrasenyas"
+        android:onClick="administrarContrasenyas"
+        android:title="Administrar contraseñas" />
     <item
         android:id="@+id/menu_cerrar_sesion"
         android:onClick="cerrarSesion"

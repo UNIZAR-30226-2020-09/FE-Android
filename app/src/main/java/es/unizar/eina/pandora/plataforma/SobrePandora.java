@@ -1,12 +1,12 @@
-package es.unizar.eina.pandora;
+package es.unizar.eina.pandora.plataforma;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,9 +15,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import es.unizar.eina.pandora.autenticacion.Login;
-import es.unizar.eina.pandora.autenticacion.RegistroUno;
-import es.unizar.eina.pandora.plataforma.ContactarUno;
+import es.unizar.eina.pandora.Principal;
+import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.MiRunnable;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
@@ -27,7 +26,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class Inicio extends AppCompatActivity {
+public class SobrePandora extends AppCompatActivity {
 
     final String url = "https://pandorapp.herokuapp.com/api/estadisticas";
     private final OkHttpClient httpClient = new OkHttpClient();
@@ -39,7 +38,7 @@ public class Inicio extends AppCompatActivity {
         public void run() {
             if(!isKilled()) {
                 doPost();
-                Log.d("Pido estadisticas", "Inicio");
+                Log.d("Pido estadisticas", "Sobre Pandora");
                 handler.postDelayed(this, 2000);
             }
         }
@@ -51,35 +50,16 @@ public class Inicio extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inicio);
-        nUsuarios = findViewById(R.id.inicio_nUsers);
-        nPass = findViewById(R.id.inicio_nPass);
-
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-        String token = sharedPreferencesHelper.getString("token",null);
-        if(token != null){
-            recargarEstadisticas.killRunnable();
-            startActivity(new Intent(Inicio.this, Principal.class));
-            finishAffinity();
-        }
-
-        // Empezar a hacer petición de estadísticas
+        setContentView(R.layout.activity_sobre_pandora);
+        nUsuarios = findViewById(R.id.sobre_pandora_nUsers);
+        nPass = findViewById(R.id.sobre_pandora_nPass);
         handler.post(recargarEstadisticas);
     }
 
-    public void goLogin(View view){
+    public void contactar(View item){
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("guest",false);
         recargarEstadisticas.killRunnable();
-        startActivity(new Intent(Inicio.this, Login.class));
-    }
-
-    public void goRegistro(View view){
-        recargarEstadisticas.killRunnable();
-        startActivity(new Intent(Inicio.this, RegistroUno.class));
-    }
-
-    public void goContacto(View view){
-        recargarEstadisticas.killRunnable();
-        startActivity(new Intent(Inicio.this, ContactarUno.class));
+        startActivity(new Intent(SobrePandora.this, ContactarUno.class));
     }
 
     private void doPost() {
