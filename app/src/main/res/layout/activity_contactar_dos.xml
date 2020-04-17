@@ -11,6 +11,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="22dp"
         android:text="Contacte con nosotros"
+        android:inputType="textEmailAddress"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/contactar2_texto_que_desea"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,6 +27,7 @@
         android:layout_marginEnd="22dp"
         android:text="Introduzca su email para que podamos atenderle"
         android:textSize="24sp"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/contactar2_entrada_comunicado"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,8 +35,8 @@
 
     <EditText
         android:id="@+id/contactar2_entrada_comunicado"
-        android:layout_width="352dp"
-        android:layout_height="56dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="32dp"
@@ -48,6 +50,7 @@
 
     <Button
         android:id="@+id/button"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="298dp"

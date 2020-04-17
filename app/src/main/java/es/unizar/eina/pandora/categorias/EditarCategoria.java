@@ -40,7 +40,12 @@ public class EditarCategoria extends AppCompatActivity {
         setContentView(R.layout.activity_editar_categoria);
         name = findViewById(R.id.editar_categoria_1_nombre);
         category = SharedPreferencesHelper.getInstance(getApplicationContext()).getJSONObject("Category_info");
-        Log.d("PruebaCategory",category.toString());
+        TextView texto = findViewById(R.id.editar_categoria_1_texto);
+        try {
+            texto.setText(texto.getText() + category.getString("categoryName") + "?");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void confirmar(View view) throws JSONException {

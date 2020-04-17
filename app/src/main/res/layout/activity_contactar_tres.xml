@@ -28,7 +28,7 @@
         android:layout_marginTop="26dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="75dp"
-        android:text="Su contacto ha sido enviado. Nos pondremos en contacto con usted si es preciso"
+        android:text="Su contacto ha sido enviado. Nos pondremos en contacto con usted si es preciso."
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/contactar3_terminar"
@@ -39,6 +39,7 @@
 
     <Button
         android:id="@+id/contactar3_terminar"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="149dp"

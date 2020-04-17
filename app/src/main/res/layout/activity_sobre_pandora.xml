@@ -39,6 +39,7 @@
             android:layout_marginBottom="32dp"
             android:text="Pandora es una plataforma sin ánimo de lucro\nque vela por la seguridad de tus contraseñas,\nmanteniéndolas en secreto gracias a:\nAES-256, criptografía de clave pública, sal...\nEntre muchas otras características\n\nEl equipo que está detrás de Pandora está\nformado por ocho estudiantes del grado en\nIngeniería Informática de la Universidad de Zaragoza"
             android:textAlignment="center"
+            android:textColor="@color/colorTextos"
             android:textStyle="italic"
             app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_text_nUsers"
             app:layout_constraintEnd_toEndOf="parent"
@@ -109,10 +110,11 @@
 
         <Button
             android:id="@+id/sobre_pandora_contacto"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="95dp"
-            android:layout_marginEnd="95dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="16dp"
             android:onClick="contactar"
             android:text="@string/inicio_contacto"

@@ -13,6 +13,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BlendMode;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -231,12 +233,8 @@ public class Principal extends AppCompatActivity {
 
     public void eliminarCuenta(MenuItem menuItem){
         // Confirmar que queremos eliminar la cuenta
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
         builder.setTitle("¿Está seguro de que quiere borrar su cuenta?");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
-
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -253,12 +251,8 @@ public class Principal extends AppCompatActivity {
 
     protected void borrarPassword(final Integer id, String name, final int position){
         // Confirmar que queremos eliminar la contraseña
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
         builder.setTitle("¿Eliminar contraseña: " + name +"?");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        builder.setView(input);
-
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -281,7 +275,8 @@ public class Principal extends AppCompatActivity {
             pulsado = true;
             catButton.setVisibility(View.VISIBLE);
             conButton.setVisibility(View.VISIBLE);
-        }else{
+        }
+        else{
             pulsado = false;
             catButton.setVisibility(View.INVISIBLE);
             conButton.setVisibility(View.INVISIBLE);
