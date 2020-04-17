@@ -16,11 +16,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -31,6 +34,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.categorias.CrearCategoria;
@@ -53,6 +58,8 @@ public class Principal extends AppCompatActivity {
     private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
     private final String urlEliminarCuenta = "https://pandorapp.herokuapp.com/api/usuarios/eliminar";
     private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
+    private final String urlListarCategorias = "https://pandorapp.herokuapp.com/api/categorias/listar";
+    private final String urlListarPasswordsOfACategory = "https://pandorapp.herokuapp.com/api/contrasenya/listarPorCategoria";
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
@@ -61,6 +68,7 @@ public class Principal extends AppCompatActivity {
     private String password;
     private ArrayList<JSONObject> lista_respuesta = new ArrayList<>();
     JSONArray lista = new JSONArray();
+    JSONArray listaCategories = new JSONArray();
     JSONObject deleted_password;
 
     PrincipalAdapter listaAdapter;
@@ -79,6 +87,8 @@ public class Principal extends AppCompatActivity {
 
     boolean pulsado = false;
 
+    String categoriaFiltrada;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +101,8 @@ public class Principal extends AppCompatActivity {
         password = sharedPreferencesHelper.getString("password",null);
 
         listaPass = findViewById(R.id.principal_recyclerview_password);
+
+        categoriaFiltrada = "Todas";
 
         catButton = findViewById(R.id.principal_frame_cat);
         conButton = findViewById(R.id.principal_frame_con);
@@ -114,8 +126,11 @@ public class Principal extends AppCompatActivity {
             public void onRefresh() {
                 // Esto se ejecuta cada vez que se realiza el gesto
                 try {
-                    doPostPassword();
+                    lista_respuesta.clear();
+                    doPostPasswordsOfACategory(categoriaFiltrada);
+                    doPostCategory();
                     toArrayList();
+                    listaAdapter.notifyDataSetChanged();
                     swipeLayout.setRefreshing(false);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -123,19 +138,46 @@ public class Principal extends AppCompatActivity {
             }
         });
         try {
-            doPostPassword();
+            doPostPasswordsOfACategory(categoriaFiltrada);
+            doPostCategory();
             toArrayList();
         } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
 
         //Creación del adaptador de contraseñas
-        listaAdapter= new PrincipalAdapter(Principal.this,lista_respuesta);
+        listaAdapter = new PrincipalAdapter(Principal.this,lista_respuesta);
         listaPass.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listaPass.setAdapter(listaAdapter);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelper);
         itemTouchHelper.attachToRecyclerView(listaPass);
+    }
+
+    public void mostrarFiltradoCategorias(View v) throws InterruptedException, JSONException {
+        doPostCategory();
+
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.getMenu().add("Todas");
+        for(int i = 0; i < listaCategories.length(); i++){
+            popup.getMenu().add(listaCategories.getJSONObject(i).getString("categoryName"));
+        }
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                categoriaFiltrada = item.getTitle().toString();
+                try {
+                    lista_respuesta.clear();
+                    doPostPasswordsOfACategory(categoriaFiltrada);
+                    doPostCategory();
+                    toArrayList();
+                    listaAdapter.notifyDataSetChanged();
+                } catch (InterruptedException | JSONException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        });
+        popup.show();
     }
 
     //Necesario para el borrado de contraseñas deslizando hacia el lateral
@@ -163,14 +205,9 @@ public class Principal extends AppCompatActivity {
 
     //Pasar JSONArray a un ArrayList<JSONObject>
     protected void toArrayList() throws JSONException {
-        ArrayList<JSONObject> listaAux = new ArrayList<>();
-        JSONObject aux;
-        for (int i=0;i<lista.length();i++){
-            aux = lista.getJSONObject(i);
-            listaAux.add(aux);
-            Log.d("Bucle", "Bucle");
+        for (int i = 0; i < lista.length(); i++){
+            lista_respuesta.add(lista.getJSONObject(i));
         }
-        lista_respuesta = listaAux;
     }
 
     public void administrarCategorias(MenuItem menuItem){
@@ -253,10 +290,12 @@ public class Principal extends AppCompatActivity {
 
     public void addCategory(View view){
         startActivity(new Intent(Principal.this, CrearCategoria.class));
+        finishAffinity();
     }
 
     public void addPassword(View view){
         startActivity(new Intent(Principal.this, CrearPasswordUno.class));
+        finishAffinity();
     }
 
     public void doPostPassword() throws InterruptedException {
@@ -303,6 +342,74 @@ public class Principal extends AppCompatActivity {
         });
         thread.start();
         thread.join();
+    }
+
+    private void doPostPasswordsOfACategory(String category) throws InterruptedException, JSONException {
+        Log.d("Category",category);
+        int idCat;
+
+        if(category.equals("Todas")){
+            doPostPassword();
+            return;
+        }
+        else{
+            idCat = getCategoryId(category);
+        }
+
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.accumulate("masterPassword",password);
+            json.accumulate("idCat",idCat);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // Formamos el cuerpo de la petición con el JSON creado
+        RequestBody formBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                json.toString()
+        );
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlListarPasswordsOfACategory)
+                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Authorization", token)
+                .post(formBody)
+                .build();
+        // Hacemos la petición SÍNCRONA
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
+                        lista = json.getJSONArray("passwords");
+                    }
+                    else{
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                    }
+                }
+                catch (IOException | JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        thread.join();
+    }
+
+    private int getCategoryId(String category) throws JSONException {
+        for(int i = 0; i < listaCategories.length(); i++){
+            if(listaCategories.getJSONObject(i).getString("categoryName").equals(category)){
+                return listaCategories.getJSONObject(i).getInt("catId");
+            }
+        }
+        return -1;
     }
 
     public void doPostEliminarCuenta() {
@@ -357,5 +464,35 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
+    }
+
+    public void doPostCategory() throws InterruptedException {
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlListarCategorias)
+                .addHeader("Authorization", token)
+                .build();
+
+        // Enviamos la petición SÍNCRONA
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    if (!response.isSuccessful()) {
+                        Log.d("ERROR ", response.body().string());
+                    } else {
+                        final JSONObject json = new JSONObject(response.body().string());
+                        listaCategories = json.getJSONArray("categories");
+                    }
+                }
+                catch (IOException | JSONException e){
+                    Log.d("EXCEPCION ", e.getMessage());
+                }
+            }
+        });
+        thread.start();
+        thread.join();
     }
 }

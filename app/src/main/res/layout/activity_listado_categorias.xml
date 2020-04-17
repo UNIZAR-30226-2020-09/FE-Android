@@ -23,4 +23,5 @@
         app:headerLayout="@layout/principal_drawer_header"
         app:menu="@menu/categories_drawer_menu" />
 
+
 </androidx.drawerlayout.widget.DrawerLayout>

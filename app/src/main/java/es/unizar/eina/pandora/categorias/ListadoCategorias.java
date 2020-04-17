@@ -316,4 +316,9 @@ public class ListadoCategorias extends AppCompatActivity {
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
     }
+
+    public void addCategory(View view){
+        startActivity(new Intent(ListadoCategorias.this, CrearCategoria.class));
+        finishAffinity();
+    }
 }
