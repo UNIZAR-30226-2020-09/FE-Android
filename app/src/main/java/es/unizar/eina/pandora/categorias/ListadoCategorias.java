@@ -104,17 +104,9 @@ public class ListadoCategorias extends AppCompatActivity {
 
     //Pasar JSONArray a un ArrayList<JSONObject>
     protected void toArrayList() throws JSONException {
-        ArrayList<JSONObject> listaAux = new ArrayList<>();
-        Log.d("ToArrayList","IN");
-        JSONObject aux;
-        for (int i=0;i<lista.length();i++){
-            aux = lista.getJSONObject(i);
-            listaAux.add(aux);
-            Log.d("Bucle", "Bucle");
+        for (int i = 0; i < lista.length(); i++){
+            lista_respuesta.add(lista.getJSONObject(i));
         }
-        lista_respuesta = listaAux;
-        Log.d("ToArrayList",Integer.toString(lista_respuesta.size()));
-        Log.d("ToArrayList","IN");
     }
 
     @Override
@@ -157,8 +149,10 @@ public class ListadoCategorias extends AppCompatActivity {
             public void onRefresh() {
                 // Esto se ejecuta cada vez que se realiza el gesto
                 try {
+                    lista_respuesta.clear();
                     doPostCategory();
                     toArrayList();
+                    listaAdapter.notifyDataSetChanged();
                     swipeLayout.setRefreshing(false);
                 } catch (Exception e) {
                     e.printStackTrace();
