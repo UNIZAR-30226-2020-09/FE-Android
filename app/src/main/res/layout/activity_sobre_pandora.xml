@@ -17,12 +17,11 @@
 
         <ImageView
             android:id="@+id/sobre_pandora_logo"
-            android:layout_width="315dp"
-            android:layout_height="200dp"
+            android:layout_width="249dp"
+            android:layout_height="142dp"
             android:layout_marginStart="39dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="39dp"
-            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_texto1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,15 +30,15 @@
 
         <TextView
             android:id="@+id/sobre_pandora_texto1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="326dp"
+            android:layout_height="159dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="32dp"
             android:text="Pandora es una plataforma sin ánimo de lucro\nque vela por la seguridad de tus contraseñas,\nmanteniéndolas en secreto gracias a:\nAES-256, criptografía de clave pública, sal...\nEntre muchas otras características\n\nEl equipo que está detrás de Pandora está\nformado por ocho estudiantes del grado en\nIngeniería Informática de la Universidad de Zaragoza"
             android:textAlignment="center"
             android:textColor="@color/colorTextos"
+            android:textSize="12sp"
             android:textStyle="italic"
             app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_text_nUsers"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:text="0"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -62,9 +61,9 @@
             android:id="@+id/sobre_pandora_text_nUsers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="45dp"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
             android:text="Usuarios registrados"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/sobre_pandora_text_nPass"
@@ -75,7 +74,7 @@
             android:id="@+id/sobre_pandora_nPass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="70dp"
             android:text="0"
             android:textSize="24sp"
@@ -87,9 +86,9 @@
             android:id="@+id/sobre_pandora_text_nPass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="42dp"
             android:text="Contraseñas guardadas"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,12 +100,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="118dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="118dp"
-            android:layout_marginBottom="9dp"
             android:text="@string/inicio_texto2"
             app:layout_constraintBottom_toTopOf="@+id/sobre_pandora_contacto"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_text_nUsers" />
 
         <Button
             android:id="@+id/sobre_pandora_contacto"
@@ -120,7 +120,8 @@
             android:text="@string/inicio_contacto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sobre_pandora_texto2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

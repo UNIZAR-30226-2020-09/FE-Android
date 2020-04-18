@@ -285,12 +285,10 @@ public class Principal extends AppCompatActivity {
 
     public void addCategory(View view){
         startActivity(new Intent(Principal.this, CrearCategoria.class));
-        finishAffinity();
     }
 
     public void addPassword(View view){
         startActivity(new Intent(Principal.this, CrearPasswordUno.class));
-        finishAffinity();
     }
 
     public void doPostPassword() throws InterruptedException {

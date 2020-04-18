@@ -53,15 +53,11 @@
         style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="298dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="32dp"
         android:onClick="contactar"
         android:text="Confirmar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactar2_entrada_comunicado" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

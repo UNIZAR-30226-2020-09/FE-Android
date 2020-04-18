@@ -34,16 +34,24 @@
 
                 <TextView
                     android:id="@+id/topbar_titulo"
-                    android:layout_width="255dp"
+                    android:layout_width="173dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="            Categorías"
-                    android:textAlignment="textStart"
+                    android:text="Categorías"
+                    android:textAlignment="center"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/topbar_relleno"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp" />
             </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
