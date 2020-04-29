@@ -71,6 +71,7 @@
             android:onClick="pulsarAdd"
             android:tint="@color/design_default_color_on_primary"
             app:backgroundTint="@color/colorPrimary"
+            app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_input_add" />
@@ -92,6 +93,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:onClick="addCategory"
+                app:elevation="0dp"
                 android:src="@drawable/category"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -117,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:onClick="addPassword"
+                app:elevation="0dp"
                 android:src="@drawable/pass"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
