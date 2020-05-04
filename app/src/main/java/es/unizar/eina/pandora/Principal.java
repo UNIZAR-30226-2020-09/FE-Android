@@ -5,40 +5,32 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BlendMode;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.categorias.CrearCategoria;
 import es.unizar.eina.pandora.categorias.ListadoCategorias;
@@ -139,6 +131,11 @@ public class Principal extends AppCompatActivity {
                 }
             }
         });
+
+        // Para hacer notificaciones de contraseñas expiradas
+        String CHANNEL_ID = "Pandora";
+        createNotificationChannel(CHANNEL_ID);
+
         try {
             doPostPasswordsOfACategory(categoriaFiltrada);
             doPostCategory();
@@ -324,6 +321,7 @@ public class Principal extends AppCompatActivity {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
                         lista = json.getJSONArray("passwords");
+                        notificarPasswordsExpiradas(lista);
                     }else{
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
@@ -382,6 +380,7 @@ public class Principal extends AppCompatActivity {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
                         lista = json.getJSONArray("passwords");
+                        notificarPasswordsExpiradas(lista);
                     }
                     else{
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
@@ -450,7 +449,8 @@ public class Principal extends AppCompatActivity {
             public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
                     Log.d("PASSWORD ELIMINADA","OK");
-                }else{
+                }
+                else{
                     Log.d("fallo","mal");
                 }
             }
@@ -487,5 +487,56 @@ public class Principal extends AppCompatActivity {
         });
         thread.start();
         thread.join();
+    }
+
+    private void notificarPasswordsExpiradas(JSONArray passwords){
+        try{
+            for(int i = 0; i < passwords.length(); i++) {
+
+                JSONObject password = passwords.getJSONObject(i);
+                int days = password.getInt("noDaysBeforeExpiration");
+
+                if (days < 0) {
+
+                    String texto_notificacion = "Tu contraseña \"" +  password.getString("passwordName") + "\" ha expirado. Cámbiala para dejar de recibir esta notificación";
+
+                    NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        NotificationChannel channel = new NotificationChannel("Pandora", "Pandora", NotificationManager.IMPORTANCE_DEFAULT);
+                        channel.setDescription("Notificaciones");
+                        mNotificationManager.createNotificationChannel(channel);
+                    }
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
+                            .setSmallIcon(R.drawable.logo) // notification icon
+                            .setContentTitle("Pandora") // title for notification
+                            .setContentText(texto_notificacion)// message for notification
+                            .setAutoCancel(true)    // clear notification after click
+                            .setChannelId("Pandora");
+                    Intent intent = new Intent(getApplicationContext(), Principal.class);
+                    PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    mBuilder.setContentIntent(pi);
+                    mNotificationManager.notify(i, mBuilder.build());
+                }
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createNotificationChannel(String CHANNEL_ID) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Pandora";
+            String description = "Notificaciones";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

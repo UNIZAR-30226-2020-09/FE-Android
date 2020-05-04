@@ -55,6 +55,4 @@ public class InformacionPassword extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
 }
