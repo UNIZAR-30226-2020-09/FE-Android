@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".passwords.GenerarPassword"></activity>
+        <activity android:name=".passwords.CrearPasswordCompartida"></activity>
+        <activity android:name=".passwords.GenerarPassword" />
         <activity android:name=".autenticacion.Login2FA" />
         <activity android:name=".categorias.EditarCategoria" />
         <activity android:name=".categorias.ListadoCategorias" />

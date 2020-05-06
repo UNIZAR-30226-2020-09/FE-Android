@@ -41,10 +41,10 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
 
+
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
         sharedPreferencesHelper.put("email", "javierreraul@gmail.com");
         sharedPreferencesHelper.put("password", "raulito1!A");
-
         startActivity(new Intent(Login.this, Principal.class));
     }
 
@@ -57,11 +57,7 @@ public class Login extends AppCompatActivity {
             sharedPreferencesHelper.put("email", email.getText().toString().trim());
             sharedPreferencesHelper.put("password", password.getText().toString().trim());
 
-            startActivity(new Intent(Login.this, Principal.class));
+            startActivity(new Intent(Login.this, Login2FA.class));
         }
-
-
     }
-
-
 }

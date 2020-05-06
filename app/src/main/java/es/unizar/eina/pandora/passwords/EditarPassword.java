@@ -272,7 +272,7 @@ public class EditarPassword extends AppCompatActivity {
                 try{
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
-                        Log.d("EDITAR","OK");
+                        PrintOnThread.show(getApplicationContext(), "Contraseña editada");
                         startActivity(new Intent(EditarPassword.this, Principal.class));
                         finishAffinity();
                     }

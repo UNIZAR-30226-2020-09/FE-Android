@@ -89,6 +89,7 @@ public class CrearCategoria extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
+                        PrintOnThread.show(getApplicationContext(), "Categoría creada");
                         startActivity(new Intent(CrearCategoria.this, Principal.class));
                         finishAffinity();
                     }

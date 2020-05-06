@@ -96,6 +96,7 @@ public class EditarCategoria extends AppCompatActivity {
                 try {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
+                        PrintOnThread.show(getApplicationContext(), "Categoría editada");
                         startActivity(new Intent(EditarCategoria.this, ListadoCategorias.class));
                         finishAffinity();
                     }

@@ -9,10 +9,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -27,7 +30,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class CrearPasswordSeis extends AppCompatActivity {
-    final String url = "https://pandorapp.herokuapp.com/api/contrasenya/insertar";
+    String url = "https://pandorapp.herokuapp.com/api/contrasenya/insertar";
+    String urlCompartida = "https://pandorapp.herokuapp.com/api/grupo/insertar";
+
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private TextView note;
@@ -55,9 +60,13 @@ public class CrearPasswordSeis extends AppCompatActivity {
             String user_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_user");
             String pass_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_pass");
             int dias_insertados = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_dias");
-            int cartegory_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
-            doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,cartegory_insertada);
+            int category_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
+            doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,category_insertada);
         }
+    }
+
+    public void compartir(View view){
+        startActivity(new Intent(CrearPasswordSeis.this, CrearPasswordCompartida.class));
     }
 
     private void doPost(final String name, final String user, final String pass, final String note,
@@ -75,8 +84,18 @@ public class CrearPasswordSeis extends AppCompatActivity {
             json.accumulate("passwordCategoryId",categoria);
             json.accumulate("optionalText",note);
             json.accumulate("userName",user);
+            json.accumulate("usuarios", getEmails(SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_mails")));
         }
         catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        try {
+            if(json.getJSONArray("usuarios").length() > 0){
+                url = urlCompartida;
+            }
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -94,6 +113,9 @@ public class CrearPasswordSeis extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
+        // Vaciamos los datos recogidos de los correos a compartir para no reutilizarlos otra vez
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_mails", "");
+
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -101,6 +123,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
                 try{
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
+                        PrintOnThread.show(getApplicationContext(), "Contraseña creada");
                         startActivity(new Intent(CrearPasswordSeis.this, Principal.class));
                         finishAffinity();
                     }
@@ -115,6 +138,28 @@ public class CrearPasswordSeis extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
+    }
+
+    private JSONArray getEmails(String emails){
+        if(emails.equals("")){
+            return new JSONArray();
+        }
+        JSONArray respuesta = new JSONArray();
+        String[] partes = emails.replaceAll(" ", "").split(",");
+        for (String email : partes) {
+            if(hasEmailFormat(email)){
+                Log.d("Parte", email);
+                respuesta.put(email);
+            }
+        }
+        return respuesta;
+    }
+
+    private boolean hasEmailFormat(String candidato){
+        String emailRegex = "^(.+)@(.+)$";
+        Pattern pat = Pattern.compile(emailRegex);
+
+        return pat.matcher(candidato).matches();
     }
 
     public void cancel(View view){
