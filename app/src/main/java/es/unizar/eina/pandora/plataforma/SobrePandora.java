@@ -1,21 +1,15 @@
 package es.unizar.eina.pandora.plataforma;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
-import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.MiRunnable;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
@@ -39,7 +33,7 @@ public class SobrePandora extends AppCompatActivity {
             if(!isKilled()) {
                 doPost();
                 Log.d("Pido estadisticas", "Sobre Pandora");
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, 60000);
             }
         }
     };

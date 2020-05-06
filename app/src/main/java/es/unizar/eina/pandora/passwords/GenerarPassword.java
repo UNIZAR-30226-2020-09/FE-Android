@@ -57,17 +57,29 @@ public class GenerarPassword extends AppCompatActivity {
         finishAffinity();
     }
     public void generar(View view){
-        String dias = l.getText().toString();
-        if (!min && !may && !car && !num){
+        String lon = l.getText().toString();
+        int selectores = 0;
+        if(min) { selectores++; }
+        if(may) { selectores++; }
+        if(car) { selectores++; }
+        if(num) { selectores++; }
+
+        if (selectores == 0){
             Toast.makeText(getApplicationContext(),"Debes seleccionar al menos uno de estos: Minúsculas, mayúsculas, números o caracteres", Toast.LENGTH_LONG).show();
-        }else{
-            if(dias.equals("")){
+        }
+        else{
+            if(lon.equals("")){
                 Toast.makeText(getApplicationContext(),"El campo longitud no puede estar vacío", Toast.LENGTH_LONG).show();
-            }else{
-                if(Integer.parseInt(dias) > 40 || Integer.parseInt(dias)==0){
+            }
+            if(selectores > Integer.parseInt(lon)){
+                Toast.makeText(getApplicationContext(),"Debe introducir una longitud mayor", Toast.LENGTH_LONG).show();
+            }
+            else{
+                if(Integer.parseInt(lon) > 40 || Integer.parseInt(lon)==0){
                     Toast.makeText(getApplicationContext(),"El campo longitud no puede ser 0 o mayor que 40", Toast.LENGTH_LONG).show();
-                }else{
-                    doPost(Integer.parseInt(dias));
+                }
+                else{
+                    doPost(Integer.parseInt(lon));
                 }
             }
         }
@@ -154,6 +166,7 @@ public class GenerarPassword extends AppCompatActivity {
                     JSONObject json = new JSONObject(response.body().string());
                     if (response.isSuccessful()) {
                         String pass = json.getString("password");
+                        PrintOnThread.show(getApplicationContext(), "Contraseña generada " + pass);
                         Log.d("Password", pass);
                         SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_pass",pass);
                         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());

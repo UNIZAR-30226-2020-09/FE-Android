@@ -1,26 +1,20 @@
 package es.unizar.eina.pandora;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
 import es.unizar.eina.pandora.autenticacion.Login;
 import es.unizar.eina.pandora.autenticacion.RegistroUno;
 import es.unizar.eina.pandora.plataforma.ContactarUno;
 import es.unizar.eina.pandora.utiles.MiRunnable;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
-import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;

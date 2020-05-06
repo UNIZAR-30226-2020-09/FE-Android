@@ -38,32 +38,26 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /*
-        Por si vuelven a cambiar el token, necesitaremos iniciar sesión para que nos den uno nuevo
-        //String _email = sharedPreferences.getString("email",null);
-        //String _password = sharedPreferences.getString("password",null);
-        // Si ya tenemos estos datos, iniciamos sesión automáticamente
-
-        if (_email != null && _password != null) {
-            doPost(sharedPreferences.getString("email",null),
-                    sharedPreferences.getString("password",null));
-            finish();
-        }
-        */
-
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
+
+        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
+        sharedPreferencesHelper.put("email", "javierreraul@gmail.com");
+        sharedPreferencesHelper.put("password", "raulito1!A");
+
+        startActivity(new Intent(Login.this, Principal.class));
     }
 
     public void entrar(View view) {
         if(email.getText().toString().equals("") || password.getText().toString().equals("")){
             Toast.makeText(getApplicationContext(),"Los campos email y contraseña no pueden estar vacíos", Toast.LENGTH_LONG).show();
-        }else{
+        }
+        else{
             SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
             sharedPreferencesHelper.put("email", email.getText().toString().trim());
             sharedPreferencesHelper.put("password", password.getText().toString().trim());
 
-            startActivity(new Intent(Login.this, Login2FA.class));
+            startActivity(new Intent(Login.this, Principal.class));
         }
 
 

@@ -43,8 +43,8 @@
 
     <TextView
         android:id="@+id/editar_categoria_1_texto"
-        android:layout_width="336dp"
-        android:layout_height="139dp"
+        android:layout_width="329dp"
+        android:layout_height="269dp"
         android:layout_marginStart="22dp"
         android:layout_marginTop="160dp"
         android:layout_marginEnd="22dp"
