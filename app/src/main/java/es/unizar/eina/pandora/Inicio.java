@@ -40,7 +40,7 @@ public class Inicio extends AppCompatActivity {
             if(!isKilled()) {
                 doPost();
                 Log.d("Pido estadisticas", "Inicio");
-                handler.postDelayed(this, 2000);
+                handler.postDelayed(this, 60000);
             }
         }
     };
@@ -55,13 +55,6 @@ public class Inicio extends AppCompatActivity {
         nUsuarios = findViewById(R.id.inicio_nUsers);
         nPass = findViewById(R.id.inicio_nPass);
 
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-        String token = sharedPreferencesHelper.getString("token",null);
-        if(token != null){
-            recargarEstadisticas.killRunnable();
-            startActivity(new Intent(Inicio.this, Principal.class));
-            finishAffinity();
-        }
 
         // Empezar a hacer petición de estadísticas
         handler.post(recargarEstadisticas);

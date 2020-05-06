@@ -168,7 +168,7 @@ public class GenerarPassword extends AppCompatActivity {
                             SharedPreferencesHelper.getInstance(getApplicationContext()).put("generada",pass);
                             startActivity(new Intent(GenerarPassword.this, EditarPassword.class));
                         }
-                        //finishAffinity();
+                        finish();
                     }
                     else {
                         Log.d("bad",json.getString("statusText"));
