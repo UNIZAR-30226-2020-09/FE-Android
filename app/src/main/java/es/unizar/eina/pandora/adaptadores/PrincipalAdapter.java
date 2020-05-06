@@ -22,6 +22,7 @@ import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.passwords.EditarPassword;
 import es.unizar.eina.pandora.passwords.InformacionPassword;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
 public class PrincipalAdapter extends
@@ -110,18 +111,24 @@ public class PrincipalAdapter extends
                             switch (item.getItemId()) {
                                 case R.id.menu_editar:
                                     //handle menu1 click
-                                    Log.d("EDIT MENU","selected");
-                                    setSharedPreferences(JSONitem);
-                                    SharedPreferencesHelper.getInstance(v.getContext()).put("generar",false);
-                                    Intent act = new Intent(v.getContext(),EditarPassword.class);
-                                    v.getContext().startActivity(act);
+                                    try {
+                                        if(JSONitem.getInt("rol") == 1){
+                                            setSharedPreferences(JSONitem);
+                                            SharedPreferencesHelper.getInstance(v.getContext()).put("generar",false);
+                                            Intent act = new Intent(v.getContext(),EditarPassword.class);
+                                            v.getContext().startActivity(act);
+                                        }
+                                        else{
+                                            PrintOnThread.show(context, "No puedes editar esta contraseña porque no eres el dueño");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     return true;
                                 case R.id.menu_info:
-                                    Log.d("INFO MENU","OK");
                                     setSharedPreferences(JSONitem);
                                     Intent act2 = new Intent(v.getContext(), InformacionPassword.class);
                                     v.getContext().startActivity(act2);
-                                    //handle menu2 click
                                     return true;
                                 default:
                                     return false;

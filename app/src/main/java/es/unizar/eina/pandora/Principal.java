@@ -54,6 +54,7 @@ public class Principal extends AppCompatActivity {
     private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
     private final String urlListarCategorias = "https://pandorapp.herokuapp.com/api/categorias/listar";
     private final String urlListarPasswordsOfACategory = "https://pandorapp.herokuapp.com/api/contrasenya/listarPorCategoria";
+    private final String urlListarPasswordsCompartidas = "https://pandorapp.herokuapp.com/api/grupo/listar";
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
@@ -190,12 +191,19 @@ public class Principal extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             deleted_password = lista_respuesta.get(position);
-            lista_respuesta.remove(position);
-            listaAdapter.notifyItemRemoved(position);
             try {
-                String name = deleted_password.getString("passwordName");
-                Integer id_pass = deleted_password.getInt("passId");
-                borrarPassword(id_pass,name,position);
+                if(deleted_password.getInt("rol") == 1) {
+                    lista_respuesta.remove(position);
+                    listaAdapter.notifyItemRemoved(position);
+                    String name = deleted_password.getString("passwordName");
+                    Integer id_pass = deleted_password.getInt("passId");
+                    borrarPassword(id_pass, name, position);
+                }
+                else{
+                    listaAdapter.notifyDataSetChanged();
+                    PrintOnThread.show(getApplicationContext(), "No puedes eliminar esta contraseña porque no eres el dueño");
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -335,12 +343,51 @@ public class Principal extends AppCompatActivity {
         thread.join();
     }
 
+    public void doPostSharedPasswords() throws InterruptedException {
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlListarPasswordsCompartidas)
+                .addHeader("Authorization", token)
+                .get()
+                .build();
+
+        // Hacemos la petición SÍNCRONA
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (response.isSuccessful()) {
+                        lista = json.getJSONArray("passwords");
+                        notificarPasswordsExpiradas(lista);
+                    }
+                    else{
+                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
+                    }
+                }
+                catch (IOException | JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        thread.join();
+    }
+
     private void doPostPasswordsOfACategory(String category) throws InterruptedException, JSONException {
         Log.d("Category",category);
         int idCat;
 
         if(category.equals("Todas")){
             doPostPassword();
+            return;
+        }
+        else if(category.equals("Compartida")){
+            doPostSharedPasswords();
             return;
         }
         else{

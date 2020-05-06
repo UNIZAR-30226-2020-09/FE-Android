@@ -33,8 +33,10 @@ import okhttp3.Response;
 
 public class EditarPassword extends AppCompatActivity {
 
-    final String url = "https://pandorapp.herokuapp.com/api/categorias/listar";
-    final String urlEditar = "https://pandorapp.herokuapp.com/api/contrasenya/modificar";
+    String url = "https://pandorapp.herokuapp.com/api/categorias/listar";
+    String urlEditar = "https://pandorapp.herokuapp.com/api/contrasenya/modificar";
+    String urlEditarCompartida = "https://pandorapp.herokuapp.com/api/grupo/modificar";
+
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private EditText nombre;
@@ -50,7 +52,7 @@ public class EditarPassword extends AppCompatActivity {
     private String _validez;
     private String _nota;
     private String category_name;
-
+    private int rol;
     private String spassword;
 
     //Para el Spinner con las categorias
@@ -98,9 +100,8 @@ public class EditarPassword extends AppCompatActivity {
             _validez = Integer.toString(dias);
             _nota = password.getString("optionalText");
             category_name = password.getString("categoryName");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            rol = password.getInt("rol");
+        } catch (JSONException e) { }
 
         nombre.setText(_nombre);
         usuario.setText(_usuario);
@@ -256,6 +257,10 @@ public class EditarPassword extends AppCompatActivity {
                 MediaType.parse("application/json; charset=utf-8"),
                 json.toString()
         );
+
+        if(rol == 1){
+
+        }
 
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()

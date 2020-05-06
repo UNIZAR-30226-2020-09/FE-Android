@@ -40,12 +40,6 @@ public class Login extends AppCompatActivity {
 
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
-
-
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-        sharedPreferencesHelper.put("email", "javierreraul@gmail.com");
-        sharedPreferencesHelper.put("password", "raulito1!A");
-        startActivity(new Intent(Login.this, Principal.class));
     }
 
     public void entrar(View view) {
