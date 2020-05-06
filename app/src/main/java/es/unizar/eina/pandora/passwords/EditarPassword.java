@@ -86,6 +86,7 @@ public class EditarPassword extends AppCompatActivity {
         JSONObject password = new JSONObject();
         spassword = sharedPreferencesHelper.getString("password",null);
         Log.d("EDITAR OK",spassword);
+
         password = sharedPreferencesHelper.getJSONObject("Password_info");
         Log.d("PruebaPassword",password.toString());
         try {
@@ -103,6 +104,15 @@ public class EditarPassword extends AppCompatActivity {
 
         nombre.setText(_nombre);
         usuario.setText(_usuario);
+        Boolean g = SharedPreferencesHelper.getInstance(getApplicationContext()).getBoolean("generar");
+        Log.d("¿Generar?", String.valueOf(g));
+        if(g){
+            //Después de generar, mostrar la contraseña generada
+            _password = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("generada");
+            Log.d("Password generada", _password);
+            SharedPreferencesHelper.getInstance(getApplicationContext()).put("generar",false);
+        }
+
         (this.password).setText(_password);
         validez.setText(_validez);
         nota.setText(_nota);
@@ -113,6 +123,11 @@ public class EditarPassword extends AppCompatActivity {
             int spinnerPosition = categoriesAdapter.getPosition(category_name);
             categorias.setSelection(spinnerPosition);
         }
+    }
+
+    public void generar(View view){
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("origen","editar");
+        startActivity(new Intent(this,GenerarPassword.class));
     }
 
     public void goConfirmar(View view){

@@ -23,10 +23,20 @@ public class CrearPasswordTres extends AppCompatActivity {
         password = findViewById(R.id.crear_password_3_password);
     }
 
+    public void generar(View view){
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("origen","crear");
+        startActivity(new Intent(this,GenerarPassword.class));
+    }
+
     public void goSiguiente(View view){
-        if(!password.getText().toString().equals("")){
-            SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_pass",password.getText().toString());
-            startActivity(new Intent(this,CrearPasswordCuatro.class));
+        String p=password.getText().toString();
+        if(!p.equals("")){
+            if(p.length()>40){
+                Toast.makeText(getApplicationContext(),"La longitud de la contraseña se usuario no debe ser superior a 40", Toast.LENGTH_LONG).show();
+            }else{
+                SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_pass",password.getText().toString());
+                startActivity(new Intent(this,CrearPasswordCuatro.class));
+            }
         }
         else{
             Toast.makeText(getApplicationContext(),"El campo contraseña no puede estar vacío", Toast.LENGTH_LONG).show();

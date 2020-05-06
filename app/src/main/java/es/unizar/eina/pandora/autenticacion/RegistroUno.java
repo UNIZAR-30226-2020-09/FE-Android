@@ -70,7 +70,7 @@ public class RegistroUno extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            emailCheckLength = (correo.length() <= 100 && correo.length() >= 3);
+            emailCheckLength = (correo.length() <= 100 && correo.length() >= 6);
             emailCheckValue = correo.matches("[a-zA-Z0-9_.]+@[a-zA-Z0-9_.]+");
 
             siguiente.setEnabled(!emptyEmail);

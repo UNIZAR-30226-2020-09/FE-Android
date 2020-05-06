@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,14 +46,18 @@ public class CrearPasswordSeis extends AppCompatActivity {
     }
 
     public void crear(View view){
-        //Recuperamos los datos introducidos
-        String nombre_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_name");
-        String user_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_user");
-        String pass_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_pass");
         String nota_insertada = note.getText().toString().trim();
-        int dias_insertados = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_dias");
-        int cartegory_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
-        doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,cartegory_insertada);
+        if(nota_insertada.length()>100){
+            Toast.makeText(getApplicationContext(),"La longitud de la nota no pude superar 100 caracteres", Toast.LENGTH_LONG).show();
+        }else{
+            //Recuperamos los datos introducidos
+            String nombre_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_name");
+            String user_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_user");
+            String pass_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_pass");
+            int dias_insertados = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_dias");
+            int cartegory_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
+            doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,cartegory_insertada);
+        }
     }
 
     private void doPost(final String name, final String user, final String pass, final String note,

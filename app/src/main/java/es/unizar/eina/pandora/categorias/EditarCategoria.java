@@ -51,7 +51,11 @@ public class EditarCategoria extends AppCompatActivity {
     public void confirmar(View view) throws JSONException {
         String nombre_introducido = name.getText().toString();
         if(!nombre_introducido.equals("")){
-            doPostCategoria(name.getText().toString(), category.getInt("catId"));
+            if(nombre_introducido.length()>30 || nombre_introducido.length()<1){
+                Toast.makeText(getApplicationContext(),"Longitud de cateoria entre 1 y 30", Toast.LENGTH_LONG).show();
+            }else {
+                doPostCategoria(name.getText().toString(), category.getInt("catId"));
+            }
         }else{
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la categoría", Toast.LENGTH_LONG).show();
         }

@@ -24,9 +24,14 @@ public class CrearPasswordUno extends AppCompatActivity {
     }
 
     public void goSiguiente(View view){
-        if(!nombre.getText().toString().equals("")){
-            SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_name",nombre.getText().toString());
-            startActivity(new Intent(this,CrearPasswordDos.class));
+        String n =nombre.getText().toString();
+        if(!n.equals("")){
+            if(n.length()>30 || n.length()<1){
+                Toast.makeText(getApplicationContext(),"La longitud del nombre debe estar entre 1 y 30", Toast.LENGTH_LONG).show();
+            }else{
+                SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_name",nombre.getText().toString());
+                startActivity(new Intent(this,CrearPasswordDos.class));
+            }
         }
         else{
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();

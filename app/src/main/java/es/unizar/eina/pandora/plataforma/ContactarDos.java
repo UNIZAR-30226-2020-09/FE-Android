@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,10 +42,17 @@ public class ContactarDos extends AppCompatActivity {
     }
 
     public void contactar(View view){
-        if(!remitente.getText().toString().equals("")){
-            String remitente_insertado = remitente.getText().toString().trim();
-            String mensaje_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("mensaje");
-            doPost(remitente_insertado, mensaje_insertado);
+        String r = remitente.getText().toString();
+        if(!r.equals("")){
+            if(r.length()<6 || r.length()>100){
+                Toast.makeText(getApplicationContext(),"La longitud del remitente debe estar entre 6 y 100 caracteres", Toast.LENGTH_LONG).show();
+            }else{
+                String remitente_insertado = remitente.getText().toString().trim();
+                String mensaje_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("mensaje");
+                doPost(remitente_insertado, mensaje_insertado);
+            }
+        }else{
+            Toast.makeText(getApplicationContext(),"El remitente no puede estar vacío", Toast.LENGTH_LONG).show();
         }
     }
 

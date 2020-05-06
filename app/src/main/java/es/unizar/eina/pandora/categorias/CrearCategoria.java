@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,13 @@ public class CrearCategoria extends AppCompatActivity {
     public void confirmar(View view){
         String nombre_introducido = name.getText().toString();
         if(!nombre_introducido.equals("")){
-            doPostCategoria(nombre_introducido);
+            if(nombre_introducido.length()>30 ){
+                Toast.makeText(getApplicationContext(),"Longitud de cateoria entre 1 y 30", Toast.LENGTH_LONG).show();
+            }else {
+                Log.d("n",nombre_introducido);
+                doPostCategoria(nombre_introducido);
+            }
+
         }else{
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la categoría", Toast.LENGTH_LONG).show();
         }

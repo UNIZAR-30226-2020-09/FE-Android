@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +28,7 @@ import okhttp3.Response;
 
 public class Login extends AppCompatActivity {
 
-    final String url = "https://pandorapp.herokuapp.com/api/usuarios/login";
-    private final OkHttpClient httpClient = new OkHttpClient();
+
 
     TextView email;
     TextView password;
@@ -56,61 +56,18 @@ public class Login extends AppCompatActivity {
     }
 
     public void entrar(View view) {
-        SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-        sharedPreferencesHelper.put("email", email.getText().toString().trim());
-        sharedPreferencesHelper.put("password", password.getText().toString().trim());
+        if(email.getText().toString().equals("") || password.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(),"Los campos email y contraseña no pueden estar vacíos", Toast.LENGTH_LONG).show();
+        }else{
+            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
+            sharedPreferencesHelper.put("email", email.getText().toString().trim());
+            sharedPreferencesHelper.put("password", password.getText().toString().trim());
 
-        doPost(sharedPreferencesHelper.getString("email"),
-                sharedPreferencesHelper.getString("password"));
-    }
-
-    private void doPost(final String correo, final String contrasena) {
-        Log.d("correo", correo);
-        Log.d("contrasena", contrasena);
-
-        // Formamos un JSON con los parámetros
-        JSONObject json = new JSONObject();
-        try{
-            json.accumulate("mail",correo);
-            json.accumulate("masterPassword",contrasena);
-        }
-        catch (Exception e){
-            e.printStackTrace();
+            startActivity(new Intent(Login.this, Login2FA.class));
         }
 
-        // Formamos el cuerpo de la petición con el JSON creado
-        RequestBody formBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json.toString());
 
-        // Formamos la petición con el cuerpo creado
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
-                .post(formBody)
-                .build();
-
-        // Hacemos la petición
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    JSONObject json = new JSONObject(response.body().string());
-                    if (response.isSuccessful()) {
-                            String token = json.getString("token");
-                            SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
-                            sharedPreferencesHelper.put("token", token);
-                            startActivity(new Intent(Login.this, Principal.class));
-                            finishAffinity();
-                    }
-                    else {
-                        PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(Call call, IOException e) { e.printStackTrace();}
-        });
     }
+
+
 }

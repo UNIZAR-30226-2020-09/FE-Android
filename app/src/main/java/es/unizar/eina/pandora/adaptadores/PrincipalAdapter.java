@@ -112,6 +112,7 @@ public class PrincipalAdapter extends
                                     //handle menu1 click
                                     Log.d("EDIT MENU","selected");
                                     setSharedPreferences(JSONitem);
+                                    SharedPreferencesHelper.getInstance(v.getContext()).put("generar",false);
                                     Intent act = new Intent(v.getContext(),EditarPassword.class);
                                     v.getContext().startActivity(act);
                                     return true;

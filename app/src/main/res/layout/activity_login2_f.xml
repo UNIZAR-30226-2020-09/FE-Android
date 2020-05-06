@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".autenticacion.Login2FA">
+
+    <TextView
+        android:id="@+id/login_2FA_texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="32dp"
+        android:text="Introduzca el código"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/login_2FA_texto2"
+        android:layout_width="303dp"
+        android:layout_height="119dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="99dp"
+        android:text="Abra la aplicación 2FA y escriba el código proporcionado para completar el inicio de sesión"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrada_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto" />
+
+    />
+
+    <TextView
+        android:id="@+id/login_2FA_texto_codigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="50dp"
+        android:text="Código 2FA"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrada_clave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto2" />
+
+    <EditText
+        android:id="@+id/login_2FA_entrada_codigo"
+        android:layout_width="294dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="51dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:hint="Codigo"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/login_entrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto_codigo" />
+
+    <Button
+        android:id="@+id/login_2FA_entrar"
+        style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="entrar"
+        android:text="Entrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

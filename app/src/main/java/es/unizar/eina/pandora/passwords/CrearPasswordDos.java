@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -24,8 +25,13 @@ public class CrearPasswordDos extends AppCompatActivity {
 
     public void goSiguiente(View view){
         //Puede ser vacío
-        SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_user",user.getText().toString());
-        startActivity(new Intent(this,CrearPasswordTres.class));
+        String u =user.getText().toString();
+        if(u.length()>30){
+            Toast.makeText(getApplicationContext(),"La longitud del nombre se usuario no debe ser superior a 30", Toast.LENGTH_LONG).show();
+        }else{
+            SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_user",u);
+            startActivity(new Intent(this,CrearPasswordTres.class));
+        }
     }
 
     public void cancel(View view){
