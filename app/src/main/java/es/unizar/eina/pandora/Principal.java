@@ -52,6 +52,7 @@ public class Principal extends AppCompatActivity {
     private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
     private final String urlEliminarCuenta = "https://pandorapp.herokuapp.com/api/usuarios/eliminar";
     private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
+    private final String urlEliminarPasswordCompartida = "https://pandorapp.herokuapp.com/api/grupo/eliminar";
     private final String urlListarCategorias = "https://pandorapp.herokuapp.com/api/categorias/listar";
     private final String urlListarPasswordsOfACategory = "https://pandorapp.herokuapp.com/api/contrasenya/listarPorCategoria";
     private final String urlListarPasswordsCompartidas = "https://pandorapp.herokuapp.com/api/grupo/listar";
@@ -192,16 +193,19 @@ public class Principal extends AppCompatActivity {
             int position = viewHolder.getAdapterPosition();
             deleted_password = lista_respuesta.get(position);
             try {
-                if(deleted_password.getInt("rol") == 1) {
+                if(deleted_password.getString("categoryName").equals("Compartida")) {
                     lista_respuesta.remove(position);
                     listaAdapter.notifyItemRemoved(position);
                     String name = deleted_password.getString("passwordName");
                     Integer id_pass = deleted_password.getInt("passId");
-                    borrarPassword(id_pass, name, position);
+                    borrarPassword(id_pass, name, position, true);
                 }
                 else{
-                    listaAdapter.notifyDataSetChanged();
-                    PrintOnThread.show(getApplicationContext(), "No puedes eliminar esta contraseña porque no eres el dueño");
+                    lista_respuesta.remove(position);
+                    listaAdapter.notifyItemRemoved(position);
+                    String name = deleted_password.getString("passwordName");
+                    Integer id_pass = deleted_password.getInt("passId");
+                    borrarPassword(id_pass, name, position, false);
                 }
 
             } catch (JSONException e) {
@@ -254,14 +258,19 @@ public class Principal extends AppCompatActivity {
         builder.show();
     }
 
-    protected void borrarPassword(final Integer id, String name, final int position){
+    protected void borrarPassword(final Integer id, String name, final int position, final boolean compartida){
         // Confirmar que queremos eliminar la contraseña
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
         builder.setTitle("¿Eliminar contraseña: " + name +"?");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                doPostEliminarPassword(id);
+                if (compartida){
+                    doPostEliminarPasswordCompartida(id);
+                }
+                else{
+                    doPostEliminarPassword(id);
+                }
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -495,6 +504,37 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
+                    PrintOnThread.show(getApplicationContext(), "Contraseña eliminada");
+                    Log.d("PASSWORD ELIMINADA","OK");
+                }
+                else{
+                    Log.d("fallo","mal");
+                }
+            }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
+        });
+    }
+
+    public void doPostEliminarPasswordCompartida(Integer id_pass) {
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
+        String urlAux = urlEliminarPasswordCompartida+"?id=" + Integer.toString(id_pass);
+        Log.d("URL",urlAux);
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlAux)
+                .addHeader("Authorization", token)
+                .delete()
+                .build();
+
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    PrintOnThread.show(getApplicationContext(), "Contraseña eliminada");
                     Log.d("PASSWORD ELIMINADA","OK");
                 }
                 else{

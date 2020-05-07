@@ -63,10 +63,6 @@ public class Login2FA extends AppCompatActivity {
     }
 
     private void doPost() {
-        Log.d("correo", email);
-        Log.d("contrasena", password);
-        Log.d("codigo", codigo);
-        Log.d("++++++++++++++","ok");
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try {
@@ -93,18 +89,15 @@ public class Login2FA extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     JSONObject json = new JSONObject(response.body().string());
-                    if (response.isSuccessful()) {
-                        Log.d("Ok","OK");
+                    if (response.isSuccessful() && json.getString("token") != null) {
                         String token = json.getString("token");
-                        Log.d("token", token);
                         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
                         sharedPreferencesHelper.put("token", token);
                         startActivity(new Intent(Login2FA.this, Principal.class));
                         finishAffinity();
-                    } else {
-                        Log.d("No Ok",json.getString("statusText"));
+                    }
+                    else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
