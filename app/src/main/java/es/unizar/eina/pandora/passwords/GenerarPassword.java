@@ -58,15 +58,15 @@ public class GenerarPassword extends AppCompatActivity {
     }
     public void generar(View view){
         if (!min && !may && !car && !num){
-            Toast.makeText(getApplicationContext(),"Debes seleccionar al menos uno de estos: Minúsculas, mayúsculas, números o caracteres", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"Debes seleccionar al menos uno de estos: minúsculas, mayúsculas, números o caracteres especiales", Toast.LENGTH_LONG).show();
         }
         else{
             String lon = l.getText().toString();
             if(lon.equals("")){
                 Toast.makeText(getApplicationContext(),"El campo longitud no puede estar vacío", Toast.LENGTH_LONG).show();
             }
-            else if(8 > Integer.parseInt(lon)){
-                Toast.makeText(getApplicationContext(),"Debe introducir una longitud mayor o igual que 8", Toast.LENGTH_LONG).show();
+            else if(4 > Integer.parseInt(lon)){
+                Toast.makeText(getApplicationContext(),"Debe introducir una longitud mayor o igual que 4", Toast.LENGTH_LONG).show();
             }
             else{
                 if(Integer.parseInt(lon) > 40 || Integer.parseInt(lon)==0){
