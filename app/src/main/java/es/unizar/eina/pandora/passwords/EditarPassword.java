@@ -258,17 +258,26 @@ public class EditarPassword extends AppCompatActivity {
                 json.toString()
         );
 
-        if(rol == 1){
+        // Formamos la petición con el cuerpo creado
+        final Request request;
 
+        if(!category_name.equals("Compartida")){
+            request = new Request.Builder()
+                    .url(urlEditar)
+                    .addHeader("Content-Type", formBody.contentType().toString())
+                    .addHeader("Authorization", token)
+                    .post(formBody)
+                    .build();
+        }
+        else{
+            request = new Request.Builder()
+                    .url(urlEditarCompartida)
+                    .addHeader("Content-Type", formBody.contentType().toString())
+                    .addHeader("Authorization", token)
+                    .post(formBody)
+                    .build();
         }
 
-        // Formamos la petición con el cuerpo creado
-        final Request request = new Request.Builder()
-                .url(urlEditar)
-                .addHeader("Content-Type", formBody.contentType().toString())
-                .addHeader("Authorization", token)
-                .post(formBody)
-                .build();
 
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
@@ -283,7 +292,6 @@ public class EditarPassword extends AppCompatActivity {
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
