@@ -240,7 +240,7 @@ public class EditarPassword extends AppCompatActivity {
         JSONObject json = new JSONObject();
         try{
             json.accumulate("masterPassword",spassword);
-            json.accumulate("passId",_id);
+            json.accumulate("id",_id);
             json.accumulate("passwordName",name);
             json.accumulate("password",pass);
             json.accumulate("expirationTime",dias);
