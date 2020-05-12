@@ -235,6 +235,7 @@ public class RegistroDos extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
+                    PrintOnThread.show(getApplicationContext(), "Cuenta creada, debe dirigirse a su correo electrónico para verificarla");
                     startActivity(new Intent(RegistroDos.this, Login.class));
                     finishAffinity();
                 }
