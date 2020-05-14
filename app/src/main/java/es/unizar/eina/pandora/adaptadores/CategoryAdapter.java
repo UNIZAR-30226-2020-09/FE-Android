@@ -100,7 +100,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         public void bind(final JSONObject JSONitem) throws JSONException {
             name.setText(JSONitem.getString("categoryName"));
-            if(!name.getText().toString().equals("Sin categoría")) {
+            if(!name.getText().toString().equals("Sin categoría") && !name.getText().toString().equals("Compartida")  ) {
                 //Desplegar el menú cuando hacemos click
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -126,17 +126,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        if(c.equals("Sin categoría")){
-                                            Toast.makeText(context,"No se puede eliminar la categoría \"Sin categoría\"", Toast.LENGTH_LONG).show();
-                                        }else{
-                                            Integer id_category = null;
-                                            try {
-                                                id_category = JSONitem.getInt("catId");
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-                                            borrarCategory(id_category,c);
+
+                                        Integer id_category = null;
+                                        try {
+                                            id_category = JSONitem.getInt("catId");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
+                                        borrarCategory(id_category,c);
+
                                     default:
                                         return false;
                                 }

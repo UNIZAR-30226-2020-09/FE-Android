@@ -87,6 +87,9 @@ public class ListadoCategorias extends AppCompatActivity {
                 if(name.equals("Sin categoría")){
                     listaAdapter.notifyItemChanged(position);
                     Toast.makeText(getApplicationContext(),"No se puede eliminar la categoría \"Sin categoría\"", Toast.LENGTH_LONG).show();
+                }else if(name.equals("Compartida")){
+                    listaAdapter.notifyItemChanged(position);
+                    Toast.makeText(getApplicationContext(),"No se puede eliminar la categoría \"Compartida\"", Toast.LENGTH_LONG).show();
                 }
                 else{
                     lista_respuesta.remove(position);
