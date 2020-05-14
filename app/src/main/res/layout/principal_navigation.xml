@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/principalnav"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">>
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/principalnav_topbar"
@@ -29,12 +29,12 @@
 
             <TextView
                 android:id="@+id/topbar_titulo"
-                android:layout_width="255dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="Principal"
+                android:text="@string/principal"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
@@ -48,7 +48,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:onClick="mostrarFiltradoCategorias"
-                android:src="@drawable/ic_filter" />
+                android:src="@drawable/ic_filter"
+                android:contentDescription="@string/todo" />
 
         </LinearLayout>
 
@@ -74,7 +75,8 @@
             app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:focusable="true" />
 
         <FrameLayout
             android:id="@+id/principal_frame_cat"
@@ -85,7 +87,8 @@
             android:background="@android:color/transparent"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/principal_add_button">
+            app:layout_constraintEnd_toStartOf="@+id/principal_add_button"
+            tools:ignore="ExtraText">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/principal_add_cat_button"
@@ -97,7 +100,8 @@
                 android:src="@drawable/category"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
+                app:layout_constraintEnd_toStartOf="@+id/principal_add_button"
+                android:focusable="true" />
             />
 
         </FrameLayout>
@@ -123,7 +127,8 @@
                 android:src="@drawable/pass"
                 app:backgroundTint="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/principal_add_button" />
+                app:layout_constraintEnd_toStartOf="@+id/principal_add_button"
+                android:focusable="true" />
             />
         </FrameLayout>
 

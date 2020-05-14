@@ -59,7 +59,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_long_clave"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:importantForAutofill="no" />
 
         <ImageButton
             android:id="@+id/registro2_imagen_ver"
@@ -73,7 +74,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/registro2_clave1"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_view" />
+            app:srcCompat="@android:drawable/ic_menu_view"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/registro2_long_clave2"
@@ -117,7 +119,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_long_clave2"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:importantForAutofill="no" />
 
         <ImageButton
             android:id="@+id/registro2_imagen_ver2"
@@ -133,7 +136,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/registro2_clave2"
             app:layout_constraintTop_toBottomOf="@+id/registro2_imagen_ver"
-            app:srcCompat="@android:drawable/ic_menu_view" />
+            app:srcCompat="@android:drawable/ic_menu_view"
+            android:contentDescription="@string/todo" />
 
         <TextView
             android:id="@+id/registro2_long_clave"

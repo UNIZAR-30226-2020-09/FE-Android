@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Pandora</string>
     <!-- Pantalla de inicio -->
     <string name="inicio_bienvenido">BIENVENIDO A</string>
@@ -24,4 +24,140 @@
     <string name="registro2_texto_clave2">Repita la clave maestra</string>
     <string name="registro2_hint_clave2">Clave maestra</string>
     <string name="registro2_confirmar">Confirmar</string>
+
+    <!-- Crear categoría -->
+    <string name="todo">TODO</string>
+    <string name="crear_categor_a">Crear Categoría</string>
+    <string name="qu_nombre_desea_para_la_nueva_categor_a">¿Qué nombre desea para la nueva categoría?</string>
+    <string name="introduzca_el_nombre">Introduzca el nombre</string>
+    <string name="nombre">Nombre</string>
+    <string name="confirmar">Confirmar</string>
+
+    <!-- Contacto Uno-->
+    <string name="contacte_con_nnosotros">Contacte con\nnosotros</string>
+    <string name="qu_desea_comunicar">¿Qué desea comunicar?</string>
+    <string name="escriba_aqu_su_mensaje">Escriba aquí su mensaje</string>
+    <string name="siguiente">Siguiente</string>
+
+    <!-- Contacto Dos-->
+    <string name="introduzca_su_email_para_que_podamos_atenderle">Introduzca su email para que podamos atenderle</string>
+    <string name="example_example_example">example@example.example</string>
+    <string name="contacte_con_nosotros">Contacte con nosotros</string>
+
+    <!-- Contacto Tres-->
+    <string name="gracias">¡GRACIAS!</string>
+    <string name="su_contacto_ha_sido_enviado_nos_pondremos_en_contacto_con_usted_si_es_preciso">Su contacto ha sido enviado. Nos pondremos en contacto con usted si es preciso.</string>
+    <string name="terminar">Terminar</string>
+
+
+
+    <!-- Crear contraseña Compartida-->
+    <string name="con_qu_usuarios_quiere_compartir_la_contrase_a">¿Con qué usuarios quiere compartir la contraseña?</string>
+    <string name="introduzca_los_correos_electr_nicos_separados_por_comas">Introduzca los correos electrónicos separados por comas</string>
+    <string name="email_example_es_email2_ex_es" tools:ignore="TypographyEllipsis">email@example.es, email2@ex.es, ...</string>
+
+
+
+    <!-- Crear contraseña Dos-->
+    <string name="qu_nombre_de_usuario_desea_asignarle_a_la_contrase_a">¿Qué nombre de usuario desea asignarle a la contraseña?</string>
+    <string name="introduzca_el_usuario_puede_ser_vac_o">Introduzca el usuario (puede ser vacío)</string>
+    <string name="usuario">Usuario</string>
+
+
+    <!-- Crear contraseña Tres-->
+    <string name="cu_l_es_la_contrase_a">¿Cuál es la contraseña?</string>
+    <string name="introduzca_la_contrase_a">Introduzca la contraseña</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="si_prefiere_generar_la_contrase_a_pulse_el_siguiente_bot_n">Si prefiere generar la contraseña pulse el siguiente botón</string>
+    <string name="generar_contrase_a">Generar contraseña</string>
+    <string name="qu_nombre_desea_para_la_nueva_contrase_a">¿Qué nombre desea para la nueva contraseña?</string>
+
+    <!-- Crear contraseña Cuatro-->
+    <string name="qu_periodo_de_validez_expresado_en_d_as_desea_para_su_contrase_a">¿Qué periodo de validez expresado en días desea para su contraseña ?</string>
+    <string name="introduzca_un_n_mero_entre_el_1_y_el_365">Introduzca un número entre el 1 y el 365</string>
+    <string name="por_ejemplo_90">Por ejemplo: 90</string>
+
+    <!-- Crear contraseña Cinco-->
+    <string name="crear_contrase_a">Crear Contraseña</string>
+    <string name="a_qu_categor_a_desea_que_pertenezca_su_contrase_a">¿A qué categoría desea que pertenezca su contraseña?</string>
+    <string name="seleccione_una_categor_a">Seleccione una categoría</string>
+
+    <!-- Crear contraseña Seis-->
+    <string name="desea_a_adir_alguna_informaci_n_adicional">¿Desea añadir alguna información adicional?</string>
+    <string name="escriba_lo_que_desee_puede_dejarlo_vac_o">Escriba lo que desee (puede dejarlo vacío)</string>
+    <string name="desea_compartir_su_contrase_a_con_otros_usuarios">¿Desea compartir su contraseña con otros usuarios?</string>
+    <string name="compartir_contrase_a">Compartir contraseña</string>
+    <string name="informaci_n_adicional">Información adicional</string>
+
+    <!-- Editar categoría -->
+    <string name="editar_categor_a">Editar Categoría</string>
+    <string name="qu_nombre_desea_asignarle_a_la_categor_a">¿Qué nombre desea asignarle a la categoría </string>
+
+    <!-- Editar contraseña -->
+    <string name="editar_contrase_a">Editar Contraseña</string>
+    <string name="d_as">Días</string>
+    <string name="periodo_de_validez">Periodo de validez</string>
+    <string name="nombre_de_usuario">Nombre de usuario</string>
+    <string name="nota">Nota</string>
+
+    <!-- Generar contraseña -->
+    <string name="generar_contrase_ae">Generar Contraseña</string>
+    <string name="escoja_las_propiedades_que_desea_para_su_contrase_a">Escoja las propiedades que desea para su contraseña</string>
+    <string name="min_sculas">Minúsculas</string>
+    <string name="por_ejemplo_15">Por ejemplo: 15</string>
+    <string name="longitud">Longitud</string>
+    <string name="caracteres_especiales">Caracteres especiales</string>
+    <string name="may_sculas">Mayúsculas</string>
+    <string name="generar">Generar</string>
+
+    <!-- Informacion contraseña -->
+    <string name="n_meros">Números</string>
+    <string name="twitter">Twitter</string>
+    <string name="mostrar_contrase_a">Mostrar contraseña</string>
+    <string name="categor_a">Categoría</string>
+    <string name="asfasfsfasdfasfasffasfsafasfasfasfsalf_kasflaskflaskflas_kfasl_fkasl_fksal_fkasl_fasdf">asfasfsfasdfasfasffasfsafasfasfasfsalfñkasflaskflaskflasñkfaslñfkaslñfksalñfkaslñfasdf</string>
+
+    <!-- Inicio -->
+    <string name="usuarios_registrados">Usuarios registrados</string>
+    <string name="_0">0</string>
+    <string name="contrase_as_guardadas">Contraseñas guardadas</string>
+
+    <!-- Login -->
+    <string name="iniciar_sesi_n">Iniciar sesión</string>
+    <string name="email">Email</string>
+    <string name="clave_maestra">Clave maestra</string>
+    <string name="introduzca_su_clave_maestra">Introduzca su clave maestra</string>
+
+   <!-- Login 2fa -->
+    <string name="c_digo_2fa">Código 2FA</string>
+    <string name="abra_la_aplicaci_n_2fa_y_escriba_el_c_digo_proporcionado_para_completar_el_inicio_de_sesi_n">Abra la aplicación 2FA y escriba el código proporcionado para completar el inicio de sesión</string>
+    <string name="introduzca_el_c_digo">Introduzca el código</string>
+    <string name="codigo">Codigo</string>
+    <string name="entrar">Entrar</string>
+
+    <!-- Sobre pandora -->
+    <string name="pandora_es_una_plataforma_sin_nimo_de_lucro_nque_vela_por_la_seguridad_de_tus_contrase_as_nmanteni_ndolas_en_secreto_gracias_a_naes_256_criptograf_a_de_clave_p_blica_sal_nentre_muchas_otras_caracter_sticas_n_nel_equipo_que_est_detr_s_de_pandora_est_nformado_por_ocho_estudiantes_del_grado_en_ningenier_a_inform_tica_de_la_universidad_de_zaragoza" tools:ignore="TypographyEllipsis">Pandora es una plataforma sin ánimo de lucro\nque vela por la seguridad de tus contraseñas,\nmanteniéndolas en secreto gracias a:\nAES-256, criptografía de clave pública, sal...\nEntre muchas otras características\n\nEl equipo que está detrás de Pandora está\nformado por ocho estudiantes del grado en\nIngeniería Informática de la Universidad de Zaragoza</string>
+
+    <string name="categor_as">Categorías</string>
+    <string name="categoria">Categoria</string>
+
+    <!-- Principal -->
+    <string name="user">user</string>
+    <string name="principal">Principal</string>
+
+    <!-- Menu categoría-->
+    <string name="administrar_contrase_as">Administrar contraseñas</string>
+    <string name="cerrar_sesi_n">Cerrar sesión</string>
+    <string name="contactar">Contactar</string>
+    <string name="sobre_pandora">Sobre Pandora</string>
+    <string name="eliminar_cuenta">Eliminar cuenta</string>
+
+    <!-- Menu flotante categoria y contraseña-->
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="mostrar_informaci_n">Mostrar información</string>
+    <string name="administrar_categor_as">Administrar categorías</string>
+    <string name="consultar_email_filtrado">Consultar email filtrado</string>
+
+
 </resources>

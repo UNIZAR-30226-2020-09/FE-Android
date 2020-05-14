@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -256,6 +257,13 @@ public class ListadoCategorias extends AppCompatActivity {
     public void contactar(MenuItem menuItem){
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("guest",false);
         startActivity(new Intent(ListadoCategorias.this, ContactarUno.class));
+    }
+
+    public void redireccion(MenuItem menuItem){
+        Toast.makeText(getApplicationContext(),"Va a ser redirigido al servicio externo de haveibeenpwned", Toast.LENGTH_LONG).show();
+        Uri uri = Uri.parse("https://haveibeenpwned.com/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     public void sobrePandora(MenuItem menuItem){

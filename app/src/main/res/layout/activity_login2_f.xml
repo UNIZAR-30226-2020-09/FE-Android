@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".autenticacion.Login2FA">
+    tools:context=".autenticacion.Login2FA"
+    tools:ignore="ExtraText">
 
     <TextView
         android:id="@+id/login_2FA_texto"
@@ -14,7 +15,7 @@
         android:layout_marginTop="118dp"
         android:layout_marginEnd="99dp"
         android:layout_marginBottom="32dp"
-        android:text="Introduzca el código"
+        android:text="@string/introduzca_el_c_digo"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,13 +28,13 @@
         android:layout_marginStart="99dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="99dp"
-        android:text="Abra la aplicación 2FA y escriba el código proporcionado para completar el inicio de sesión"
+        android:text="@string/abra_la_aplicaci_n_2fa_y_escriba_el_c_digo_proporcionado_para_completar_el_inicio_de_sesi_n"
         android:textAlignment="center"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_entrada_usuario"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto" />
+        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto"
+        tools:ignore="UnknownIdInLayout" />
 
     />
 
@@ -43,9 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="50dp"
-        android:text="Código 2FA"
+        android:text="@string/c_digo_2fa"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_entrada_clave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,12 +60,12 @@
         android:layout_marginEnd="66dp"
         android:layout_marginBottom="32dp"
         android:ems="10"
-        android:hint="Codigo"
+        android:hint="@string/codigo"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/login_entrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto_codigo" />
+        app:layout_constraintTop_toBottomOf="@+id/login_2FA_texto_codigo"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/login_2FA_entrar"
@@ -75,7 +75,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="32dp"
         android:onClick="entrar"
-        android:text="Entrar"
+        android:text="@string/entrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

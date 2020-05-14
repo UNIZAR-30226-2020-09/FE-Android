@@ -10,8 +10,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="22dp"
-        android:text="Contacte con nosotros"
-        android:inputType="textEmailAddress"
+        android:text="@string/contacte_con_nosotros"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/contactar2_texto_que_desea"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +24,7 @@
         android:layout_marginStart="22dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="22dp"
-        android:text="Introduzca su email para que podamos atenderle"
+        android:text="@string/introduzca_su_email_para_que_podamos_atenderle"
         android:textSize="24sp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/contactar2_entrada_comunicado"
@@ -40,13 +39,14 @@
         android:layout_marginStart="22dp"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="32dp"
-        android:hint="example@example.example"
+        android:hint="@string/example_example_example"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactar2_texto_que_desea" />
+        app:layout_constraintTop_toBottomOf="@+id/contactar2_texto_que_desea"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/button"
@@ -56,7 +56,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="32dp"
         android:onClick="contactar"
-        android:text="Confirmar"
+        android:text="@string/confirmar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

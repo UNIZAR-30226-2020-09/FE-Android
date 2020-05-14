@@ -28,7 +28,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
                 android:lineSpacingExtra="12sp"
-                android:text="Nombre"
+                android:text="@string/nombre"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorTextos"
                 android:textSize="20sp"
@@ -41,7 +41,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
-                android:text="Categoria"
+                android:text="@string/categoria"
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
@@ -51,11 +51,11 @@
         <TextView
             android:id="@+id/item_password_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="user"
+            android:text="@string/user"
             android:textAlignment="textStart"
             android:textSize="19sp" />
     </LinearLayout>

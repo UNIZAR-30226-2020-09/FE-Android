@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,7 +12,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="32dp"
-        android:text="Contacte con\nnosotros"
+        android:text="@string/contacte_con_nnosotros"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/contactar1_texto_que_desea"
@@ -28,7 +27,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
-        android:text="¿Qué desea comunicar?"
+        android:text="@string/qu_desea_comunicar"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/contactar1_entrada_comunicado"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,13 +41,14 @@
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="32dp"
-        android:hint="Escriba aquí su mensaje"
+        android:hint="@string/escriba_aqu_su_mensaje"
         android:maxLength="200"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contactar1_texto_que_desea" />
+        app:layout_constraintTop_toBottomOf="@+id/contactar1_texto_que_desea"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/button"
@@ -58,7 +58,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="32dp"
         android:onClick="goSiguiente"
-        android:text="Siguiente"
+        android:text="@string/siguiente"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

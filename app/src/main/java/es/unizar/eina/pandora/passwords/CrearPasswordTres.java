@@ -20,7 +20,7 @@ public class CrearPasswordTres extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_password_tres);
-        password = findViewById(R.id.crear_password_3_password);
+        password = findViewById(R.id.crear_password_3_passwor);
     }
 
     public void generar(View view){

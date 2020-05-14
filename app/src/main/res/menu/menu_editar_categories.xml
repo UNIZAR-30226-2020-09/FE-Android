@@ -2,9 +2,12 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_editar"
-        android:title="Editar"></item>
-    <item android:id="@+id/menu_borrar_cat"
-        android:title="Eliminar"></item>
+    <item
+        android:id="@+id/menu_editar"
+        android:title="@string/editar" />
+
+    <item
+        android:id="@+id/menu_borrar_cat"
+        android:title="@string/eliminar" />
 
 </menu>

@@ -42,7 +42,7 @@ public class EditarCategoria extends AppCompatActivity {
         category = SharedPreferencesHelper.getInstance(getApplicationContext()).getJSONObject("Category_info");
         TextView texto = findViewById(R.id.editar_categoria_1_texto);
         try {
-            texto.setText(texto.getText() + category.getString("categoryName") + "?");
+            texto.setText(texto.getText() + " " + category.getString("categoryName") + "?");
         } catch (JSONException e) {
             e.printStackTrace();
         }

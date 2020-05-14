@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+@SuppressWarnings("ALL")
 public class Inicio extends AppCompatActivity {
 
     final String url = "https://pandorapp.herokuapp.com/api/estadisticas";

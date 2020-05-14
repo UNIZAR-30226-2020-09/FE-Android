@@ -6,21 +6,26 @@
     <item
         android:id="@+id/menu_administrar_contrasenyas"
         android:onClick="administrarContrasenyas"
-        android:title="Administrar contraseñas" />
+        android:title="@string/administrar_contrase_as" />
     <item
         android:id="@+id/menu_cerrar_sesion"
         android:onClick="cerrarSesion"
-        android:title="Cerrar sesión" />
+        android:title="@string/cerrar_sesi_n" />
     <item
         android:id="@+id/menu_contactar"
         android:onClick="contactar"
-        android:title="Contactar" />
+        android:title="@string/contactar" />
+
+    <item
+        android:id="@+id/menu_redireccion"
+        android:onClick="redireccion"
+        android:title="@string/consultar_email_filtrado" />
     <item
         android:id="@+id/menu_sobre_pandora"
         android:onClick="sobrePandora"
-        android:title="Sobre Pandora" />
+        android:title="@string/sobre_pandora" />
     <item
         android:id="@+id/menu_eliminar_cuenta"
         android:onClick="eliminarCuenta"
-        android:title="Eliminar cuenta" />
+        android:title="@string/eliminar_cuenta" />
 </menu>
