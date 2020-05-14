@@ -80,10 +80,13 @@ public class CrearPasswordCinco extends AppCompatActivity {
         for (int i=0; i < cat.length();i++){
             aux = cat.getJSONObject(i);
             name = aux.getString("categoryName");
-            id = aux.getInt("catId");
-            Log.d("Category",name + "" + Integer.toString(id));
-            name_category.add(name);
-            id_category.add(id);
+            //Eliminar "Compartida" de la lista para evitar problemas
+            if(!name.equals("Compartida")){
+                id = aux.getInt("catId");
+                Log.d("Category",name + "" + Integer.toString(id));
+                name_category.add(name);
+                id_category.add(id);
+            }
         }
         Log.d("OK",Integer.toString(cat.length()));
     }
