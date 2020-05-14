@@ -101,7 +101,6 @@ public class EditarCategoria extends AppCompatActivity {
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

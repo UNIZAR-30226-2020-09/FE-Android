@@ -146,16 +146,13 @@ public class GenerarPassword extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         String pass = json.getString("password");
                         PrintOnThread.show(getApplicationContext(), "Contraseña generada " + pass);
-                        Log.d("Password", pass);
                         SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_pass",pass);
                         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
                         //Dependiendo de la actividad anterior, vamos a una actividad u otra
                         String origen = sharedPreferencesHelper.getString("origen");
                         if(origen.equals("crear")){
-                            Log.d("Crear","ok");
                             startActivity(new Intent(GenerarPassword.this, CrearPasswordCuatro.class));
                         }else{
-                            Log.d("Editar","ok");
                             SharedPreferencesHelper.getInstance(getApplicationContext()).put("generar",true);
                             SharedPreferencesHelper.getInstance(getApplicationContext()).put("generada",pass);
                             startActivity(new Intent(GenerarPassword.this, EditarPassword.class));
@@ -163,9 +160,7 @@ public class GenerarPassword extends AppCompatActivity {
                         finish();
                     }
                     else {
-                        Log.d("bad",json.getString("statusText"));
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e){
                     e.printStackTrace();

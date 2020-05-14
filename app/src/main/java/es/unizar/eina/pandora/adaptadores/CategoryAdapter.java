@@ -15,14 +15,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.categorias.EditarCategoria;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,11 +36,13 @@ import okhttp3.Response;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private final String urlEliminarCategoria = "https://pandorapp.herokuapp.com/api/categorias/eliminar";
+    private final String urlListarCategorias = "https://pandorapp.herokuapp.com/api/categorias/listar";
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private Context context;
     private ArrayList<JSONObject> categories;
+    private JSONArray lista;
 
 
     //Constructor
@@ -155,6 +160,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 doPostEliminarCategoria(id);
+                try {
+                    doPostCategory();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -183,7 +194,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             @Override
             public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
-                    Log.d("CATEGORIA ELIMINADA","OK");
+                    PrintOnThread.show(context, "Categoría eliminada");
                 }else{
                     Log.d("fallo","mal");
                 }
@@ -191,5 +202,42 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
+    }
+
+    public void doPostCategory() throws InterruptedException {
+        String token = SharedPreferencesHelper.getInstance(context).getString("token");
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlListarCategorias)
+                .addHeader("Authorization", token)
+                .build();
+
+        // Enviamos la petición SÍNCRONA
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    if (response.isSuccessful()) {
+                        final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
+                        lista = json.getJSONArray("categories");
+                        toArrayList();
+                    }
+                }
+                catch (IOException | JSONException e){
+                    Log.d("EXCEPCION ", Objects.requireNonNull(e.getMessage()));
+                }
+            }
+        });
+        thread.start();
+        thread.join();
+    }
+
+    //Pasar JSONArray a un ArrayList<JSONObject>
+    protected void toArrayList() throws JSONException {
+        categories.clear();
+        for (int i = 0; i < lista.length(); i++){
+            categories.add(lista.getJSONObject(i));
+        }
     }
 }

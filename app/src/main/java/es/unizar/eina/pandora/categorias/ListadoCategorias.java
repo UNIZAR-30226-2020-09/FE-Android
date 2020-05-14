@@ -37,6 +37,7 @@ import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.adaptadores.CategoryAdapter;
 import es.unizar.eina.pandora.plataforma.ContactarUno;
 import es.unizar.eina.pandora.plataforma.SobrePandora;
+import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -197,7 +198,12 @@ public class ListadoCategorias extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
-                    Log.d("CATEGORIA ELIMINADA","OK");
+                    PrintOnThread.show(getApplicationContext(), "Categoría eliminada");
+                    try {
+                        doPostCategory();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }else{
                     Log.d("fallo","mal");
                 }
@@ -309,6 +315,7 @@ public class ListadoCategorias extends AppCompatActivity {
     }
 
     public void addCategory(View view){
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("addCategory","category");
         startActivity(new Intent(ListadoCategorias.this, CrearCategoria.class));
     }
 }

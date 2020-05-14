@@ -129,7 +129,6 @@ public class CrearPasswordSeis extends AppCompatActivity {
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
@@ -141,7 +140,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
     }
 
     private JSONArray getEmails(String emails){
-        if(emails.equals("")){
+        if(emails != null && emails.equals("")){
             return new JSONArray();
         }
         JSONArray respuesta = new JSONArray();

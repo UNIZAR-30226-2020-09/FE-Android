@@ -311,6 +311,7 @@ public class Principal extends AppCompatActivity {
     }
 
     public void addCategory(View view){
+        SharedPreferencesHelper.getInstance(getApplicationContext()).put("addCategory","password");
         startActivity(new Intent(Principal.this, CrearCategoria.class));
     }
 

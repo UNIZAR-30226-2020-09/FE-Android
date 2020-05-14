@@ -91,12 +91,17 @@ public class CrearCategoria extends AppCompatActivity {
                     JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         PrintOnThread.show(getApplicationContext(), "Categoría creada");
-                        startActivity(new Intent(CrearCategoria.this, Principal.class));
+                        String activity = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("addCategory");
+                        if(activity.equals("password")){
+                            startActivity(new Intent(CrearCategoria.this, Principal.class));
+                        }
+                        else if(activity.equals("category")){
+                            startActivity(new Intent(CrearCategoria.this, ListadoCategorias.class));
+                        }
                         finishAffinity();
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
-                        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

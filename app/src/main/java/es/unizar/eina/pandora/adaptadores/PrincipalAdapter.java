@@ -15,11 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.passwords.EditarPassword;
@@ -28,20 +30,25 @@ import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class PrincipalAdapter extends
         RecyclerView.Adapter<PrincipalAdapter.ViewHolder> {
 
     private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
+    private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
     private final String urlEliminarPasswordCompartida = "https://pandorapp.herokuapp.com/api/grupo/eliminar";
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private Context context;
-    private ArrayList<JSONObject> password = new ArrayList<>();
+    private ArrayList<JSONObject> password;
+    private JSONArray lista;
+
 
 
     //Constructor
@@ -181,6 +188,12 @@ public class PrincipalAdapter extends
                 else{
                     doPostEliminarPassword(id);
                 }
+                try {
+                    doPostPassword();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
@@ -250,5 +263,61 @@ public class PrincipalAdapter extends
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
+    }
+
+    public void doPostPassword() throws InterruptedException {
+        // Recogemos el token
+        final String token = SharedPreferencesHelper.getInstance(context).getString("token");
+
+        JSONObject json = new JSONObject();
+        try{
+            json.accumulate("masterPassword",password);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        // Formamos el cuerpo de la petición con el JSON creado
+        RequestBody formBody = RequestBody.create(
+                MediaType.parse("application/json; charset=utf-8"),
+                json.toString()
+        );
+        // Formamos la petición con el cuerpo creado
+        final Request request;
+        request = new Request.Builder()
+                .url(urlListarPassword)
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
+                .addHeader("Authorization", token)
+                .post(formBody)
+                .build();
+        // Hacemos la petición SÍNCRONA
+        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try (Response response = httpClient.newCall(request).execute()) {
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    if (response.isSuccessful()) {
+                        lista = json.getJSONArray("passwords");
+                        toArrayList();
+                    }else{
+                        PrintOnThread.show(context, json.getString("statusText"));
+                    }
+                }
+                catch (IOException | JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        thread.join();
+    }
+
+    //Pasar JSONArray a un ArrayList<JSONObject>
+    protected void toArrayList() throws JSONException {
+        password.clear();
+        for (int i = 0; i < lista.length(); i++){
+            password.add(lista.getJSONObject(i));
+        }
     }
 }
