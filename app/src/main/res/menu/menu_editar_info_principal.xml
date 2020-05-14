@@ -6,5 +6,7 @@
         android:title="Editar"></item>
     <item android:id="@+id/menu_info"
         android:title="Mostrar información"></item>
+    <item android:id="@+id/menu_delete"
+        android:title="Eliminar"></item>
 
 </menu>

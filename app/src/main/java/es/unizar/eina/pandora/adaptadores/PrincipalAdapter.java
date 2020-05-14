@@ -1,6 +1,7 @@
 package es.unizar.eina.pandora.adaptadores;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +12,13 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import es.unizar.eina.pandora.Principal;
@@ -24,10 +27,19 @@ import es.unizar.eina.pandora.passwords.EditarPassword;
 import es.unizar.eina.pandora.passwords.InformacionPassword;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class PrincipalAdapter extends
         RecyclerView.Adapter<PrincipalAdapter.ViewHolder> {
 
+    private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
+    private final String urlEliminarPasswordCompartida = "https://pandorapp.herokuapp.com/api/grupo/eliminar";
+
+    private final OkHttpClient httpClient = new OkHttpClient();
 
     private Context context;
     private ArrayList<JSONObject> password = new ArrayList<>();
@@ -130,6 +142,21 @@ public class PrincipalAdapter extends
                                     Intent act2 = new Intent(v.getContext(), InformacionPassword.class);
                                     v.getContext().startActivity(act2);
                                     return true;
+                                case R.id.menu_delete:
+                                    try {
+                                        if(JSONitem.getString("categoryName").equals("Compartida")){
+                                            String name = JSONitem.getString("passwordName");
+                                            Integer id_pass = JSONitem.getInt("passId");
+                                            borrarPassword(id_pass, name,true);
+                                        }else{
+                                            String name = JSONitem.getString("passwordName");
+                                            Integer id_pass = JSONitem.getInt("passId");
+                                            borrarPassword(id_pass, name, false);
+                                        }
+                                        notifyDataSetChanged();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 default:
                                     return false;
                             }
@@ -140,5 +167,89 @@ public class PrincipalAdapter extends
                 }
             });
         }
+    }
+
+    protected void borrarPassword(final Integer id, String name, final boolean compartida){
+        // Confirmar que queremos eliminar la contraseña
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+        builder.setTitle("¿Eliminar contraseña: " + name +"?");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (compartida){
+                    doPostEliminarPasswordCompartida(id);
+                }
+                else{
+                    doPostEliminarPassword(id);
+                }
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Volvemos a colocar la pass word en su contraseña
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    public void doPostEliminarPassword(Integer id_pass) {
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(context).getString("token");
+        String urlAux = urlEliminarPassword+"?id=" + Integer.toString(id_pass);
+        Log.d("URL",urlAux);
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlAux)
+                .addHeader("Authorization", token)
+                .delete()
+                .build();
+
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    PrintOnThread.show(context, "Contraseña eliminada");
+                    Log.d("PASSWORD ELIMINADA","OK");
+                }
+                else{
+                    Log.d("fallo","mal");
+                }
+            }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
+        });
+    }
+
+    public void doPostEliminarPasswordCompartida(Integer id_pass) {
+        // Recogemos el token
+        String token = SharedPreferencesHelper.getInstance(context).getString("token");
+        String urlAux = urlEliminarPasswordCompartida+"?id=" + Integer.toString(id_pass);
+        Log.d("URL",urlAux);
+
+        // Formamos la petición con el cuerpo creado
+        final Request request = new Request.Builder()
+                .url(urlAux)
+                .addHeader("Authorization", token)
+                .delete()
+                .build();
+
+        // Hacemos la petición
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    PrintOnThread.show(context, "Contraseña eliminada");
+                    Log.d("PASSWORD ELIMINADA","OK");
+                }
+                else{
+                    Log.d("fallo","mal");
+                }
+            }
+            @Override
+            public void onFailure(Call call, IOException e) { e.printStackTrace();}
+        });
     }
 }

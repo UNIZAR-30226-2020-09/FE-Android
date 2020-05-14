@@ -153,6 +153,7 @@ public class Principal extends AppCompatActivity {
         listaAdapter = new PrincipalAdapter(Principal.this,lista_respuesta);
         listaPass.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         listaPass.setAdapter(listaAdapter);
+        listaAdapter.notifyDataSetChanged();
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelper);
         itemTouchHelper.attachToRecyclerView(listaPass);
