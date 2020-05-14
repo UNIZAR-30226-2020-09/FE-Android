@@ -118,7 +118,7 @@ public class EditarPassword extends AppCompatActivity {
         validez.setText(_validez);
         nota.setText(_nota);
 
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, name_category);
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
         categorias.setAdapter(categoriesAdapter);
         if (category_name!= null) {
             int spinnerPosition = categoriesAdapter.getPosition(category_name);

@@ -49,7 +49,8 @@ public class CrearPasswordCinco extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, name_category);
+
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
         categorias.setAdapter(categoriesAdapter);
     }
 
