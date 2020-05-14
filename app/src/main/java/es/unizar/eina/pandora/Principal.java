@@ -17,6 +17,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -234,6 +237,13 @@ public class Principal extends AppCompatActivity {
     public void contactar(MenuItem menuItem){
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("guest",false);
         startActivity(new Intent(Principal.this, ContactarUno.class));
+    }
+
+    public void redireccion(MenuItem menuItem){
+        Toast.makeText(getApplicationContext(),"Va a ser redirigido al servicio externo de haveibeenpwned", Toast.LENGTH_LONG).show();
+        Uri uri = Uri.parse("https://haveibeenpwned.com/");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     public void sobrePandora(MenuItem menuItem){

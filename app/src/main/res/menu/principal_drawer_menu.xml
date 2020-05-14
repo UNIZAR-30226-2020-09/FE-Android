@@ -16,6 +16,10 @@
         android:onClick="contactar"
         android:title="Contactar" />
     <item
+        android:id="@+id/menu_redireccion"
+        android:onClick="redireccion"
+        android:title="Consultar email filtrado" />
+    <item
         android:id="@+id/menu_sobre_pandora"
         android:onClick="sobrePandora"
         android:title="Sobre Pandora" />
