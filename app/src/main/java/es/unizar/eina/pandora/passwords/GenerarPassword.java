@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -86,32 +87,16 @@ public class GenerarPassword extends AppCompatActivity {
         // Check which checkbox was clicked
         switch(view.getId()) {
             case R.id.generar_check_min:
-                if (checked){
-                    min = true;
-                }else{
-                    min = false;
-                }
+                min = checked;
                 break;
             case R.id.generar_check_may:
-                if (checked){
-                    may = true;
-                }else{
-                    may = false;
-                }
+                may = checked;
                 break;
             case R.id.generar_check_num:
-                if (checked){
-                    num = true;
-                }else{
-                    num = false;
-                }
+                num = checked;
                 break;
             case R.id.generar_check_car:
-                if (checked){
-                    car = true;
-                }else{
-                    car = false;
-                }
+                car = checked;
                 break;
         }
     }
@@ -147,7 +132,7 @@ public class GenerarPassword extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
@@ -157,7 +142,7 @@ public class GenerarPassword extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try{
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         String pass = json.getString("password");
                         PrintOnThread.show(getApplicationContext(), "Contraseña generada " + pass);

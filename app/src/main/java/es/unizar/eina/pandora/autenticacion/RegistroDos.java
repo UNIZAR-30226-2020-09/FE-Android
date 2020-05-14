@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
@@ -100,7 +101,7 @@ public class RegistroDos extends AppCompatActivity {
             _password = password.getText().toString().trim();
             _confirmpassword = confirmPassword.getText().toString().trim();
 
-            Integer passchars = 40 - _password.length();
+            int passchars = 40 - _password.length();
             if (passchars < 0) {
                 limitPass.setTextColor(Color.rgb(200,0,0));
             }
@@ -108,7 +109,7 @@ public class RegistroDos extends AppCompatActivity {
                 limitPass.setTextColor(Color.rgb(128,128,128));
             }
 
-            newLimitpassword = passchars.toString();
+            newLimitpassword = Integer.toString(passchars);
 
             Integer pass2chars = 40 - _confirmpassword.length();
             if (passchars < 0) {
@@ -226,7 +227,7 @@ public class RegistroDos extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final okhttp3.Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .post(formBody)
                 .build();
 
@@ -241,7 +242,7 @@ public class RegistroDos extends AppCompatActivity {
                 }
                 else {
                     try {
-                        JSONObject json = new JSONObject(response.body().string());
+                        JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                     catch (JSONException e) {

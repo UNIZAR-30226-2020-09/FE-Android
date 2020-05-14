@@ -13,14 +13,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,22 +29,19 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Inicio;
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.adaptadores.CategoryAdapter;
-import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.plataforma.ContactarUno;
 import es.unizar.eina.pandora.plataforma.SobrePandora;
-import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class ListadoCategorias extends AppCompatActivity {
@@ -188,7 +182,7 @@ public class ListadoCategorias extends AppCompatActivity {
     public void doPostEliminarCategoria(Integer id_category) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
-        String urlAux = urlEliminarCategoria+"?id=" + Integer.toString(id_category);
+        String urlAux = urlEliminarCategoria+"?id=" + id_category;
         Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado
@@ -228,15 +222,15 @@ public class ListadoCategorias extends AppCompatActivity {
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
+                        Log.d("ERROR ", Objects.requireNonNull(response.body()).string());
                     } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+                        final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                         lista = json.getJSONArray("categories");
                         Log.d("Categorias", lista.toString());
                     }
                 }
                 catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    Log.d("EXCEPCION ", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
@@ -302,7 +296,7 @@ public class ListadoCategorias extends AppCompatActivity {
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
                     SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     startActivity(new Intent(ListadoCategorias.this, Inicio.class));

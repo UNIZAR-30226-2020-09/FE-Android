@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import es.unizar.eina.pandora.Principal;
@@ -28,7 +27,7 @@ public class CrearPasswordCuatro extends AppCompatActivity {
     public void goSiguiente(View view){
         String aux = dias.getText().toString();
         if(!dias.getText().toString().equals("")) {
-            int aux2 = Integer.valueOf(aux);
+            int aux2 = Integer.parseInt(aux);
             if(aux2 >= 1 && aux2 <= 365){
                 SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_dias",aux2);
                 startActivity(new Intent(this, CrearPasswordCinco.class));

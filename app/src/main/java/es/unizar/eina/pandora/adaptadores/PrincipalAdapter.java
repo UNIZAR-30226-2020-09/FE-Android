@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.passwords.EditarPassword;
 import es.unizar.eina.pandora.passwords.InformacionPassword;
@@ -91,7 +90,7 @@ public class PrincipalAdapter extends
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
@@ -105,7 +104,7 @@ public class PrincipalAdapter extends
             return name.getText().toString();
         }
 
-        public void bind(final JSONObject JSONitem) throws JSONException {
+        void bind(final JSONObject JSONitem) throws JSONException {
             name.setText(JSONitem.getString("passwordName"));
             category.setText(JSONitem.getString("categoryName"));
             user.setText(JSONitem.getString("userName"));
@@ -169,7 +168,7 @@ public class PrincipalAdapter extends
         }
     }
 
-    protected void borrarPassword(final Integer id, String name, final boolean compartida){
+    private void borrarPassword(final Integer id, String name, final boolean compartida){
         // Confirmar que queremos eliminar la contraseña
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         builder.setTitle("¿Eliminar contraseña: " + name +"?");
@@ -196,7 +195,7 @@ public class PrincipalAdapter extends
     public void doPostEliminarPassword(Integer id_pass) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(context).getString("token");
-        String urlAux = urlEliminarPassword+"?id=" + Integer.toString(id_pass);
+        String urlAux = urlEliminarPassword+"?id=" + id_pass;
         Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado

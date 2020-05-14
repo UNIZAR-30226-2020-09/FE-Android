@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -50,7 +51,7 @@ public class CrearPasswordCinco extends AppCompatActivity {
         }
 
 
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
         categorias.setAdapter(categoriesAdapter);
     }
 
@@ -84,7 +85,7 @@ public class CrearPasswordCinco extends AppCompatActivity {
             //Eliminar "Compartida" de la lista para evitar problemas
             if(!name.equals("Compartida")){
                 id = aux.getInt("catId");
-                Log.d("Category",name + "" + Integer.toString(id));
+                Log.d("Category",name + "" + id);
                 name_category.add(name);
                 id_category.add(id);
             }
@@ -107,21 +108,20 @@ public class CrearPasswordCinco extends AppCompatActivity {
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
+                        Log.d("ERROR ", Objects.requireNonNull(response.body()).string());
                     } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+                        final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                         cat = json.getJSONArray("categories");
                     }
                 }
                 catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    Log.d("EXCEPCION ", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
         thread.start();
         thread.join();
     }
-
     public void cancel(View view){
         startActivity(new Intent(this, Principal.class));
         finishAffinity();

@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -77,7 +78,7 @@ public class CrearCategoria extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
@@ -87,7 +88,7 @@ public class CrearCategoria extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         PrintOnThread.show(getApplicationContext(), "Categoría creada");
                         startActivity(new Intent(CrearCategoria.this, Principal.class));

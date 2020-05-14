@@ -2,7 +2,7 @@ package es.unizar.eina.pandora.passwords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -96,12 +97,12 @@ public class EditarPassword extends AppCompatActivity {
             _nombre = password.getString("passwordName");
             _usuario = password.getString("userName");
             _password = password.getString("password");
-            Integer dias = password.getInt("noDaysBeforeExpiration");
+            int dias = password.getInt("noDaysBeforeExpiration");
             _validez = Integer.toString(dias);
             _nota = password.getString("optionalText");
             category_name = password.getString("categoryName");
             rol = password.getInt("rol");
-        } catch (JSONException e) { }
+        } catch (JSONException ignored) { }
 
         nombre.setText(_nombre);
         usuario.setText(_usuario);
@@ -118,7 +119,7 @@ public class EditarPassword extends AppCompatActivity {
         validez.setText(_validez);
         nota.setText(_nota);
 
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, name_category);
         categorias.setAdapter(categoriesAdapter);
         if (category_name!= null) {
             int spinnerPosition = categoriesAdapter.getPosition(category_name);
@@ -137,12 +138,12 @@ public class EditarPassword extends AppCompatActivity {
        _usuario = usuario.getText().toString();
        _password = password.getText().toString();
        _validez = validez.getText().toString();
-       Integer dias = 0;
-       Boolean empty = false;
+       int dias = 0;
+       boolean empty = false;
        if(_validez.equals("")){
            empty=true;
        }else{
-           dias = Integer.valueOf(_validez);
+           dias = Integer.parseInt(_validez);
        }
        _nota = nota.getText().toString();
        if(checkParameters(_nombre,_password,dias,empty)){
@@ -152,7 +153,7 @@ public class EditarPassword extends AppCompatActivity {
 
     //Devuelve true si se cumplen todas las restricciones de los parametros de las contraseñas
     private Boolean checkParameters(String name, String pass, Integer dias,Boolean empty){
-        Boolean isOK = false;
+        boolean isOK = false;
         if(name.equals("")){
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();
         }else if(pass.equals("")){
@@ -189,14 +190,14 @@ public class EditarPassword extends AppCompatActivity {
     protected void getCategoryNameAndId() throws JSONException {
         JSONObject aux;
         String name;
-        Integer id;
+        int id;
         for (int i=0; i < cat.length();i++){
             aux = cat.getJSONObject(i);
             name = aux.getString("categoryName");
             //Eliminar "Compartida" de la lista para evitar problemas
             if(!name.equals("Compartida")) {
                 id = aux.getInt("catId");
-                Log.d("Category", name + "" + Integer.toString(id));
+                Log.d("Category", name + "" + id);
                 name_category.add(name);
                 id_category.add(id);
             }
@@ -219,14 +220,14 @@ public class EditarPassword extends AppCompatActivity {
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
+                        Log.d("ERROR ", Objects.requireNonNull(response.body()).string());
                     } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+                        final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                         cat = json.getJSONArray("categories");
                     }
                 }
                 catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    Log.d("EXCEPCION ", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
@@ -267,7 +268,7 @@ public class EditarPassword extends AppCompatActivity {
         if(!category_name.equals("Compartida")){
             request = new Request.Builder()
                     .url(urlEditar)
-                    .addHeader("Content-Type", formBody.contentType().toString())
+                    .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                     .addHeader("Authorization", token)
                     .post(formBody)
                     .build();
@@ -275,7 +276,7 @@ public class EditarPassword extends AppCompatActivity {
         else{
             request = new Request.Builder()
                     .url(urlEditarCompartida)
-                    .addHeader("Content-Type", formBody.contentType().toString())
+                    .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                     .addHeader("Authorization", token)
                     .post(formBody)
                     .build();
@@ -286,7 +287,7 @@ public class EditarPassword extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try{
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         PrintOnThread.show(getApplicationContext(), "Contraseña editada");
                         startActivity(new Intent(EditarPassword.this, Principal.class));

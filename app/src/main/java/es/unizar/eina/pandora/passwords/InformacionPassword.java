@@ -39,8 +39,8 @@ public class InformacionPassword extends AppCompatActivity {
             String _name = password.getString("passwordName");
             String _user = password.getString("userName");
             String _password = password.getString("password");
-            Integer dias = password.getInt("noDaysBeforeExpiration");
-            String _validez = Integer.toString(dias) + " días";
+            int dias = password.getInt("noDaysBeforeExpiration");
+            String _validez = dias + " días";
             String _nota = password.getString("optionalText");
             String category_name = password.getString("categoryName");
 

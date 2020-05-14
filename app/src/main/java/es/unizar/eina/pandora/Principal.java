@@ -34,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import es.unizar.eina.pandora.adaptadores.PrincipalAdapter;
 import es.unizar.eina.pandora.categorias.CrearCategoria;
 import es.unizar.eina.pandora.categorias.ListadoCategorias;
@@ -334,9 +336,10 @@ public class Principal extends AppCompatActivity {
                 json.toString()
         );
         // Formamos la petición con el cuerpo creado
-        final Request request = new Request.Builder()
+        final Request request;
+        request = new Request.Builder()
                 .url(urlListarPassword)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
@@ -346,7 +349,7 @@ public class Principal extends AppCompatActivity {
             @Override
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         lista = json.getJSONArray("passwords");
                         notificarPasswordsExpiradas(lista);
@@ -380,7 +383,8 @@ public class Principal extends AppCompatActivity {
             @Override
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json;
+                    json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         lista = json.getJSONArray("passwords");
                         notificarPasswordsExpiradas(lista);
@@ -432,9 +436,10 @@ public class Principal extends AppCompatActivity {
                 json.toString()
         );
         // Formamos la petición con el cuerpo creado
-        final Request request = new Request.Builder()
+        final Request request;
+        request = new Request.Builder()
                 .url(urlListarPasswordsOfACategory)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
@@ -444,7 +449,7 @@ public class Principal extends AppCompatActivity {
             @Override
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         lista = json.getJSONArray("passwords");
                         notificarPasswordsExpiradas(lista);
@@ -485,7 +490,7 @@ public class Principal extends AppCompatActivity {
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) {
                 if (response.isSuccessful()) {
                     SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
                     startActivity(new Intent(Principal.this, Inicio.class));
@@ -500,7 +505,7 @@ public class Principal extends AppCompatActivity {
     public void doPostEliminarPassword(Integer id_pass) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
-        String urlAux = urlEliminarPassword+"?id=" + Integer.toString(id_pass);
+        String urlAux = urlEliminarPassword+"?id=" + id_pass;
         Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado
@@ -530,7 +535,7 @@ public class Principal extends AppCompatActivity {
     public void doPostEliminarPasswordCompartida(Integer id_pass) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("token");
-        String urlAux = urlEliminarPasswordCompartida+"?id=" + Integer.toString(id_pass);
+        String urlAux = urlEliminarPasswordCompartida+"?id=" + id_pass;
         Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado
@@ -572,14 +577,14 @@ public class Principal extends AppCompatActivity {
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
-                        Log.d("ERROR ", response.body().string());
+                        Log.d("ERROR ", Objects.requireNonNull(response.body()).string());
                     } else {
-                        final JSONObject json = new JSONObject(response.body().string());
+                        final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                         listaCategories = json.getJSONArray("categories");
                     }
                 }
                 catch (IOException | JSONException e){
-                    Log.d("EXCEPCION ", e.getMessage());
+                    Log.d("EXCEPCION ", Objects.requireNonNull(e.getMessage()));
                 }
             }
         });
@@ -602,7 +607,7 @@ public class Principal extends AppCompatActivity {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("Pandora", "Pandora", NotificationManager.IMPORTANCE_DEFAULT);
                         channel.setDescription("Notificaciones");
-                        mNotificationManager.createNotificationChannel(channel);
+                        Objects.requireNonNull(mNotificationManager).createNotificationChannel(channel);
                     }
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
                             .setSmallIcon(R.drawable.logo) // notification icon
@@ -613,7 +618,7 @@ public class Principal extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Principal.class);
                     PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     mBuilder.setContentIntent(pi);
-                    mNotificationManager.notify(i, mBuilder.build());
+                    Objects.requireNonNull(mNotificationManager).notify(i, mBuilder.build());
                 }
             }
         }
@@ -634,7 +639,7 @@ public class Principal extends AppCompatActivity {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
     }
 }

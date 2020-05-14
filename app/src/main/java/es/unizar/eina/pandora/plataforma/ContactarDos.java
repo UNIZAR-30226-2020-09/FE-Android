@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
@@ -64,7 +65,7 @@ public class ContactarDos extends AppCompatActivity {
             json.accumulate("body",mensaje);
         }
         catch (Exception e){
-            Log.d("EXCEPCION", e.getMessage());
+            Log.d("EXCEPCION", Objects.requireNonNull(e.getMessage()));
         }
 
         // Formamos el cuerpo de la petición con el JSON creado
@@ -76,7 +77,7 @@ public class ContactarDos extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .post(formBody)
                 .build();
 
@@ -85,7 +86,7 @@ public class ContactarDos extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         startActivity(new Intent(ContactarDos.this, ContactarTres.class));
                         finish();

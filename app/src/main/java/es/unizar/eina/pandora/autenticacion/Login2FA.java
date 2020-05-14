@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
@@ -79,7 +79,7 @@ public class Login2FA extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .post(formBody)
                 .build();
 
@@ -88,8 +88,8 @@ public class Login2FA extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    JSONObject json = new JSONObject(response.body().string());
-                    if (response.isSuccessful() && json.getString("token") != null) {
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
+                    if (response.isSuccessful()) {
                         String token = json.getString("token");
                         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
                         sharedPreferencesHelper.put("token", token);

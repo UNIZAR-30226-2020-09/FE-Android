@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import es.unizar.eina.pandora.Principal;
@@ -108,7 +108,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
         // Formamos la petición con el cuerpo creado
         final Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Content-Type", formBody.contentType().toString())
+                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
                 .addHeader("Authorization", token)
                 .post(formBody)
                 .build();
@@ -121,7 +121,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try{
-                    JSONObject json = new JSONObject(response.body().string());
+                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
                         PrintOnThread.show(getApplicationContext(), "Contraseña creada");
                         startActivity(new Intent(CrearPasswordSeis.this, Principal.class));

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -38,7 +37,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private Context context;
-    private ArrayList<JSONObject> categories = new ArrayList<>();
+    private ArrayList<JSONObject> categories;
 
 
     //Constructor
@@ -53,7 +52,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View categoryView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
-        ViewHolder viewHolder = new ViewHolder(categoryView);
+        ViewHolder viewHolder;
+        viewHolder = new ViewHolder(categoryView);
         return viewHolder;
     }
 
@@ -91,14 +91,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.item_category_name);
+            name = itemView.findViewById(R.id.item_category_name);
         }
 
         public String getName(){
             return name.getText().toString();
         }
 
-        public void bind(final JSONObject JSONitem) throws JSONException {
+        void bind(final JSONObject JSONitem) throws JSONException {
             name.setText(JSONitem.getString("categoryName"));
             if(!name.getText().toString().equals("Sin categoría") && !name.getText().toString().equals("Compartida")  ) {
                 //Desplegar el menú cuando hacemos click
@@ -140,7 +140,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 }
                             }
                         });
-                        //displaying the popup
                         popup.show();
                     }
                 });
@@ -148,7 +147,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         }
     }
 
-    protected void borrarCategory(final Integer id, String name){
+    private void borrarCategory(final Integer id, String name){
         // Confirmar que queremos eliminar la categoría
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         builder.setTitle("¿Eliminar categoría: " + name +"?");
@@ -166,10 +165,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         builder.show();
     }
 
-    public void doPostEliminarCategoria(Integer id_category) {
+    private void doPostEliminarCategoria(Integer id_category) {
         // Recogemos el token
         String token = SharedPreferencesHelper.getInstance(context).getString("token");
-        String urlAux = urlEliminarCategoria+"?id=" + Integer.toString(id_category);
+        String urlAux = urlEliminarCategoria+"?id=" + id_category;
         Log.d("URL",urlAux);
 
         // Formamos la petición con el cuerpo creado

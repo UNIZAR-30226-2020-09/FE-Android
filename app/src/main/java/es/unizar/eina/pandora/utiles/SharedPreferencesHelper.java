@@ -1,5 +1,6 @@
 package es.unizar.eina.pandora.utiles;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -123,12 +124,10 @@ public class SharedPreferencesHelper {
     public JSONObject getJSONObject(String key) {
         String strJson = sharedPreferences.getString(key,"0");
         JSONObject response = new JSONObject();
-        if (strJson != null) {
-            try {
-                response = new JSONObject(strJson);
-            } catch (JSONException e) {
-                Log.d("Excepcion","JSONOject");
-            }
+        try {
+            response = new JSONObject(strJson);
+        } catch (JSONException e) {
+            Log.d("Excepcion","JSONOject");
         }
         return response;
     }
@@ -158,6 +157,7 @@ public class SharedPreferencesHelper {
         sharedPreferencesEditor = null;
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void doEdit() {
         if (!isBulkUpdate && sharedPreferencesEditor == null) {
             sharedPreferencesEditor = sharedPreferences.edit();
