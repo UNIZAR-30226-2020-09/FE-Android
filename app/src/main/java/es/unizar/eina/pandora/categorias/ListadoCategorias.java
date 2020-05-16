@@ -318,4 +318,9 @@ public class ListadoCategorias extends AppCompatActivity {
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("addCategory","category");
         startActivity(new Intent(ListadoCategorias.this, CrearCategoria.class));
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ListadoCategorias.this, Principal.class));
+    }
 }

@@ -77,12 +77,13 @@ public class CrearPasswordSeis extends AppCompatActivity {
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
-            json.accumulate("passwordName",name);
-            json.accumulate("password",pass);
-            json.accumulate("expirationTime",dias);
-            json.accumulate("passwordCategoryId",categoria);
-            json.accumulate("optionalText",note);
-            json.accumulate("userName",user);
+            json.accumulate("masterPassword", SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password"));
+            json.accumulate("passwordName", name);
+            json.accumulate("password", pass);
+            json.accumulate("expirationTime", dias);
+            json.accumulate("passwordCategoryId", categoria);
+            json.accumulate("optionalText", note);
+            json.accumulate("userName", user);
             json.accumulate("usuarios", getEmails(SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_mails")));
         }
         catch (Exception e){
