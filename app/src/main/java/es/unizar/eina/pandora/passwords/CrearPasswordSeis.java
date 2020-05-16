@@ -77,7 +77,6 @@ public class CrearPasswordSeis extends AppCompatActivity {
         // Formamos un JSON con los parámetros
         JSONObject json = new JSONObject();
         try{
-            json.accumulate("masterPassword",password);
             json.accumulate("passwordName",name);
             json.accumulate("password",pass);
             json.accumulate("expirationTime",dias);
@@ -89,7 +88,6 @@ public class CrearPasswordSeis extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
-
 
         try {
             if(json.getJSONArray("usuarios").length() > 0){
@@ -113,25 +111,44 @@ public class CrearPasswordSeis extends AppCompatActivity {
                 .post(formBody)
                 .build();
 
-        // Vaciamos los datos recogidos de los correos a compartir para no reutilizarlos otra vez
-        SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_mails", "");
+
 
         // Hacemos la petición
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try{
+                try {
                     JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
                     if (response.isSuccessful()) {
-                        PrintOnThread.show(getApplicationContext(), "Contraseña creada");
+                        if(url.equals(urlCompartida)) {
+                            JSONArray usuarios = json.getJSONArray("usuariosErroneos");
+                            String listaErroneos = "";
+                            for (int i = 0; i < usuarios.length(); i++) {
+                                listaErroneos = "\n" + usuarios.get(i).toString();
+                            }
+                            String _response = "Contraseña grupal creada.";
+                            if(usuarios.length() > 0) {
+                                _response += " La contraseña no pudo ser compartida con:" + listaErroneos;
+                            }
+
+                            PrintOnThread.show(getApplicationContext(), _response);
+                        }
+                        else {
+                            PrintOnThread.show(getApplicationContext(), "Contraseña creada.");
+                        }
+
+                        // Vaciamos los datos recogidos de los correos a compartir para no reutilizarlos otra vez
+                        SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_mails", "");
+
                         startActivity(new Intent(CrearPasswordSeis.this, Principal.class));
                         finishAffinity();
                     }
                     else {
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
-                } catch (JSONException e){
-                    e.printStackTrace();
+                }
+                catch (JSONException ex) {
+                    ex.printStackTrace();
                 }
             }
             @Override

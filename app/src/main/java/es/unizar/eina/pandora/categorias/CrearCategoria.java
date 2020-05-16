@@ -45,7 +45,7 @@ public class CrearCategoria extends AppCompatActivity {
         String nombre_introducido = name.getText().toString();
         if(!nombre_introducido.equals("")){
             if(nombre_introducido.length()>30 ){
-                Toast.makeText(getApplicationContext(),"Longitud de cateoria entre 1 y 30", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Longitud de categoria entre 1 y 30", Toast.LENGTH_LONG).show();
             }else {
                 Log.d("n",nombre_introducido);
                 doPostCategoria(nombre_introducido);
