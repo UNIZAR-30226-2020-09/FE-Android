@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Objects;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
@@ -109,5 +110,10 @@ public class EditarCategoria extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
+    }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
     }
 }

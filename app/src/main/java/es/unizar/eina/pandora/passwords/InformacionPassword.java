@@ -2,12 +2,15 @@ package es.unizar.eina.pandora.passwords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
@@ -54,5 +57,10 @@ public class InformacionPassword extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
     }
 }

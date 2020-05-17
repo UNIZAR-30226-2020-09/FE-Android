@@ -309,4 +309,9 @@ public class EditarPassword extends AppCompatActivity {
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
     }
+
+    public void cancel(View view){
+        startActivity(new Intent(this, Principal.class));
+        finishAffinity();
+    }
 }
