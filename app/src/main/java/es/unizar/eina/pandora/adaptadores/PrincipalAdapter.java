@@ -154,10 +154,12 @@ public class PrincipalAdapter extends
                                             String name = JSONitem.getString("passwordName");
                                             Integer id_pass = JSONitem.getInt("passId");
                                             borrarPassword(id_pass, name,true);
+                                            password.remove(JSONitem);
                                         }else{
                                             String name = JSONitem.getString("passwordName");
                                             Integer id_pass = JSONitem.getInt("passId");
                                             borrarPassword(id_pass, name, false);
+                                            password.remove(JSONitem);
                                         }
                                         notifyDataSetChanged();
                                     } catch (JSONException e) {

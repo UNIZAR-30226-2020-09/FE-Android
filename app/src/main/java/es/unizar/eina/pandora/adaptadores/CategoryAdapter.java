@@ -139,6 +139,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                             e.printStackTrace();
                                         }
                                         borrarCategory(id_category,c);
+                                        categories.remove(JSONitem);
+                                        notifyDataSetChanged();
 
                                     default:
                                         return false;
