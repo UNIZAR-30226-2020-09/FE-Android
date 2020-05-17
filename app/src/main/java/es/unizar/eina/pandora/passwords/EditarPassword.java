@@ -158,7 +158,12 @@ public class EditarPassword extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Debe introducir un nombre para la contraseña", Toast.LENGTH_LONG).show();
         }else if(pass.equals("")){
             Toast.makeText(getApplicationContext(),"El campo contraseña no puede estar vacío", Toast.LENGTH_LONG).show();
-        }else if(empty){
+        }else if(pass.length() < 4){
+            Toast.makeText(getApplicationContext(), "La longitud de la contraseña de usuario no debe ser inferior a 4", Toast.LENGTH_LONG).show();
+        }else if(pass.length() > 40){
+            Toast.makeText(getApplicationContext(), "La longitud de la contraseña de usuario no debe ser superior a 40", Toast.LENGTH_LONG).show();
+        }
+        else if(empty){
             Toast.makeText(getApplicationContext(),"El periodo de validez no puede estar vacío", Toast.LENGTH_LONG).show();
         }else if(dias<1 || dias>365){
             Toast.makeText(getApplicationContext(),"El periodo de validez debe estar entre 1 y 365", Toast.LENGTH_LONG).show();

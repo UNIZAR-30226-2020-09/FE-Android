@@ -30,10 +30,13 @@ public class CrearPasswordTres extends AppCompatActivity {
 
     public void goSiguiente(View view){
         String p=password.getText().toString();
-        if(!p.equals("")){
-            if(p.length()>40){
-                Toast.makeText(getApplicationContext(),"La longitud de la contraseña se usuario no debe ser superior a 40", Toast.LENGTH_LONG).show();
-            }else{
+        if(!p.equals("")) {
+            if (p.length() > 40) {
+                Toast.makeText(getApplicationContext(), "La longitud de la contraseña de usuario no debe ser superior a 40", Toast.LENGTH_LONG).show();
+            } else if (p.length() < 4){
+                Toast.makeText(getApplicationContext(), "La longitud de la contraseña de usuario no debe ser inferior a 4", Toast.LENGTH_LONG).show();
+            }
+            else{
                 SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_pass",password.getText().toString());
                 startActivity(new Intent(this,CrearPasswordCuatro.class));
             }
