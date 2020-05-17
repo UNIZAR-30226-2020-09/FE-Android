@@ -161,6 +161,26 @@ public class Principal extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(listaPass);
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        builder.setTitle("¿Está seguro de que quiere cerrar sesión y salir de la aplicación?");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                //startActivity(new Intent(Principal.this, Inicio.class));
+                finishAffinity();
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
     public void mostrarFiltradoCategorias(View v) throws InterruptedException, JSONException {
         doPostCategory();
 
@@ -232,9 +252,22 @@ public class Principal extends AppCompatActivity {
     }
 
     public void cerrarSesion(MenuItem menuItem){
-        SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
-        startActivity(new Intent(Principal.this, Inicio.class));
-        finishAffinity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        builder.setTitle("¿Está seguro de que quiere cerrar sesión?");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SharedPreferencesHelper.getInstance(getApplicationContext()).clear();
+                startActivity(new Intent(Principal.this, Inicio.class));
+                finishAffinity();
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+        });
+        builder.show();
     }
 
     public void contactar(MenuItem menuItem){

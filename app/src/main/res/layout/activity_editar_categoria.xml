@@ -42,10 +42,10 @@
 
     <TextView
         android:id="@+id/editar_categoria_1_texto"
-        android:layout_width="358dp"
-        android:layout_height="157dp"
+        android:layout_width="352dp"
+        android:layout_height="222dp"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
         android:layout_marginEnd="22dp"
         android:text="@string/qu_nombre_desea_asignarle_a_la_categor_a"
         android:textAlignment="center"
@@ -59,7 +59,7 @@
         android:layout_width="326dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="22dp"
         android:text="@string/introduzca_el_nombre"
         android:textSize="18sp"
