@@ -31,15 +31,15 @@
 
         <TextView
             android:id="@+id/registro2_texto_clave1"
-            android:layout_width="240dp"
-            android:layout_height="75dp"
+            android:layout_width="243dp"
+            android:layout_height="69dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="32dp"
             android:text="@string/registro2_texto_clave1"
             android:textAlignment="center"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/registro2_clave1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,28 +54,28 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="18dp"
             android:hint="@string/registro2_hint_clave1"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/registro2_texto_clave2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_long_clave"
-            tools:ignore="MissingConstraints"
-            android:importantForAutofill="no" />
+            tools:ignore="MissingConstraints" />
 
         <ImageButton
             android:id="@+id/registro2_imagen_ver"
             android:layout_width="28dp"
             android:layout_height="36dp"
             android:layout_marginStart="7dp"
-            android:layout_marginTop="317dp"
+            android:layout_marginTop="280dp"
             android:layout_marginEnd="14dp"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/todo"
             android:onClick="password_visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/registro2_clave1"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_view"
-            android:contentDescription="@string/todo" />
+            app:srcCompat="@android:drawable/ic_menu_view" />
 
         <TextView
             android:id="@+id/registro2_long_clave2"
@@ -91,17 +91,18 @@
 
         <TextView
             android:id="@+id/registro2_texto_clave2"
-            android:layout_width="247dp"
-            android:layout_height="83dp"
+            android:layout_width="244dp"
+            android:layout_height="51dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="27dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/registro2_texto_clave2"
             android:textAlignment="center"
-            android:textSize="30sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/registro2_clave2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_clave1" />
 
@@ -110,17 +111,17 @@
             android:layout_width="305dp"
             android:layout_height="57dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="51dp"
             android:hint="@string/registro2_hint_clave2"
+            android:importantForAutofill="no"
             android:inputType="textPassword"
             app:layout_constraintBottom_toTopOf="@+id/registro2_confirmar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_long_clave2"
-            tools:ignore="MissingConstraints"
-            android:importantForAutofill="no" />
+            tools:ignore="MissingConstraints" />
 
         <ImageButton
             android:id="@+id/registro2_imagen_ver2"
@@ -176,6 +177,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/registro2_texto" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="23dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/registro2_texto2_clave1"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/registro2_clave1"
+            app:layout_constraintEnd_toStartOf="@+id/registro2_imagen_ver"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/registro2_texto_clave1"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

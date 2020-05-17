@@ -19,6 +19,7 @@
     <!-- Segunda pantalla de registro -->
     <string name="registro2_texto">Registro</string>
     <string name="registro2_texto_clave1">Introduzca una clave maestra</string>
+    <string name="registro2_texto2_clave1">Debe tener:\n1 mayúscula, 1 minúscula, 1 número, 1 carácter especial [@#$%!]</string>
     <string name="registro2_hint_clave1">Clave maestra</string>
     <string name="registro2_long_clave">40</string>
     <string name="registro2_texto_clave2">Repita la clave maestra</string>
