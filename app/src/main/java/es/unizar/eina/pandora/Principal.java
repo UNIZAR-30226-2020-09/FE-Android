@@ -276,10 +276,23 @@ public class Principal extends AppCompatActivity {
     }
 
     public void redireccion(MenuItem menuItem){
-        Toast.makeText(getApplicationContext(),"Va a ser redirigido al servicio externo de haveibeenpwned", Toast.LENGTH_LONG).show();
-        Uri uri = Uri.parse("https://haveibeenpwned.com/");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        builder.setTitle("¿Desea ser redirigido a haveibeenpwned?");
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"Redirigiendo a haveibeenpwned", Toast.LENGTH_LONG).show();
+                Uri uri = Uri.parse("https://haveibeenpwned.com/");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     public void sobrePandora(MenuItem menuItem){
