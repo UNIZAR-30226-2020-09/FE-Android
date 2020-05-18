@@ -162,12 +162,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 doPostEliminarCategoria(id);
-                try {
-                    doPostCategory();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                notifyDataSetChanged();
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
