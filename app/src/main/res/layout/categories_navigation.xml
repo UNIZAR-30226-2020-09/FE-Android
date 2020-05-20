@@ -46,6 +46,7 @@
 
                 <ImageButton
                     android:id="@+id/topbar_relleno"
+                    android:clickable="false"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="54dp"
                     android:layout_height="wrap_content"

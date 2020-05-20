@@ -40,14 +40,12 @@ public class PrincipalAdapter extends
         RecyclerView.Adapter<PrincipalAdapter.ViewHolder> {
 
     private final String urlEliminarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/eliminar";
-    private final String urlListarPassword = "https://pandorapp.herokuapp.com/api/contrasenya/listar";
     private final String urlEliminarPasswordCompartida = "https://pandorapp.herokuapp.com/api/grupo/eliminar";
 
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private Context context;
     private ArrayList<JSONObject> password;
-    private JSONArray lista;
 
 
 
@@ -153,13 +151,12 @@ public class PrincipalAdapter extends
                                         if(JSONitem.getString("categoryName").equals("Compartida")){
                                             String name = JSONitem.getString("passwordName");
                                             Integer id_pass = JSONitem.getInt("passId");
-                                            borrarPassword(id_pass, name,true);
-                                            password.remove(JSONitem);
-                                        }else{
+                                            borrarPassword(id_pass, name,true, JSONitem);
+                                        }
+                                        else{
                                             String name = JSONitem.getString("passwordName");
                                             Integer id_pass = JSONitem.getInt("passId");
-                                            borrarPassword(id_pass, name, false);
-                                            password.remove(JSONitem);
+                                            borrarPassword(id_pass, name, false, JSONitem);
                                         }
                                         notifyDataSetChanged();
                                     } catch (JSONException e) {
@@ -177,23 +174,19 @@ public class PrincipalAdapter extends
         }
     }
 
-    private void borrarPassword(final Integer id, String name, final boolean compartida){
+    private void borrarPassword(final Integer id, String name, final boolean compartida, final JSONObject JSONitem){
         // Confirmar que queremos eliminar la contraseña
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
         builder.setTitle("¿Eliminar contraseña: " + name +"?");
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                password.remove(JSONitem);
                 if (compartida){
                     doPostEliminarPasswordCompartida(id);
                 }
                 else{
                     doPostEliminarPassword(id);
-                }
-                try {
-                    doPostPassword();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 notifyDataSetChanged();
             }
@@ -265,61 +258,5 @@ public class PrincipalAdapter extends
             @Override
             public void onFailure(Call call, IOException e) { e.printStackTrace();}
         });
-    }
-
-    public void doPostPassword() throws InterruptedException {
-        // Recogemos el token
-        final String token = SharedPreferencesHelper.getInstance(context).getString("token");
-
-        JSONObject json = new JSONObject();
-        try{
-            json.accumulate("masterPassword",password);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        // Formamos el cuerpo de la petición con el JSON creado
-        RequestBody formBody = RequestBody.create(
-                MediaType.parse("application/json; charset=utf-8"),
-                json.toString()
-        );
-        // Formamos la petición con el cuerpo creado
-        final Request request;
-        request = new Request.Builder()
-                .url(urlListarPassword)
-                .addHeader("Content-Type", Objects.requireNonNull(formBody.contentType()).toString())
-                .addHeader("Authorization", token)
-                .post(formBody)
-                .build();
-        // Hacemos la petición SÍNCRONA
-        // Enviamos la petición en un thread nuevo y actuamos en función de la respuesta
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try (Response response = httpClient.newCall(request).execute()) {
-                    JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
-                    if (response.isSuccessful()) {
-                        lista = json.getJSONArray("passwords");
-                        toArrayList();
-                    }else{
-                        PrintOnThread.show(context, json.getString("statusText"));
-                    }
-                }
-                catch (IOException | JSONException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        thread.join();
-    }
-
-    //Pasar JSONArray a un ArrayList<JSONObject>
-    protected void toArrayList() throws JSONException {
-        password.clear();
-        for (int i = 0; i < lista.length(); i++){
-            password.add(lista.getJSONObject(i));
-        }
     }
 }

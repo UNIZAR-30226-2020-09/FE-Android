@@ -2,10 +2,13 @@ package es.unizar.eina.pandora.passwords;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
 
@@ -24,6 +27,10 @@ public class CrearPasswordCompartida extends AppCompatActivity {
         String mails = mailsEditText.getText().toString();
         Log.d("Mails", mails);
         SharedPreferencesHelper.getInstance(getApplicationContext()).put("password_mails", mails);
+        finish();
+    }
+
+    public void cancel(View view){
         finish();
     }
 }
