@@ -116,6 +116,7 @@
     <string name="twitter">Twitter</string>
     <string name="mostrar_contrase_a">Mostrar contraseña</string>
     <string name="categor_a">Categoría</string>
+    <string name="robustez">Robustez</string>
     <string name="asfasfsfasdfasfasffasfsafasfasfasfsalf_kasflaskflaskflas_kfasl_fkasl_fksal_fkasl_fasdf">asfasfsfasdfasfasffasfsafasfasfasfsalfñkasflaskflaskflasñkfaslñfkaslñfksalñfkaslñfasdf</string>
 
     <!-- Inicio -->
@@ -133,7 +134,7 @@
     <string name="c_digo_2fa">Código 2FA</string>
     <string name="abra_la_aplicaci_n_2fa_y_escriba_el_c_digo_proporcionado_para_completar_el_inicio_de_sesi_n">Abra la aplicación 2FA y escriba el código proporcionado para completar el inicio de sesión</string>
     <string name="introduzca_el_c_digo">Introduzca el código</string>
-    <string name="codigo">Codigo</string>
+    <string name="codigo">Código</string>
     <string name="entrar">Entrar</string>
 
     <!-- Sobre pandora -->

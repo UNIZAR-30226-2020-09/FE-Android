@@ -92,6 +92,7 @@ public class PrincipalAdapter extends
         public TextView name;
         public TextView category;
         public TextView user;
+        public TextView robustez;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -103,6 +104,7 @@ public class PrincipalAdapter extends
             name = (TextView) itemView.findViewById(R.id.item_password_name);
             category = (TextView) itemView.findViewById(R.id.item_password_category);
             user = (TextView) itemView.findViewById(R.id.item_password_user);
+            robustez = (TextView) itemView.findViewById(R.id.item_password_robustez);
         }
 
         public String getName(){
@@ -113,6 +115,7 @@ public class PrincipalAdapter extends
             name.setText(JSONitem.getString("passwordName"));
             category.setText(JSONitem.getString("categoryName"));
             user.setText(JSONitem.getString("userName"));
+            robustez.setText(new StringBuilder().append(JSONitem.getString("robustez")).append(" %").toString());
 
             //Desplegar el menú cuando hacemos click
             itemView.setOnClickListener(new View.OnClickListener() {

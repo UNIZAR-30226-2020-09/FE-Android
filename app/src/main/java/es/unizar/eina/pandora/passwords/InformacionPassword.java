@@ -22,6 +22,7 @@ public class InformacionPassword extends AppCompatActivity {
     private TextView categoria;
     private TextView validez;
     private TextView nota;
+    private TextView robustez;
 
 
     @Override
@@ -33,8 +34,9 @@ public class InformacionPassword extends AppCompatActivity {
         usuario = findViewById(R.id.info_user);
         spassword = findViewById(R.id.info_password);
         categoria = findViewById(R.id.info_categoria);
-        validez= findViewById(R.id.info_validez);
+        validez = findViewById(R.id.info_validez);
         nota = findViewById(R.id.info_nota);
+        robustez = findViewById(R.id.info_robustez);
 
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
         JSONObject password = sharedPreferencesHelper.getJSONObject("Password_info");
@@ -46,6 +48,7 @@ public class InformacionPassword extends AppCompatActivity {
             String _validez = dias + " días";
             String _nota = password.getString("optionalText");
             String category_name = password.getString("categoryName");
+            String _robustez = password.getInt("robustez") + " %";
 
             nombre.setText(_name);
             usuario.setText(_user);
@@ -53,6 +56,7 @@ public class InformacionPassword extends AppCompatActivity {
             validez.setText(_validez);
             nota.setText(_nota);
             categoria.setText(category_name);
+            robustez.setText(_robustez);
 
         } catch (JSONException e) {
             e.printStackTrace();
