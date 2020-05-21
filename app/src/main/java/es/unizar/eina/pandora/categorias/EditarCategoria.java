@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class EditarCategoria extends AppCompatActivity {
 
     private TextView name;
     private JSONObject category;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class EditarCategoria extends AppCompatActivity {
         name = findViewById(R.id.editar_categoria_1_nombre);
         category = SharedPreferencesHelper.getInstance(getApplicationContext()).getJSONObject("Category_info");
         TextView texto = findViewById(R.id.editar_categoria_1_texto);
+        button = findViewById(R.id.editar_categoria_1_button_confirmar);
         try {
             texto.setText(texto.getText() + " " + category.getString("categoryName") + "?");
         } catch (JSONException e) {
@@ -49,6 +52,7 @@ public class EditarCategoria extends AppCompatActivity {
     }
 
     public void confirmar(View view) throws JSONException {
+        button.setEnabled(false);
         String nombre_introducido = name.getText().toString();
         if(!nombre_introducido.equals("")){
             if(nombre_introducido.length()>30 || nombre_introducido.length()<1){
@@ -101,6 +105,7 @@ public class EditarCategoria extends AppCompatActivity {
                         finishAffinity();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 } catch (JSONException e) {

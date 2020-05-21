@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class EditarPassword extends AppCompatActivity {
     ArrayList<Integer> id_category = new ArrayList<>();
     Integer id_cat;
     JSONArray cat = new JSONArray();
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class EditarPassword extends AppCompatActivity {
         validez.setTransformationMethod(null);
         nota = findViewById(R.id.editar_password_nota);
         categorias=findViewById(R.id.editar_password_cat);
+        button = findViewById(R.id.editar_password_button_continuar);
 
         //Conseguimos las categorias para el spinner
         try {
@@ -133,22 +136,23 @@ public class EditarPassword extends AppCompatActivity {
     }
 
     public void goConfirmar(View view){
-       getCategory();
-       _nombre = nombre.getText().toString();
-       _usuario = usuario.getText().toString();
-       _password = password.getText().toString();
-       _validez = validez.getText().toString();
-       int dias = 0;
-       boolean empty = false;
-       if(_validez.equals("")){
-           empty=true;
-       }else{
-           dias = Integer.parseInt(_validez);
-       }
-       _nota = nota.getText().toString();
-       if(checkParameters(_nombre,_password,dias,empty)){
-           doPostEditar(_id, _nombre, _usuario, _password,_nota, dias, id_cat);
-       }
+        button.setEnabled(false);
+        getCategory();
+        _nombre = nombre.getText().toString();
+        _usuario = usuario.getText().toString();
+        _password = password.getText().toString();
+        _validez = validez.getText().toString();
+        int dias = 0;
+        boolean empty = false;
+        if(_validez.equals("")){
+            empty=true;
+        }else{
+            dias = Integer.parseInt(_validez);
+        }
+        _nota = nota.getText().toString();
+        if(checkParameters(_nombre,_password,dias,empty)){
+            doPostEditar(_id, _nombre, _usuario, _password,_nota, dias, id_cat);
+        }
     }
 
     //Devuelve true si se cumplen todas las restricciones de los parametros de las contraseñas
@@ -225,6 +229,7 @@ public class EditarPassword extends AppCompatActivity {
             public void run() {
                 try (Response response = httpClient.newCall(request).execute()) {
                     if (!response.isSuccessful()) {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         Log.d("ERROR ", Objects.requireNonNull(response.body()).string());
                     } else {
                         final JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());

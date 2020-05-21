@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,16 +35,16 @@ public class CrearPasswordSeis extends AppCompatActivity {
     String urlCompartida = "https://pandorapp.herokuapp.com/api/grupo/insertar";
 
     private final OkHttpClient httpClient = new OkHttpClient();
-
     private TextView note;
-
     private String password;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_password_seis);
         note = findViewById(R.id.crear_password_6_note);
+        button = findViewById(R.id.crear_password_6_button_confirmar);
 
         SharedPreferencesHelper sharedPreferencesHelper = SharedPreferencesHelper.getInstance(getApplicationContext());
         password = sharedPreferencesHelper.getString("password",null);
@@ -52,15 +53,18 @@ public class CrearPasswordSeis extends AppCompatActivity {
 
     public void crear(View view){
         String nota_insertada = note.getText().toString().trim();
-        if(nota_insertada.length()>100){
-            Toast.makeText(getApplicationContext(),"La longitud de la nota no pude superar 100 caracteres", Toast.LENGTH_LONG).show();
-        }else{
+        if(nota_insertada.length() > 100){
+            Toast.makeText(getApplicationContext(),"La longitud de la nota no puede superar los 100 caracteres", Toast.LENGTH_LONG).show();
+        }
+        else{
             //Recuperamos los datos introducidos
             String nombre_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_name");
             String user_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_user");
             String pass_insertado = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("password_pass");
             int dias_insertados = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_dias");
             int category_insertada = SharedPreferencesHelper.getInstance(getApplicationContext()).getInt("password_cat");
+
+            button.setEnabled(false);
             doPost(nombre_insertado,user_insertado,pass_insertado,nota_insertada,dias_insertados,category_insertada);
         }
     }
@@ -145,6 +149,7 @@ public class CrearPasswordSeis extends AppCompatActivity {
                         finishAffinity();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 }

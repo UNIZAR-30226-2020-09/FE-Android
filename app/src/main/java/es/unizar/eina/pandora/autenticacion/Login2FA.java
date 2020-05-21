@@ -57,7 +57,9 @@ public class Login2FA extends AppCompatActivity {
         codigo = _codigo.getText().toString();
         if(codigo.equals("")){
             Toast.makeText(getApplicationContext(),"El campo codigo no puede estar vacío", Toast.LENGTH_LONG).show();
-        }else{
+        }
+        else{
+            entrar.setEnabled(false);
             doPost();
         }
     }
@@ -97,6 +99,7 @@ public class Login2FA extends AppCompatActivity {
                         finishAffinity();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), entrar);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 } catch (JSONException e) {

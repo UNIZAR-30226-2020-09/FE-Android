@@ -66,16 +66,11 @@ public class GenerarPassword extends AppCompatActivity {
             if(lon.equals("")){
                 Toast.makeText(getApplicationContext(),"El campo longitud no puede estar vacío", Toast.LENGTH_LONG).show();
             }
-            else if(4 > Integer.parseInt(lon)){
-                Toast.makeText(getApplicationContext(),"Debe introducir una longitud mayor o igual que 4", Toast.LENGTH_LONG).show();
+            else if(Integer.parseInt(lon) > 40 || Integer.parseInt(lon) < 4 ){
+                    Toast.makeText(getApplicationContext(),"El campo longitud debe tener un valor entre 4 y 40", Toast.LENGTH_LONG).show();
             }
-            else{
-                if(Integer.parseInt(lon) > 40 || Integer.parseInt(lon)==0){
-                    Toast.makeText(getApplicationContext(),"El campo longitud no puede ser 0 o mayor que 40", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    doPost(Integer.parseInt(lon));
-                }
+            else {
+                doPost(Integer.parseInt(lon));
             }
         }
     }

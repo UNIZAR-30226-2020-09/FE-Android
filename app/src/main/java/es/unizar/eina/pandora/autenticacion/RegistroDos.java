@@ -80,6 +80,7 @@ public class RegistroDos extends AppCompatActivity {
 
         password.addTextChangedListener(registerTextWatcher);
         confirmPassword.addTextChangedListener(registerTextWatcher);
+        confirmar.findViewById(R.id.registro2_confirmar);
 
         savedEmail = SharedPreferencesHelper.getInstance(getApplicationContext()).getString("email");
     }
@@ -243,6 +244,7 @@ public class RegistroDos extends AppCompatActivity {
                 else {
                     try {
                         JSONObject json = new JSONObject(Objects.requireNonNull(response.body()).string());
+                        PrintOnThread.setEnabled(getApplicationContext(), confirmar);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                     catch (JSONException e) {

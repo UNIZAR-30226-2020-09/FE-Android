@@ -1,22 +1,16 @@
 package es.unizar.eina.pandora.autenticacion;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Objects;
-
-import es.unizar.eina.pandora.Principal;
 import es.unizar.eina.pandora.R;
 import es.unizar.eina.pandora.utiles.PrintOnThread;
 import es.unizar.eina.pandora.utiles.SharedPreferencesHelper;
@@ -35,6 +29,7 @@ public class Login extends AppCompatActivity {
 
     TextView email;
     TextView password;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +38,7 @@ public class Login extends AppCompatActivity {
 
         email = findViewById(R.id.login_entrada_usuario);
         password = findViewById(R.id.login_entrada_clave);
+        button = findViewById(R.id.login_entrar);
     }
 
     public void entrar(View view) {
@@ -50,6 +46,7 @@ public class Login extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Los campos email y contraseña no pueden estar vacíos", Toast.LENGTH_LONG).show();
         }
         else{
+            button.setEnabled(false);
             doPost();
         }
     }
@@ -88,6 +85,7 @@ public class Login extends AppCompatActivity {
                         finishAffinity();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 } catch (JSONException e) {

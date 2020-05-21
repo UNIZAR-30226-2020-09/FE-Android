@@ -3,6 +3,7 @@ package es.unizar.eina.pandora.utiles;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,17 @@ public class PrintOnThread {
                 @Override
                 public void run() {
                     view.setText(texto);
+                }
+            });
+        }
+    }
+
+    public static void setEnabled(final Context context, final Button button) {
+        if (context != null) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    button.setEnabled(true);
                 }
             });
         }

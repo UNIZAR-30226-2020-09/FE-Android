@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +34,14 @@ public class CrearCategoria extends AppCompatActivity {
     private final OkHttpClient httpClient = new OkHttpClient();
 
     private TextView name;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_categoria);
         name = findViewById(R.id.crear_categoria_1_nombre);
+        button = findViewById(R.id.crear_categoria_1_button_confirmar);
     }
 
     public void confirmar(View view){
@@ -48,6 +51,7 @@ public class CrearCategoria extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Longitud de categoria entre 1 y 30", Toast.LENGTH_LONG).show();
             }else {
                 Log.d("n",nombre_introducido);
+                button.setEnabled(false);
                 doPostCategoria(nombre_introducido);
             }
 
@@ -101,6 +105,7 @@ public class CrearCategoria extends AppCompatActivity {
                         finishAffinity();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 } catch (JSONException e) {
