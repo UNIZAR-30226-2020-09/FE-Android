@@ -117,7 +117,7 @@
     <string name="mostrar_contrase_a">Mostrar contraseña</string>
     <string name="categor_a">Categoría</string>
     <string name="robustez">Robustez</string>
-    <string name="asfasfsfasdfasfasffasfsafasfasfasfsalf_kasflaskflaskflas_kfasl_fkasl_fksal_fkasl_fasdf">asfasfsfasdfasfasffasfsafasfasfasfsalfñkasflaskflaskflasñkfaslñfkaslñfksalñfkaslñfasdf</string>
+    <string name="asfasfsfasdfasfasffasfsafasfasfasfsalf_kasflaskflaskflas_kfasl_fkasl_fksal_fkasl_fasdf">asfasfsfasdfas\nfas\nffas\nfsafasfasfasfsalfñkasflaskflask\nflasAAAAAAAAAAAAAAAAAAAAAAAAA</string>
 
     <!-- Inicio -->
     <string name="usuarios_registrados">Usuarios registrados</string>
