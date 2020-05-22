@@ -153,6 +153,9 @@ public class EditarPassword extends AppCompatActivity {
         if(checkParameters(_nombre,_password,dias,empty)){
             doPostEditar(_id, _nombre, _usuario, _password,_nota, dias, id_cat);
         }
+        else {
+            button.setEnabled(true);
+        }
     }
 
     //Devuelve true si se cumplen todas las restricciones de los parametros de las contraseñas

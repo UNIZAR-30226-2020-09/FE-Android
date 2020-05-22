@@ -646,7 +646,7 @@ public class Principal extends AppCompatActivity {
                 JSONObject password = passwords.getJSONObject(i);
                 int days = password.getInt("noDaysBeforeExpiration");
 
-                if (days < 0) {
+                if (days <= 0) {
 
                     String texto_notificacion = "Tu contraseña \"" +  password.getString("passwordName") + "\" ha expirado. Cámbiala para dejar de recibir esta notificación";
 
