@@ -44,14 +44,14 @@
         android:hint="@string/escriba_aqu_su_mensaje"
         android:maxLength="200"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/contactar2_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contactar1_texto_que_desea"
         android:importantForAutofill="no" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/contactar2_button"
         style="@android:style/Widget.DeviceDefault.Light.Button.Toggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

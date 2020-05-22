@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ public class ContactarDos extends AppCompatActivity {
     private final OkHttpClient httpClient = new OkHttpClient();
 
     TextView remitente;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class ContactarDos extends AppCompatActivity {
         setContentView(R.layout.activity_contactar_dos);
 
         remitente = findViewById(R.id.contactar2_entrada_comunicado);
+        button = findViewById(R.id.contactar2_button);
 
         // Si viene de la pantalla principal (ha iniciado sesión), rellenamos el campo con su email
         // puesto que ya lo conocemos
@@ -44,6 +47,7 @@ public class ContactarDos extends AppCompatActivity {
 
     public void contactar(View view){
         String r = remitente.getText().toString();
+        button.setEnabled(false);
         if(!r.equals("")){
             if(r.length()<6 || r.length()>100){
                 Toast.makeText(getApplicationContext(),"La longitud del remitente debe estar entre 6 y 100 caracteres", Toast.LENGTH_LONG).show();
@@ -92,6 +96,7 @@ public class ContactarDos extends AppCompatActivity {
                         finish();
                     }
                     else {
+                        PrintOnThread.setEnabled(getApplicationContext(), button);
                         PrintOnThread.show(getApplicationContext(), json.getString("statusText"));
                     }
                 } catch (JSONException e) {
