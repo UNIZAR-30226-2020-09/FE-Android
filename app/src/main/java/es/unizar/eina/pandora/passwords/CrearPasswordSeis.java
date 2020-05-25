@@ -127,9 +127,9 @@ public class CrearPasswordSeis extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         if(url.equals(urlCompartida)) {
                             JSONArray usuarios = json.getJSONArray("usuariosErroneos");
-                            String listaErroneos = "";
+                            StringBuilder listaErroneos = new StringBuilder();
                             for (int i = 0; i < usuarios.length(); i++) {
-                                listaErroneos = "\n" + usuarios.get(i).toString();
+                                listaErroneos.append("\n").append(usuarios.get(i).toString());
                             }
                             String _response = "Contraseña grupal creada.";
                             if(usuarios.length() > 0) {
